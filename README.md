@@ -13,7 +13,7 @@ This project is not ready for production use, for now, considering using this fo
 
 ## Security
 
-I try to do the things the right way, but I started this project from scratch with zero-PHP skills or knowledge. That is also one of the reasons to NOT USE this code in a production environment.
+I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area. That is also one of the reasons to NOT USE this code in a production environment.
 
 I hope soon it will be good enough for this.
 
@@ -42,7 +42,7 @@ From the $_POST of the user, check validity of the input and writte a file into 
 
 > |4|body|Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit  in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum|
 
-> |5|date_and_time|2024-10-28_151236|
+> |5|date_and_time|YYYY-MM-DD_hhmmss|
 
 > |6|IP|XXX.XXX.XX.XXX|
 
@@ -50,7 +50,7 @@ From the $_POST of the user, check validity of the input and writte a file into 
 
 The mail will take this type of name :
 
-> pending_mail_2024-10-28_151236_XXX.XXX.XX.XXX_Foo_Bar_foo.bar_at_gogole.com.txt
+> pending_mail_YYYY-MM-DD_hhmmss_XXX.XXX.XX.XXX_Foo_Bar_foo.bar_at_gogole.com.txt
 
 This file will be stored into ' mail_temp_directory '.
 
