@@ -66,7 +66,7 @@ This allows you to keep a trace of every message, even if they are removed from 
 
 ## How to install it
 
-Download the code and configure your web server regarding your need. 
+Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need. 
 
 Soon some example of configuration using NGinx & Apache2 will be provided, as tweaks for php.ini and a dedicated pool for it.
 
