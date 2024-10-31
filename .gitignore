@@ -1,2 +1,4 @@
 src/.env
 .*.swp
+/vendor
+.*~
