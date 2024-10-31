@@ -2,3 +2,5 @@ src/.env
 .*.swp
 /vendor
 .*~
+*-swp
+*.kate-swp
