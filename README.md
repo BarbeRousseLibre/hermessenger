@@ -3,9 +3,9 @@ WIP - A self-made e-mail web form written in PHP, using composer, PHPDotenv &amp
 
 ## About
 
-This project is simply a goal for me to learn PHP. It was written with PHP 8.2 and (for now) it was not tested on other release of PHP. This was also not tested on other operating system than Linux.
+This project is simply a goal for me to learn PHP. It was written with PHP 8.2 and (for now) it was not tested on other release of PHP. This was also not tested on other operating system than Linux.
 
-It is a free software, under GPL 3.0. Feel free to use it, enhance it… 
+It is a free software, under GPL 3.0. Feel free to use it, enhance it…
 
 ## This is a beta !
 
@@ -13,7 +13,7 @@ This project is not ready for production use, for now, considering using this fo
 
 ## Security
 
-I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area. That is also one of the reasons to NOT USE this code in a production environment.
+I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area (developping). That is also one of the reasons to NOT USE this code in a production environment.
 
 I hope soon it will be good enough for this.
 
@@ -27,6 +27,8 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 - A honey-pot for protection against smartest bot and AI
 - Blocking non-trusty ESP domains (such as yopmail)
 - Adding support for non-Latin
+- Testing this script on PHP8.3
+- Testing this script on other operating system (such as *BSD or Windows)
 
 ## How it works
 
@@ -68,6 +70,8 @@ This allows you to keep a trace of every message, even if they are removed from 
 
 Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need. 
 
+Then, renames src/var/variables.example.php to src/var/variables.php. Once it's done, open it and edit values accordingly to your needs (at least $document_root and probably $timezone).
+
 Soon some example of configuration using NGinx & Apache2 will be provided, as tweaks for php.ini and a dedicated pool for it.
 
 The user running the cron task job needs to be able to access the PHP's binary as the Document Root holding it.
@@ -80,10 +84,15 @@ Once you have these info, simply edit src/.env and modify the value regarding yo
 
 ### About some files
 - public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code
-- src/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the " temp_mail_directory ", until it is send by " send_mail_in_queue.php ".
+- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the " temp_mail_directory ", until it is send by " send_mail_in_queue.php ".
 - src/send_mail_in_queue.php - Once invoked, take from the " temp_mail_directory " the oldest mail and send it, only this one. If a checkbox has be checked on the index.html page, a second mail is sended as a receipt/copy for the user using the form.
 - var/mailing_var.php - This file rely on PHPDotenv, it reads from src/.env some sensitive datas: SMTP server, username, **password**, etc. You should write into .env the sensitive datas, nowhere else !
 - var/variables.php - This file is allowing you to add or remove fields, there is variables you could modify to adapt the code to your actual HTML page and need.
+- var/variables.example.php - See How to use it above.
+- .gitkeep - File allowing me to send "empty" directory to git, this is safe to removes them, unless you need to push code to this repository.
+- src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
+- src/.env.example - File to renames .env for your usage. See .env above.
+
 
 ## Last words
 
