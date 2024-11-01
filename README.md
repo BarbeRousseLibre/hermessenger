@@ -29,6 +29,7 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 - Adding support for non-Latin
 - Testing this script on PHP8.3
 - Testing this script on other operating system (such as *BSD or Windows)
+- Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
 
 ## How it works
 
@@ -68,19 +69,70 @@ This allows you to keep a trace of every message, even if they are removed from 
 
 ## How to install it
 
-Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need. 
+1. Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need. See NGinX example below.
 
-Then, renames src/var/variables.example.php to src/var/variables.php. Once it's done, open it and edit values accordingly to your needs (at least $document_root and probably $timezone).
+2. Renames src/var/variables.example.php to src/var/variables.php. Once it's done, open it and edit values accordingly to your needs (at least $document_root and probably $timezone):
+
+```bash
+cd /path/to/document_root/hermessenger/ && mv src/var/variables.example.php src/var/variables.php && echo -n "Success !\n"
+```
+
+3. Edit .env.example file accordingly to your ESP's SMTP parameters. You need to edit without adding at the end of the line the semicolon (';'):
+
+```
+SMTP_USER = "sender_username"
+SMTP_DOMAIN = "@domain.org"
+SMTP_PASSWORD = "super_secret_password"
+SMTP_SERVER = "mail.domain.org"
+SMTP_PORT = yourport
+
+RECIPIENT_USER = "recipient_username"
+RECIPIENT_DOMAIN = "@domain.org"
+```
+
+To:
+
+```
+SMTP_USER = "contact"
+SMTP_DOMAIN = "@mywebsite.com"
+SMTP_PASSWORD = "1234_abcdefg!"
+SMTP_SERVER = "mail.myesp.org"
+SMTP_PORT = 465
+
+RECIPIENT_USER = "recipient_username"
+RECIPIENT_DOMAIN = "@domain.org"
+```
+
+4. Once you are sure of your parameters, renames it to .env:
+
+```bash
+cd /path/to/document_root/hermessenger/ && mv src/.env.example src/.env && echo -n "Success !\n"
+```
+
+### Security notes (for administators installing hermessenger):
+
+1. Be aware that .env file should NEVER be accessible to your webserver (and so, client).
+
+2. As it should always be added to .gitignore or any cvs system equivalent.
+
+3. Be still sure to never 'git add src/.env', only .env.example is safe. If that so, changes ASAP your password, maybe user as well. This is your responsability as the one implementing my script. Git never forget!
+
+4. NEVER use .env.example, and do not renames or moves it. It as to belong to src/ as well.
+
+5. It is also useless to manually block it from your webserver, because only public/ should be accessible to your webserver, and should be your document root **no matter what**.
+
+6. This also apply, at a lesser degree of security issue, to src/var/variables.php as well. See src/var/variables.example.php.
 
 Soon some example of configuration using NGinx & Apache2 will be provided, as tweaks for php.ini and a dedicated pool for it.
 
 The user running the cron task job needs to be able to access the PHP's binary as the Document Root holding it.
 
+
 ## How to use it
 
-You need a working mail service, or ESP, allowing you to use their SMTP servers to send the e-mail with PHPMailer.
+You need a working mail service, or ESP, allowing you to use their SMTP servers to send the e-mail with PHPMailer.
 
-Once you have these info, simply edit src/.env and modify the value regarding your configuration.
+Once you have these info, simply follow instruction into 'How to install it' it above.
 
 ### About some files
 - public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code
