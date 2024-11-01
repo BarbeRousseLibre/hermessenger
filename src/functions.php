@@ -99,7 +99,7 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
     $files = scandir($temp_mail_dir);
 
     // Check if an $exclude file is present, changes the index of the oldest mail accordingly
-    ($files[2] == $exclude ? $mail_index = 3 : $mail_index = 2);
+    ($files[2] === $exclude ? $mail_index = 3 : $mail_index = 2);
 
     if (!array_key_exists($mail_index, $files)) { // If no mail to send
 
@@ -107,7 +107,7 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
 
     } else { // There is a mail to send
 
-        $oldest_mail = $files[$mail_index];
+        $oldest_mail = $temp_mail_dir . $files[$mail_index];
 
     }
 
