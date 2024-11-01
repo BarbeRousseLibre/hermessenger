@@ -32,23 +32,22 @@ require_once 'var/variables.php';
 
 }*/
 
+/*
+ * Once the mail has been given to PHPMailer, stores it regarding if PHPMailer returned true or false.
+ * 'rejected_mail' goes into 'mail_dir/REJECTED' subdirectory, and 'accepted_mail' into 'mail_dir/ACCEPTED'.
+ *
+ * Move the mail from $pending_mail_path's directory to the subdirectory (see above).
+ *
+ * $pending_mail_path is the location where holding mails are waiting before being send.
+ *
+ * $status define where the mail should go (ACCEPTED/REJECTED).
+ *
+ * $locations is the array with all needed locations to retrieve and move around the mail's file.
+ *
+ * Return true or false.
+ *
+ */
 function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
-    /*
-     * Once the mail has been given to PHPMailer, stores it regarding if PHPMailer returned true or false.
-     * 'rejected_mail' goes into 'mail_dir/REJECTED' subdirectory, and 'accepted_mail' into 'mail_dir/ACCEPTED'.
-     *
-     * Move the mail from $pending_mail_path's directory to the subdirectory (see above).
-     *
-     * $pending_mail_path is the location where holding mails are waiting before being send.
-     *
-     * $status define where the mail should go (ACCEPTED/REJECTED).
-     *
-     * $locations is the array with all needed locations to retrieve and move around the mail's file.
-     *
-     * Return true or false.
-     *
-     */
-
     /*
      * State if it's a rejected or accepted mail (from phpmailer return code) and will use it to replace "pending_mail"
      * by 'rejected_mail' or 'accepted_mail' into the name's file, defining also it's futur location.
@@ -80,20 +79,21 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
 
 }
 
+/*
+ * From the path given as argument, return only the oldest file, using scandir.
+ *
+ * $temp_mail_dir should be the location of the holding queue directory for mail.
+ *
+ * $exclude is a string reprensentating the .gitkeep file used to allow to pull this directory, empty.
+ *
+ * Return an array with all data's from the mail.
+ *
+ * scandir's default behavior allow this to directly get as third index (first being '.', second being '..'), being
+ * the oldest file.
+ *
+ */
 function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
-    /*
-     * From the path given as argument, return only the oldest file, using scandir.
-     *
-     * $temp_mail_dir should be the location of the holding queue directory for mail.
-     *
-     * $exclude is a string reprensentating the .gitkeep file used to allow to pull this directory, empty.
-     *
-     * Return an array with all data's from the mail.
-     *
-     * scandir's default behavior allow this to directly get as third index (first being '.', second being '..'), being
-     * the oldest file.
-     *
-     */
+
 
     // Retrieve all files in the temp directory as an array
     $files = scandir($temp_mail_dir);
@@ -141,56 +141,57 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
     return $cgi_mail_data;
 }
 
+/* Take the mail from the the form and stores it into $temp_mail_dir. The mail will get formated this way for each
+ * row:
+ *
+ * |lineNumber|htmlTag|userInput|
+ *
+ * Exception being made for :
+ *
+ * - Index 5 (6th row): |date_and_time| being the date & time when the user hit the send e-mail button on the page.
+ *
+ * - Index 6 (7th row): |IP| being the client's IP. Important: This data isn't trusty, but can be useful for stats and
+ *                      such things.
+ *
+ * - Index 7 (8th row): |send_copy| being a boolean stating if a copy has to be send to the actual user (|email|) as
+ *                      a recipient.
+ *
+ * These can be used to find a bit more data about who's trying to send an e-mail and when. Remembering that IP
+ * is an untrusty information that can be hidden easily.
+ *
+ * Each file will then be formated this way:
+ *
+ * |0|firstname|foo|
+ * |1|secondname|bar|
+ * |2|email|foo.bar@toto.org|
+ * |3|subject|This is a test message|
+ * |4|body|Body of the message|
+ * |5|date_and_time|YY-MM-DD_HHMMSS|
+ * |6|IP|XX.XXX.XXX.XX|
+ * |7|send_copy|bool|
+ *
+ * The mail's file will be named this way:
+ *
+ * 'mail_pending_DATE_TIME_IP_firstname_secondname_email_at_domain_tld.txt'
+ *
+ * Where all white space characters are replaced by '_' and arobase ('@') is replaced by '_at_'.
+ *
+ * This way, both file's name and it's content could be used to extract data from these.
+ *
+ * $mail is the array from $_POST after remove_receipt_key() has cleaned it, if present.
+ *
+ * $temp_mail_dir is the path of the directory that will hold the file (.txt) used to store the mail until it is
+ * send by a cronjob task running 'php_mailer.php' file every X minutes/hours/day (etc), or a loop.
+ *
+ * $send_copy is a bool, stating if a second copy has to be send to the user of the form / sender.
+ *
+ * Store the mail into the directory if true and returns it.
+ *
+ * Otherwise, return false.
+ *
+ */
 function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
-    /* Take the mail from the the form and stores it into $temp_mail_dir. The mail will get formated this way for each
-     * row:
-     *
-     * |lineNumber|htmlTag|userInput|
-     *
-     * Exception being made for :
-     *
-     * - Index 5 (6th row): |date_and_time| being the date & time when the user hit the send e-mail button on the page.
-     *
-     * - Index 6 (7th row): |IP| being the client's IP. Important: This data isn't trusty, but can be useful for stats and
-     *                      such things.
-     *
-     * - Index 7 (8th row): |send_copy| being a boolean stating if a copy has to be send to the actual user (|email|) as
-     *                      a recipient.
-     *
-     * These can be used to find a bit more data about who's trying to send an e-mail and when. Remembering that IP
-     * is an untrusty information that can be hidden easily.
-     *
-     * Each file will then be formated this way:
-     *
-     * |0|firstname|foo|
-     * |1|secondname|bar|
-     * |2|email|foo.bar@toto.org|
-     * |3|subject|This is a test message|
-     * |4|body|Body of the message|
-     * |5|date_and_time|YY-MM-DD_HHMMSS|
-     * |6|IP|XX.XXX.XXX.XX|
-     * |7|send_copy|bool|
-     *
-     * The mail's file will be named this way:
-     *
-     * 'mail_pending_DATE_TIME_IP_firstname_secondname_email_at_domain_tld.txt'
-     *
-     * Where all white space characters are replaced by '_' and arobase ('@') is replaced by '_at_'.
-     *
-     * This way, both file's name and it's content could be used to extract data from these.
-     *
-     * $mail is the array from $_POST after remove_receipt_key() has cleaned it, if present.
-     *
-     * $temp_mail_dir is the path of the directory that will hold the file (.txt) used to store the mail until it is
-     * send by a cronjob task running 'php_mailer.php' file every X minutes/hours/day (etc), or a loop.
-     *
-     * $send_copy is a bool, stating if a second copy has to be send to the user of the form / sender.
-     *
-     * Store the mail into the directory if true and returns it.
-     *
-     * Otherwise, return false.
-     *
-     */
+
 
     // Define an array where each key is an user input or other informations regarding the mail sending
     $FROM_post_info = array(
@@ -269,63 +270,65 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
 
 }
 
+/*
+ * If user has checked the checkbox 'receive_ack_receipt', removes it and return 'true'.
+ *
+ * $is_present is a bool.
+ *
+ * Return true, never false because this function is called IF it's supposed to get this key and it's necessary to
+ * removes it.
+ *
+ * WARN: This function could be overkill ?
+ *
+ */
 function remove_receipt_key($is_present) {
-    /*
-     * If user has checked the checkbox 'receive_ack_receipt', removes it and return 'true'.
-     *
-     * $is_present is a bool.
-     *
-     * Return true, never false because this function is called IF it's supposed to get this key and it's necessary to
-     * removes it.
-     *
-     * WARN: This function could be overkill ?
-     *
-     */
+
 
     unset($_POST['receive_ack_receipt']); // Remove this key to avoid conflict for testing validity of user input
     return true;
 
 }
 
+/* Return true if $string is matching lenght against allowed range (>=$min, <= $max) and pattern matching (PCRE2).
+ * See $filter_type below for more details about pattern matched.
+ *
+ * If not valid regarding the conditions made, return false and skip the following execution of any useless code:
+ *
+ * No more tests are needed at this point. Be aware that front-end part should has a method to deny any bad formatted
+ * (pattern, lenght) mail sending request.
+ *
+ * This function should be a safety-nest against user's error, front-end developper error or a forgetfulness from them
+ * or worst, a fake user (as bot or AI), or any attack with lenght or pattern, if any.
+ *
+ * If $filter_type isn't used with one of the value below, then it return false.
+ *
+ * All args are mandatory.
+ *
+ * $string: Content to check against regex pattern or PHP filters.
+ *
+ * $filter_type should be one of these only:
+ *
+ * - names ($filter_names) : Accept all Latin-Unicode characers plus (severals) hyphen for composed names, unicode.
+ *
+ * - email (FILTER_VALIDATE_EMAIL): Following filter_var's filters, see:
+ * https://www.php.net/manual/en/filter.filters.validate.php
+ *
+ * - text ($filter_text) : Accept all Latin-Unicode characters, plus sign and usual and commons non-alphabetic and
+ * non-numeric, as it match numeric characters too, space, tabs, etc.
+ *
+ * Please see PCRE2 patterns and syntax specifications :
+ * - https://www.pcre.org/
+ *
+ * It's expected to receive Latin-alike unicode input, not cyrilic or asians characters, hindie, etc.
+ * WIP: FEATURE TO ADD LATER.
+ *
+ * $min is the minimum allowed value (included) for the string's lenght.
+ *
+ * $max is the maximum allowed value (included) for the string's lenght.
+ *
+ */
 function check_string_validity($string, $filter_type, $min, $max) {
-  /* Return true if $string is matching lenght against allowed range (>=$min, <= $max) and pattern matching (PCRE2).
-   * See $filter_type below for more details about pattern matched.
-   *
-   * If not valid regarding the conditions made, return false and skip the following execution of any useless code:
-   *
-   * No more tests are needed at this point. Be aware that front-end part should has a method to deny any bad formatted
-   * (pattern, lenght) mail sending request.
-   *
-   * This function should be a safety-nest against user's error, front-end developper error or a forgetfulness from them
-   * or worst, a fake user (as bot or AI), or any attack with lenght or pattern, if any.
-   *
-   * If $filter_type isn't used with one of the value below, then it return false.
-   *
-   * All args are mandatory.
-   *
-   * $string: Content to check against regex pattern or PHP filters.
-   *
-   * $filter_type should be one of these only:
-   *
-   * - names ($filter_names) : Accept all Latin-Unicode characers plus (severals) hyphen for composed names, unicode.
-   *
-   * - email (FILTER_VALIDATE_EMAIL): Following filter_var's filters, see:
-   * https://www.php.net/manual/en/filter.filters.validate.php
-   *
-   * - text ($filter_text) : Accept all Latin-Unicode characters, plus sign and usual and commons non-alphabetic and
-   * non-numeric, as it match numeric characters too, space, tabs, etc.
-   *
-   * Please see PCRE2 patterns and syntax specifications :
-   * - https://www.pcre.org/
-   *
-   * It's expected to receive Latin-alike unicode input, not cyrilic or asians characters, hindie, etc.
-   * WIP: FEATURE TO ADD LATER.
-   *
-   * $min is the minimum allowed value (included) for the string's lenght.
-   *
-   * $max is the maximum allowed value (included) for the string's lenght.
-   *
-   */
+
 
    // Range check
    if (strlen($string) < $min OR strlen($string) > $max) {
@@ -379,17 +382,18 @@ function check_string_validity($string, $filter_type, $min, $max) {
     }
 }
 
+/* From $user_post (being $_POST) and against $allowed_len_list, as pattern matching, define if the
+ * email that the user is trying to send is valid regarding the rules of the script.
+ *
+ * Use check_string_validity() to test the user's posted value.
+ *
+ * Return true if every checks are OK.
+ *
+ * Otherwise, return false and no more tests are needed, if one has failed, the mail won't be sended anyway.
+ *
+ */
 function validate_email_sending($user_post, $allowed_len_list) {
-    /* From $user_post (being $_POST) and against $allowed_len_list, as pattern matching, define if the
-     * email that the user is trying to send is valid regarding the rules of the script.
-     *
-     * Use check_string_validity() to test the user's posted value.
-     *
-     * Return true if every checks are OK.
-     *
-     * Otherwise, return false and no more tests are needed, if one has failed, the mail won't be sended anyway.
-     *
-     */
+
 
     // Define at each iteration what are min and max value for range, as the filter to use for pattern matching.
     foreach ($user_post as $key => $value) {
