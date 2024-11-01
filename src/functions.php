@@ -67,15 +67,7 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
     $final_file_name = $subdir_status_path . $final_file_name;
 
     // Move the file from the pending mail directory to the target directory (ACCEPTED or REJECTED)
-    if (!rename($pending_mail_path, $final_file_name)) {
-
-        return false;
-
-    } else {
-
-        return true;
-
-    }
+    return (bool) rename($pending_mail_path, $final_file_name);
 
 }
 
@@ -415,14 +407,6 @@ function validate_email_sending($user_post, $allowed_len_list) {
 
     }
 
-    if (!check_string_validity($value, $current_filter, $min, $max)) {
-
-        return false;
-
-    } else {
-
-        return true;
-
-    }
+    return (bool) check_string_validity($value, $current_filter, $min, $max);
 
 }
