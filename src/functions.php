@@ -113,14 +113,14 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
 
     // Retrieve in the file the desired field, delimited by '|'
     $mail_file = @fopen($oldest_mail, 'r');
-    $cgi_mail_data = array('firstname',
-                           'secondname',
-                           'email',
-                           'subject',
-                           'body',
-                           'pending_mail_location',
-                           'mail_file_name'
-    );
+    $cgi_mail_data = ['firstname',
+                      'secondname',
+                      'email',
+                      'subject',
+                      'body',
+                      'pending_mail_location',
+                      'mail_file_name'
+    ];
 
     // Read the file, line by line, until it get false (no more line)
     while (($line = fgets($mail_file)) !== false) {
@@ -194,7 +194,7 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
 
 
     // Define an array where each key is an user input or other informations regarding the mail sending
-    $FROM_post_info = array(
+    $FROM_post_info = [
         'username'      =>      $_POST['email'],
         'firstname'     =>      $_POST['firstname'],
         'secondname'    =>      $_POST['secondname'],
@@ -202,7 +202,7 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
         'IP'            =>      $_SERVER['REMOTE_ADDR'], // Client's IP while hitting the send e-mail button
         'date_and_time' =>      date('Y-m-d_His'), // Client's date and time while hitting the send e-mail button
         'send_copy'     =>      $send_copy
-    );
+    ];
 
     // Format the date & time information as IP for the file's name
     $date_and_time = $FROM_post_info['date_and_time'];
