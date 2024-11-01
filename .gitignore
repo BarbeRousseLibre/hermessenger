@@ -2,10 +2,9 @@
 *.env
 src/.env
 
-# The file should, possible, never be shared (giving local path informations, which is not very nice)
+# The file should, possibly, never be shared (giving local path informations, which is not very nice, as useless)
 src/var/variables.php
 *.txt
-
 
 # Files or directories that are useless to be shared.
 composer.phar
