@@ -4,3 +4,7 @@ src/.env
 .*~
 *-swp
 *.kate-swp
+pending*
+accepted*
+rejected*
+*.txt
