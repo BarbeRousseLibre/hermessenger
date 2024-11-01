@@ -30,10 +30,13 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 - Testing this script on PHP8.3
 - Testing this script on other operating system (such as *BSD or Windows)
 - Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
+- Adding a self-made logo
+- Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form
+- Adding a sweet way to add a prefix for subject as body, allowing to know easier that the current mail of the recipient's mail box is coming from this script.
 
 ## How it works
 
-From the $_POST of the user, check validity of the input and writte a file into this format :
+From input's user into a HTML mail form to send a message, check validity of the input and write a file into this format :
 
 > |0|firstname|Foo|
 
