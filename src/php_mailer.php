@@ -14,6 +14,7 @@ use PHPMailer\PHPMailer\Exception;
 $phpdotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $phpdotenv->load();
 
+require 'var/variables.php';
 require 'var/mailing_var.php';
 
 // Building sender and recipient e-mail address informations from PHPDotenv's method (.env file)
@@ -90,7 +91,7 @@ try {
 
     }
 
-    store_sended_mail_to_logs($old_mail_path, false);
+    store_sended_mail_to_logs($old_mail_path, false, $locations);
 
     echo "Message could not been sent. Mailer error: {$mail->ErrorInfo}";
 
