@@ -50,12 +50,7 @@ if (!file_exists($locations["pending_mails"])) {
 
     exit;
 
-} else if (!$store_mail = store_to_plaintext($post_copy, $locations["pending_mails"], $is_receipt_asked)) {
-
-    return false;
-
-} else { // Everything is good
-
-    return true;
-
 }
+
+// Try to store the mail's file and return the code
+return (bool) $store_mail = store_to_plaintext($post_copy, $locations["pending_mails"], $is_receipt_asked);
