@@ -341,40 +341,13 @@ function check_string_validity($string, $filter_type, $min, $max) {
        switch ($filter_type) {
 
            case 'names':
-
-               if (!preg_match($filter_names, $string)) {
-
-                   return false;
-
-               } else {
-
-                   return true;
-
-               }
+               return (bool) preg_match($filter_names, $string);
 
            case 'email':
-
-               if (!filter_var($string, FILTER_VALIDATE_EMAIL)) {
-
-                   return false;
-
-               } else {
-
-                   return true;
-
-               }
+               return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
 
            case 'text':
-
-               if (!preg_match("/^[\p{Latin}\p{Common}\d\s\p{P}\p{S}]+$/u", $string)) {
-
-                   return false;
-
-               } else {
-
-                   return true;
-
-               }
+               return (bool) preg_match("/^[\p{Latin}\p{Common}\d\s\p{P}\p{S}]+$/u", $string);
 
            default: return false; // Not a valid filter
 
