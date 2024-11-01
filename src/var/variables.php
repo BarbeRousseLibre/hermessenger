@@ -77,7 +77,7 @@ $filter_names = "/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/";
 $filter_prefix = "/[\p{nD}\p{Latin}\p{P}\p{S}\h]/g";
 
 // This variable is ugly, and you know it. Fix it !
-$document_root = "/var/www/localhost/htdocs/checking_form/"; // This path has to be ended with a slash ('/')
+$document_root = "/var/www/localhost/htdocs/hermessenger/"; // This path has to be ended with a slash ('/')
 $locations = array(
     "pending_mails"         => $document_root . "temp_mail_directory/",
     "logs_mail"             => $document_root . "mail_dir/",
