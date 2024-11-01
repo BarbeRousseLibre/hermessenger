@@ -120,7 +120,7 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
                       'body',
                       'pending_mail_location',
                       'mail_file_name'
-    ];
+                     ];
 
     // Read the file, line by line, until it get false (no more line)
     while (($line = fgets($mail_file)) !== false) {
@@ -194,15 +194,14 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
 
 
     // Define an array where each key is an user input or other informations regarding the mail sending
-    $FROM_post_info = [
-        'username'      =>      $_POST['email'],
-        'firstname'     =>      $_POST['firstname'],
-        'secondname'    =>      $_POST['secondname'],
-        'name'          =>      $_POST['firstname'] . " " . $_POST['secondname'],
-        'IP'            =>      $_SERVER['REMOTE_ADDR'], // Client's IP while hitting the send e-mail button
-        'date_and_time' =>      date('Y-m-d_His'), // Client's date and time while hitting the send e-mail button
-        'send_copy'     =>      $send_copy
-    ];
+    $FROM_post_info = ['username'      =>      $_POST['email'],
+                       'firstname'     =>      $_POST['firstname'],
+                       'secondname'    =>      $_POST['secondname'],
+                       'name'          =>      $_POST['firstname'] . " " . $_POST['secondname'],
+                       'IP'            =>      $_SERVER['REMOTE_ADDR'], // Client's IP while hitting the send e-mail button
+                       'date_and_time' =>      date('Y-m-d_His'), // Client's date and time while hitting the send e-mail button
+                       'send_copy'     =>      $send_copy
+                      ];
 
     // Format the date & time information as IP for the file's name
     $date_and_time = $FROM_post_info['date_and_time'];
@@ -282,7 +281,6 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
  *
  */
 function remove_receipt_key($is_present) {
-
 
     unset($_POST['receive_ack_receipt']); // Remove this key to avoid conflict for testing validity of user input
     return true;
