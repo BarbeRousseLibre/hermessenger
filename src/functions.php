@@ -80,11 +80,13 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
 
 }
 
-function return_oldest_mail($temp_mail_dir) {
+function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
     /*
      * From the path given as argument, return only the oldest file, using scandir.
      *
      * $temp_mail_dir should be the location of the holding queue directory for mail.
+     *
+     * $exclude is a string reprensentating the .gitkeep file used to allow to pull this directory, empty.
      *
      * Return an array with all data's from the mail.
      *
@@ -96,8 +98,18 @@ function return_oldest_mail($temp_mail_dir) {
     // Retrieve all files in the temp directory as an array
     $files = scandir($temp_mail_dir);
 
-    // scandir() return per default the oldest file as first in list, after '.' and '..'. Index being 2 for the first.
-    $oldest_mail = $temp_mail_dir . $files[2];
+    // Check if an $exclude file is present, changes the index of the oldest mail accordingly
+    ($files[2] == $exclude ? $mail_index = 3 : $mail_index = 2);
+
+    if (!array_key_exists($mail_index, $files)) { // If no mail to send
+
+        exit;
+
+    } else { // There is a mail to send
+
+        $oldest_mail = $files[$mail_index];
+
+    }
 
     // Retrieve in the file the desired field, delimited by '|'
     $mail_file = @fopen($oldest_mail, 'r');
