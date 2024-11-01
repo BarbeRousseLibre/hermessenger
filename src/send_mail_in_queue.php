@@ -17,7 +17,8 @@ if (!scandir($locations["pending_mails"]) > 2) {
 
 } else { // At least one e-mail has to be send
 
-    $mail_to_send = return_oldest_mail($locations["pending_mails"]); // Attribute the oldest item returned by scandir()
+    // Attribute the oldest item returned by scandir(), while avoiding if necessary to send the exclude file (last arg)
+    $mail_to_send = return_oldest_mail($locations["pending_mails"], ".gitkeep");
     include 'php_mailer.php'; // Call the script to actually send the mail
 
 }
