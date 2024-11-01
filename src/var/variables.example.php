@@ -1,13 +1,36 @@
 <?php
 
+/*
+ * This file is used to link to the proper path, timezone as HTML input's field/textarea.
+ *
+ * Per default, you get variables.example.php, you have to manually renames it or copy it to
+ * variables.php to enable it.
+ *
+ */
+
+/* - * - * - * - * - * CHANGE THIS ACCORDING YOUR OWN NEED - * - * - * - * - * - * - * - * - * - */
+
+// Timezone to use, per default Europe/Paris, change according your location / need
+$timezone = "Europe/Paris";
+
+// Change the $document_root variable accordingly to your own configuration
+$document_root = "/path/to/your/docroot"; // This path has to be ended with a slash ('/')
+$locations = array(
+    "pending_mails"         => $document_root . "temp_mail_directory/",
+    "logs_mail"             => $document_root . "mail_dir/",
+    "logs_mail_accepted"    => $document_root . "mail_dir/ACCEPTED/",
+    "logs_mail_rejected"    => $document_root . "mail_dir/REJECTED/"
+);
+/* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
+
+/* These below are safe to change, but that might be not necessary */
+// ^ WIP, to improve !
+
 /* Set internal character encoding to UTF-8 */
 mb_internal_encoding("UTF-8");
 
 // Per default, define there is no copy to send
 $is_receipt_asked = false;
-
-// Timezone to use
-$timezone = "Europe/Paris";
 
 // Define the range of each field between a *_min & *_max key's value
 $field_len_list = array(
@@ -76,14 +99,7 @@ $mail_form = array(
 $filter_names = "/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/";
 $filter_prefix = "/[\p{nD}\p{Latin}\p{P}\p{S}\h]/g";
 
-// This variable is ugly, and you know it. Fix it !
-$document_root = "/var/www/localhost/htdocs/hermessenger/"; // This path has to be ended with a slash ('/')
-$locations = array(
-    "pending_mails"         => $document_root . "temp_mail_directory/",
-    "logs_mail"             => $document_root . "mail_dir/",
-    "logs_mail_accepted"    => $document_root . "mail_dir/ACCEPTED/",
-    "logs_mail_rejected"    => $document_root . "mail_dir/REJECTED/"
-);
+
 
 /*$non_trusty_esp_domain = array(
     "yopmail"       =>  array(

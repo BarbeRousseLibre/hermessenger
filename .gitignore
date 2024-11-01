@@ -1,4 +1,5 @@
 src/.env
+src/var/variables.php
 .*.swp
 /vendor
 .*~
