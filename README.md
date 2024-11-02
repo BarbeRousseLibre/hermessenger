@@ -67,8 +67,6 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
 
-- Adding a self-made logo.
-
 - Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
 
 - Adding a sweet way to add a prefix for subject as body, allowing to know easier and quicker that the current mail of the recipient's mail box is coming from this script.
@@ -189,6 +187,22 @@ Once you have these info, simply follow instruction into 'How to install it' it 
 - src/var/untrusty_domains/disposable_email_domains.php - Listing all domains that is listed as a disposable e-mail address, rejecting them.
 
 - .gitkeep - File allowing me to send "empty" directory to git, this is safe to removes them, unless you need to push code to this repository.
+
+## Special thanks to… and credit
+
+- Everyone's helping me by answering my answers or showing what was bad, you are great !
+
+- [PHP](https://www.php.net) for their documentation.
+
+- [KDEvelop](https://kdevelop.org/) for being a neat IDE.
+
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer) for the ease to install and the good work on sending mails.
+
+- [PHPDotenv from vlucas](https://github.com/vlucas/phpdotenv) for making this works more secure, easily.
+
+- [Justine MULLER](https://justine-muller.fr) for her advice and guidance on HTML.
+
+- [Maeva RIOT](https://www.instagram.com/bluareus/) for her cute logo she made pretty quickly !
 
 ## Last words
 
