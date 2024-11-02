@@ -40,8 +40,8 @@ $mail->CharSet = "UTF-8"; // Force UTF-8 while sending mail, adding 'mb_internal
 try {
 
     /* ESP's server settings */
-    $mail->SMTPDebug  = SMTP::DEBUG_SERVER;
-    //$mail->SMTPDebug  = false;
+    //$mail->SMTPDebug  = SMTP::DEBUG_SERVER;
+    $mail->SMTPDebug  = false;
     $mail->isSMTP(true);
     $mail->Host       = $SMTP_info["server"];
     $mail->SMTPAuth   = true;
