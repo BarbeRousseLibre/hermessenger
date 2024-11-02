@@ -1,6 +1,8 @@
 # hermessenger
 WIP - A self-made e-mail web form written in PHP, using composer, PHPDotenv &amp; PHPMailer. Be aware this is a newbie project, with (as is it for now) poor coding skills. Feel free to help me improves it. 
 
+![Hermessenger logo, made by Maeva RIOT](https://github.com/BarbeRousseLibre/hermessenger/master/hermessenger_logo.jpg?raw=true)
+
 ## About
 
 This project is simply a goal for me to learn PHP. It was written with PHP 8.2 and (for now) it was not tested on other release of PHP. This was also not tested on other operating system than Linux.
