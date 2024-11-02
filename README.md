@@ -7,31 +7,68 @@ This project is simply a goal for me to learn PHP. It was written with PHP 8.2 a
 
 It is a free software, under GPL 3.0. Feel free to use it, enhance it…
 
+This project reach a simple goal: Being a good, well-made, secure and easy-to-use and install system of mail form into a HTML page.
+
+Until I say it's ready, it's not.
+
 ## This is a beta !
 
-This project is not ready for production use, for now, considering using this for production environment is probably a very bad idea. This repository is private and is used to share my code to other peoples, helping me improving it.
+This project is not ready for production use, for now, considering using this for production environment is probably a very bad idea. This repository is public and is used to share my code to other peoples, helping me improving it.
 
 ## Security
 
-I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area (developping). That is also one of the reasons to NOT USE this code in a production environment.
+I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area (developping). That is also one of the reasons to NOT USE this code in a production environment, for now.
 
 I hope soon it will be good enough for this.
 
-Also, be aware there is for now almost no tests against bots / AI / massive attack, beside a pending mail queue, see below.
+Also, be aware there is for now almost no tests against bots / AI / massive attack, beside a pending mail queue and rejecting disposable e-mail domains, see below.
+
+## Availables features
+
+- Checking if input's data from user's post ($_POST) are valid regarding their range (character's lenght).
+
+- Checking if input's data from user's for each field is valid against PCRE2 pattern matching.
+
+- Copy the mail's file into a pending queue until a crontask job, a loop or a manual call from PHP CGI is made.
+
+- Send an e-mail to the recipient from the mail form.
+
+- Allow the sender to get a copy of the mail sended to the sender's mailbox, by checking a checkbox right before sending the mail.
+
+- Mail sended, using PHPMailer, are copied regarding the returned status, to the proper sub-directory.
+
+- The sub-directory ' temp_mail_directory ' allows to slow down a "massive attack" from bots or peoples trying to send way too much mails. This is not intended to block any mails, simply blocking the possibility to quickly overload the mailbox, making it unavailable (no space left) as protecting the mail form from being blocked at the ESP side.
+
+- Remove request made with a non-trusty and disposable e-mail domains (such as yopmail, but not only).
+
+- Safe and secure .env file, allowing administators to safely write their sensitive data (their ESP's SMTP server info, user, password, etc) without being worried to accidentaly giving them to a "client".
+
+- Logged mail are named with most informations of the mail: status (pending, accepted, rejected), date & time, IP of the client, first and second name and e-mail address.
+
+- Logged mail are having all datas from the request, plus a bool (true|false) showing if a copy/receipt was asked from the client.
 
 ## Missing features, things to do & work-in-progress
 
-- Captcha / Are you a human
+- Captcha / «Are you a human?» / Question.
+
 - Checking the content of body & subject to found out suspicious wording, link, etc.
-- An uploading features for files
-- A honey-pot for protection against smartest bot and AI
-- Blocking non-trusty ESP domains (such as yopmail)
-- Adding support for non-Latin
-- Testing this script on PHP8.3
-- Testing this script on other operating system (such as *BSD or Windows)
+
+- An uploading features for files, with anti-virus checking, size blocking, mime content type blocking, etc.
+
+- A honey-pot for protection against smartest bot and AI, invisible to real user / client.
+
+- Adding support for non-Latin input data.
+
+- Testing this script on PHP8.3.
+
+- Testing this script on other operating system (such as *BSD or Windows).
+
 - Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
-- Adding a self-made logo
-- Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form
+
+- Adding a self-made logo.
+
+- Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
+
 - Adding a sweet way to add a prefix for subject as body, allowing to know easier and quicker that the current mail of the recipient's mail box is coming from this script.
 
 ## How it works
@@ -140,14 +177,16 @@ Once you have these info, simply follow instruction into 'How to install it' it 
 ### About some files
 - public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code
 - public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the " temp_mail_directory ", until it is send by " send_mail_in_queue.php ".
+
 - src/send_mail_in_queue.php - Once invoked, take from the " temp_mail_directory " the oldest mail and send it, only this one. If a checkbox has be checked on the index.html page, a second mail is sended as a receipt/copy for the user using the form.
-- var/mailing_var.php - This file rely on PHPDotenv, it reads from src/.env some sensitive datas: SMTP server, username, **password**, etc. You should write into .env the sensitive datas, nowhere else !
-- var/variables.php - This file is allowing you to add or remove fields, there is variables you could modify to adapt the code to your actual HTML page and need.
-- var/variables.example.php - See How to use it above.
-- .gitkeep - File allowing me to send "empty" directory to git, this is safe to removes them, unless you need to push code to this repository.
+- src/var/mailing_var.php - This file rely on PHPDotenv, it reads from src/.env some sensitive datas: SMTP server, username, **password**, etc. You should write into .env the sensitive datas, nowhere else !
+- src/var/variables.php - This file is allowing you to add or remove fields, there is variables you could modify to adapt the code to your actual HTML page and need.
+- src/var/variables.example.php - See How to use it above.
 - src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
 - src/.env.example - File to renames .env for your usage. See .env above.
+- src/var/untrusty_domains/disposable_email_domains.php - Listing all domains that is listed as a disposable e-mail address, rejecting them.
 
+- .gitkeep - File allowing me to send "empty" directory to git, this is safe to removes them, unless you need to push code to this repository.
 
 ## Last words
 
