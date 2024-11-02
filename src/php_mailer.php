@@ -17,6 +17,9 @@ $phpdotenv->load();
 require 'var/variables.php';
 require 'var/mailing_var.php';
 
+// Define timezone for logs
+date_default_timezone_set($timezone);
+
 // Building sender and recipient e-mail address informations from PHPDotenv's method (.env file)
 $sender = $SMTP_info['mailbox'] . $SMTP_info['domain'];
 $recipient = $RCPT_info['mailbox'] . $RCPT_info['domain'];
@@ -75,14 +78,11 @@ try {
 
     }
 
-    date_default_timezone_set('Europe/Paris'); // This is ugly, to fix
     store_sended_mail_to_logs($old_mail_path, true, $locations);
 
     echo "Message has been sent the " . date('Y-m-d, \a\t H:i:s') . ".\n";
 
 } catch (Exception $e) {
-
-    date_default_timezone_set('Europe/Paris'); // This is ugly, to fix
 
     // Test if the new logs path for the current mail file exist and has good perms
     if (!file_exists($locations["logs_mail_rejected"])) {
