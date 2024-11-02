@@ -28,6 +28,12 @@ if (empty($post_copy)) {
 
 // WIP //
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
+$is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
+if ($is_domain_untrusty === true) {
+
+    exit; // User input is listed as untrusty, exiting.
+
+}
 
 // If sender is asking to get a receipt of the e-mail as a copy (so 2 mails has to be send), remove the key
 if (array_key_exists('receive_ack_receipt', $post_copy)) {

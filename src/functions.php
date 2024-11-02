@@ -33,6 +33,31 @@ require_once 'var/variables.php';
 }*/
 
 /*
+ * Reject all domains used in the form as 'e-mail' if it is listed as a non-trusty, disposable e-mail domains from such
+ * service.
+ *
+ * $user_email is a string from the $_POST of the user.
+ *
+ * If the user's input e-mail is listed, exit. Otherwise, return false.
+ *
+ */
+function reject_disposable_email_domain($user_email) {
+
+    require 'var/untrusty_domains/disposable_email_domains.php';
+
+    // Removes username from $user_domain
+    //$user_domain =  preg_split("/[A-Za-z0-9. _%+-]+/i", $user_email);
+    $matches = [];
+    preg_match("/@(.+\..*$)/", $user_email, $matches);
+
+    // Merge all sub-array into one
+    $all_disposable_mails_domains = array_merge(...array_values($non_trusty_esp_domain));
+
+    return (bool) (in_array($matches[1], $all_disposable_mails_domains));
+
+}
+
+/*
  * Once the mail has been given to PHPMailer, stores it regarding if PHPMailer returned true or false.
  * 'rejected_mail' goes into 'mail_dir/REJECTED' subdirectory, and 'accepted_mail' into 'mail_dir/ACCEPTED'.
  *
