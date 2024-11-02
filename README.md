@@ -1,7 +1,7 @@
 # hermessenger
 WIP - A self-made e-mail web form written in PHP, using composer, PHPDotenv &amp; PHPMailer. Be aware this is a newbie project, with (as is it for now) poor coding skills. Feel free to help me improves it. 
 
-![Hermessenger logo, made by Maeva RIOT](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo.jpg?raw=true)
+![Hermessenger logo, made by Blu](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo_320x320.jpg?raw=true)
 
 ## About
 
@@ -202,7 +202,7 @@ Once you have these info, simply follow instruction into 'How to install it' it 
 
 - [Justine MULLER](https://justine-muller.fr) for her advice and guidance on HTML.
 
-- [Maeva RIOT](https://www.instagram.com/bluareus/) for her cute logo she made pretty quickly !
+- [Blu](https://www.instagram.com/bluareus/) for her cute logo she made pretty quickly !
 
 ## Last words
 
