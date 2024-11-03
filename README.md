@@ -53,11 +53,13 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Captcha / «Are you a human?» / Question, that are efficient but at the same time does not rely on third-party services (such as Google) and does not collect any datas.
 
-- Allow to block Tor request, which could be used to hide the real client IP
+- Allow to block Tor request, which could be used to hide the real client IP.
 
-- Allow to block VPN & request from proxy, which could be used to hide the real client IP
+- Allow to block VPN & request from proxy, which could be used to hide the real client IP.
 
-- Adding a list of non-trusty mailbox and IP
+- Adding a list of non-trusty mailbox and IP.
+
+- Comparing time between the client receiving the mail's form request and the mail's sending, checking for too quickly filled form.
 
 - Checking the content of body & subject to found out suspicious wording, link, etc.
 
@@ -76,6 +78,8 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 - Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
 
 - Adding a sweet way to add a prefix for subject as body, allowing to know easier and quicker that the current mail of the recipient's mail box is coming from this script.
+
+- Giving the choice for pre-defined natural languages, probably these one: french, english, spanish. Some more could be added, later, like Chinese, Arabic, Hindi, Russian, Ukrainian and other cyrillic languages, and more. This first needs a better implementation of the pattern matching actually used, which only allow Latin-alike alphabet. Please note, this won't use translation software or AI translation. If you want to help, let's do it properly :) !
 
 ## How it works
 
