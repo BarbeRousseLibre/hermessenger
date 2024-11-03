@@ -17,13 +17,10 @@ composer.phar
 *.kate-swp
 
 # Files that are, in normal circumstance, containing pretty much sensitive informations, such as mail content, ip, etc.
-pending*
-accepted*
-rejected*
+pending_*
+accepted_*
+rejected_*
 
 # Example files, see README.md
 !.env.example
 !src/var/variables.example.php
-
-# Directories that needs an execption
-!quarantine/rejected
