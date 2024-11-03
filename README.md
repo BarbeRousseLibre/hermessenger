@@ -51,7 +51,13 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 ## Missing features, things to do & work-in-progress
 
-- Captcha / «Are you a human?» / Question.
+- Captcha / «Are you a human?» / Question, that are efficient but at the same time does not rely on third-party services (such as Google) and does not collect any datas.
+
+- Allow to block Tor request, which could be used to hide the real client IP
+
+- Allow to block VPN & request from proxy, which could be used to hide the real client IP
+
+- Adding a list of non-trusty mailbox and IP
 
 - Checking the content of body & subject to found out suspicious wording, link, etc.
 
