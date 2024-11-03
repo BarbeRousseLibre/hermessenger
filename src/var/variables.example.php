@@ -1,7 +1,8 @@
 <?php
 
 /*
- * This file is used to link to the proper path, timezone as HTML input's field/textarea.
+ * This file is used to link to the proper path, timezone as HTML input's field/textarea. As other directories needed
+ * for suspicious request.
  *
  * Per default, you get variables.example.php, you have to manually renames it or copy it to
  * variables.php to enable it.
@@ -10,16 +11,42 @@
 
 /* - * - * - * - * - * CHANGE THIS ACCORDING YOUR OWN NEED - * - * - * - * - * - * - * - * - * - */
 
-// Timezone to use, per default Europe/Paris, change according your location / need
+// Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
 
-// Change the $document_root variable accordingly to your own configuration
-$document_root = "/path/to/your/docroot"; // This path has to be ended with a slash ('/')
-$locations = ["pending_mails"         => $document_root . "temp_mail_directory/",
-              "logs_mail"             => $document_root . "mail_dir/",
-              "logs_mail_accepted"    => $document_root . "mail_dir/ACCEPTED/",
-              "logs_mail_rejected"    => $document_root . "mail_dir/REJECTED/"
+/*
+ * Change the $document_root variable accordingly to your own configuration.
+ * All these paths has to be ended with a slash ('/').
+ */
+$document_root = "/path/to/your/docroot/";
+$locations = ["pending_mails"           => $document_root . "temp_mail_directory/",
+              "logs_mail"               => $document_root . "mail_dir/",
+              "logs_mail_accepted"      => $document_root . "mail_dir/ACCEPTED/",
+              "logs_mail_rejected"      => $document_root . "mail_dir/REJECTED/",
+              "quarantine"              => $document_root . "quarantine/"
              ];
+
+/* Define the quarantine locations for suspicious mail request sending, too fast request, etc.
+ *
+ * "suspicious" is used for mails that was allowed, but a copy is written here (for, as example, later analysis), as
+ * it is logged into the logs file for these.
+ *
+ * "too_fast" is used for mails that was sended too fast, see 'is_request_too_fast()' into src/functions.php for more
+ * details.
+ *
+ * "rejected" is for mails that was not sended, but if a copy was asked from the administrator while using
+ * 'is_request_too_fast()' function, see src/functions.php for more details.
+ *
+ * "logs" contains a plaintext file were all "suspicious", "too_fast" & "rejected" are logged into a log file for each
+ * request.
+ */
+$quarantine_locations = ["suspicious"   => $locations["quarantine"] . "suspicious/",
+                         "too_fast"     => $locations["quarantine"] . "fast_request/",
+                         "rejected"     => $locations["quarantine"] . "rejected/",
+                         "logs"         => $locations["quarantine"] . "logs/"
+                        ];
+$quarantine_log_file = $quarantine_locations["logs"] . "todefinebaby"; // WIP, see this a bit later.
+
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
 
 /* These below are safe to change, but that might be not necessary */
