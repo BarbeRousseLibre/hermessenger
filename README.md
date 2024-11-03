@@ -81,6 +81,8 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Giving the choice for pre-defined natural languages, probably these one: french, english, spanish. Some more could be added, later, like Chinese, Arabic, Hindi, Russian, Ukrainian and other cyrillic languages, and more. This first needs a better implementation of the pattern matching actually used, which only allow Latin-alike alphabet. Please note, this won't use translation software or AI translation. If you want to help, let's do it properly :) !
 
+- Get a svg of the actual logo of Hermessenger.
+
 ## How it works
 
 From input's user into a HTML mail form to send a message, check validity of the input and write a file into this format :
