@@ -24,3 +24,6 @@ rejected*
 # Example files, see README.md
 !.env.example
 !src/var/variables.example.php
+
+# Directories that needs an execption
+!quarantine/rejected
