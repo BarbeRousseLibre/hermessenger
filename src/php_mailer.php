@@ -79,7 +79,7 @@ try {
 
     }
 
-    store_sended_mail_to_logs($old_mail_path, true, $locations);
+    store_sended_mail_to_logs($old_mail_path, true, $locations["logs_mail_accepted"]);
 
     echo "Message has been sent the " . date('Y-m-d, \a\t H:i:s') . ".\n";
 
@@ -92,7 +92,7 @@ try {
 
     }
 
-    store_sended_mail_to_logs($old_mail_path, false, $locations);
+    store_sended_mail_to_logs($old_mail_path, false, $locations["logs_mail_rejected"]);
 
     echo "Message could not been sent. Mailer error: {$mail->ErrorInfo}";
 
