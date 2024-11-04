@@ -1,17 +1,47 @@
 <?php
 
-/* Set internal character encoding to UTF-8 */
-mb_internal_encoding("UTF-8");
-
 require __DIR__ . '/../vendor/autoload.php';
 require_once '../src/var/variables.php';
 require_once '../src/functions.php';
 
-// Work on a copy of the $_POST
-$post_copy = $_POST;
+/* Set internal character encoding to UTF-8 */
+mb_internal_encoding($char_encoding);
 
-// Test if $_POST contain the honey-pot entry, if that's so, reject the request and logs it.
-/* WIP */
+// Pre-copy $_POST to $raw_post_copy & avoid to works on the real one, is then updated in the script once cleaned
+$raw_post_copy = $_POST;
+
+/*
+ * If this is true, then the form was used by a bot or alike, otherwise the non-needed key is removed from $_POST
+ * before it is ($_POST) copied to $raw_post_copy.
+ *
+ * If a bot use this, then exit silently. It's expected to return as a response to this bot-request the same page as a
+ * normal and legit user would have, to fool it even more.
+ *
+ */
+if (isset($raw_post_copy[0])) {
+
+    exit;
+
+} else {
+
+    unset($raw_post_copy['first_input']); // Clean the user's data
+
+}
+
+// If sender is asking to get a receipt of the e-mail as a copy (so 2 mails has to be send), remove the key before copy
+if (array_key_exists('receive_ack_receipt', $raw_post_copy)) {
+
+    unset($raw_post_copy['receive_ack_receipt']); // Clean the user's data
+    $is_receipt_asked = true;
+
+} else {
+
+    $is_receipt_asked = false;
+
+}
+
+// Update the copy of $_POST, since now it's clean for the workflow
+$post_copy = $raw_post_copy;
 
 // Test if $_POST isn't empty
 $user_input_count = count($post_copy);
@@ -19,27 +49,18 @@ if (empty($post_copy)) {
 
     exit;
 
-// Test if $_POST get the number of expected key=>value, 6 with 'receive_ack_receipt'.
-} else if (($user_input_count > 6 AND $user_input_count < 5)) {
+// Test if $_POST get the number of expected keys, otherwise something is wrong
+} else if (($user_input_count < 5)) {
 
     exit;
 
 }
 
-// WIP //
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
 if ($is_domain_untrusty === true) {
 
     exit; // User input is listed as untrusty, exiting.
-
-}
-
-// If sender is asking to get a receipt of the e-mail as a copy (so 2 mails has to be send), remove the key
-if (array_key_exists('receive_ack_receipt', $post_copy)) {
-
-    unset($post_copy['receive_ack_receipt']);
-    $is_receipt_asked = true;
 
 }
 
