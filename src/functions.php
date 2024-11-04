@@ -5,33 +5,6 @@ mb_internal_encoding("UTF-8");
 
 require_once 'var/variables.php';
 
-/* WIP */
-//function block_non_trusty_domain($domain, $blocked_domain_list) {
-    /*
-     * Check if the mail domain from the user input is part of a non-trusty / disposable ESP and refuse them.
-     *
-     * $domain is a string and should be the domain, after arobase ('@').
-     *
-     * Return true if not part of the list, otherwise return false.
-     *
-     */
-
-    /*foreach ($blocked_domain_list as $esp => $listed_domain) {
-
-        foreach ($listed_domain as $current_domain) {
-
-            if (in_array($domain, $current_domain)) {
-
-                return false;
-
-            }
-
-        }
-
-    }
-
-}*/
-
 /*
  * Reject all domains used in the form as 'e-mail' if it is listed as a non-trusty, disposable e-mail domains from such
  * service.
@@ -208,7 +181,6 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
  *
  */
 function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
-
 
     // Define an array where each key is an user input or other informations regarding the mail sending
     $FROM_post_info = ['username'      =>      $_POST['email'],
