@@ -42,6 +42,15 @@ $document_root = "/CHANGE/ME/TO/YOUR/DOCUMENTROOT";
 // Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
 
+/*
+ * Encoding needed, please see for allowed value:
+ * - https://www.php.net/manual/en/mbstring.supported-encodings.php
+ *
+ * Default to UTF-8, which you probably need anyway.
+ *
+ */
+$char_encoding = "UTF-8";
+
 // Needed sub-directories, these are safe to change before actually using Hermessenger but are made to works as it is.
 $temp_mail_directory = "temp_mail_directory";
 $mail_dir = "mail_dir";
@@ -93,16 +102,6 @@ $field_len_list = ['firstname_min' => 2, 'firstname_max' => 32,
                    'subject_min' => 8, 'subject_max' => 48,
                    'body_min' => 64, 'body_max' => 2048
                   ];
-
-/* WIP
- * Define the range for adding a prefix for subject & body field once the mail is sended.
- *
- * THIS WAS DISABLED UNTIL THE FEATURE IS IMPLEMENTED PROPERLY.
- *
- */
-/*$prefix_len = ['prefix_subject_min' => 1, 'prefix_subject_max' => 16,
-               'prefix_body_min' => 1, 'prefix_body_max' => 512,
-              ];*/
 
 /*
  * Each row/key define a new input/textarea field in the HTML code.
@@ -171,33 +170,20 @@ $mail_form = [
  * Only changes these if it's needed.
  */
 $filter_names = "/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/"; // Allow latin, separated by white-space/NBSP or hypen ("-")
-// WIP
-// $filter_prefix = "/[\p{nD}\p{Latin}\p{P}\p{S}\h]/g"; // Allow latin and other common characters such as hypen, etc.
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
 
 // These below should probably never be changed ! Do it at your own risk.
 
 // Set internal character encoding to UTF-8.
-mb_internal_encoding("UTF-8"); // This is probably not a very good idea to change this ! Do it if you NEEDS it.
-
-/*
- * Per default, define there is no copy to send.
- *
- * Do not change this ! This will probably break the code.
- *
- */
-$is_receipt_asked = false; // UNSAFE TO MODIFY THIS MANUALLY
-// ^ This is probably better to use a constant, and works on a copy. WIP.
-
-$document_root = $document_root . "/"; // Really don't touch this
+mb_internal_encoding($char_encoding); // See top of the file to change this
 
 // These are not necessary to be changed and could break Hermessenger. Do it at your own risk.
-$locations = ["pending_mails"           => $document_root . $temp_mail_directory . "/",
-              "logs_mail"               => $document_root . $mail_dir . "/",
-              "logs_mail_accepted"      => $document_root . $mail_dir . $accepted_mail_dir . "/",
-              "logs_mail_rejected"      => $document_root . $mail_dir . $rejected_mail_dir . "/",
-              "quarantine"              => $document_root . $quarantine . "/"
+$locations = ["pending_mails"           => $document_root . "/" . $temp_mail_directory . "/",
+              "logs_mail"               => $document_root . "/" . $mail_dir . "/",
+              "logs_mail_accepted"      => $document_root . "/" . $mail_dir . "/" . $accepted_mail_dir . "/",
+              "logs_mail_rejected"      => $document_root . "/" . $mail_dir . "/" . $rejected_mail_dir . "/",
+              "quarantine"              => $document_root . "/" . $quarantine . "/"
 ];
 
 $quarantine_locations = ["suspicious"   => $locations["quarantine"] . $suspicious . "/",
@@ -205,6 +191,5 @@ $quarantine_locations = ["suspicious"   => $locations["quarantine"] . $suspiciou
                          "rejected"     => $locations["quarantine"] . $rejected . "/",
                          "logs"         => $locations["quarantine"] . $logs . "/"
 ];
-// $quarantine_log_file = $quarantine_locations["logs"] . "todefinebaby"; // WIP, see this a bit later.
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
