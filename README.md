@@ -13,6 +13,18 @@ This project reach a simple goal: Being a good, well-made, secure and easy-to-us
 
 Until I say it's ready, it's not.
 
+## Philosophy
+
+This project is not made for companies or any web site with a high trafic. It is also not supposed to send more than 60 mails per hours, one per minute (which is already a lot). As it was not made with the idea to add this into CMS such as Wordpress or what ever, but for simple HTML page.
+
+But, if you are looking for a simple mail form into a web page, for personnal use (commercial for small or one-man companies or not), for small project (personnal web site, etc) with small traffic, it could be good for your usage.
+
+Hermessenger focus on sending a few mails per hours, for security reasons, nicely and slowly. Nothing more.
+
+This does not also provide any fancy features as you could have with Javascript for example, and will never. It is made to be simple, quick to install and setup for administators. Feel free to add this layer your self or rely on other project.
+
+This project is free (as free beer, but mostly as in « Freedom »), under GPLv3 license.
+
 ## This is a beta !
 
 This project is not ready for production use, for now, considering using this for production environment is probably a very bad idea. This repository is public and is used to share my code to other peoples, helping me improving it.
@@ -49,6 +61,21 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Logged mail are having all datas from the request, plus a bool (true|false) showing if a copy/receipt was asked from the client.
 
+## Missing features before first release
+
+- A honey-pot for protection against smartest bot and AI, invisible to real user / client.
+
+- Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
+
+About : When achieve, Hermessenger will be considered secure, working and tested for most scenario. It will be considered by me as ready for production use.
+
+## Things to do before first release
+
+- Complete "missing features before first release"
+
+- Parsing code to harmonize style
+
+
 ## Missing features, things to do & work-in-progress
 
 - Captcha / «Are you a human?» / Question, that are efficient but at the same time does not rely on third-party services (such as Google) and does not collect any datas.
@@ -64,8 +91,6 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 - Checking the content of body & subject to found out suspicious wording, link, etc.
 
 - An uploading features for files, with anti-virus checking, size blocking, mime content type blocking, etc.
-
-- A honey-pot for protection against smartest bot and AI, invisible to real user / client.
 
 - Adding support for non-Latin input data.
 
