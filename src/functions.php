@@ -46,26 +46,21 @@ function reject_disposable_email_domain($user_email) {
  *
  */
 function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
-    /*
-     * State if it's a rejected or accepted mail (from phpmailer return code) and will use it to replace "pending_mail"
-     * by 'rejected_mail' or 'accepted_mail' into the name's file, defining also it's futur location.
-     *
-     */
-    $mail_status = (!$status ? "rejected_mail" : "accepted_mail");
-    $subdir_status_path = (!$mail_status) ? $subdir_status_path = $locations["logs_mail_rejected"] :
-                                            $subdir_status_path = $locations["logs_mail_accepted"];
 
-    // Extract only the name of the file on the whole path, checking for everything after last slash ('/')
-    $final_file_name = substr($pending_mail_path, strrpos($pending_mail_path, '/' ) + 1);
+    // Define the prefix to use
+    $prefix = (!$status) ? "rejected_mail" : "accepted_mail" ;
+
+    // Extract the current name of the file on the whole path, matching everything after last slash ('/') (non-included)
+    $file_current_name = substr($pending_mail_path, strrpos($pending_mail_path, '/' ) + 1);
 
     // Replace the file's prefix by the status of the sending
-    $final_file_name = str_replace("mail_pending", $mail_status, $final_file_name);
+    $file_name = str_replace("mail_pending", $prefix, $file_current_name);
 
-    // Append to the directory path the name of the file.
-    $final_file_name = $subdir_status_path . $final_file_name;
+    // Define the full path for the file (so the name is included)
+    $full_path_to_moved_file = $locations . $file_name;
 
     // Move the file from the pending mail directory to the target directory (ACCEPTED or REJECTED)
-    return (bool) rename($pending_mail_path, $final_file_name);
+    return (bool) rename($pending_mail_path, $full_path_to_moved_file);
 
 }
 
