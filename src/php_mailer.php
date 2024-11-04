@@ -21,7 +21,6 @@ $phpdotenv->load();
 
 require 'var/mailing_var.php';
 
-
 // Building sender and recipient e-mail address informations from PHPDotenv's method (.env file)
 $sender = $SMTP_info['mailbox'] . $SMTP_info['domain'];
 $recipient = $RCPT_info['mailbox'] . $RCPT_info['domain'];
@@ -57,7 +56,7 @@ try {
 
     // If a receipt was asked
     $current_mail = file($old_mail_path);
-    $addRCPT = str_contains($current_mail[7], "send_copy|true");
+    $addRCPT = str_contains($current_mail[7], "true");
     if ($addRCPT) {
 
         $mail->addCC($mail_to_send['email']);
