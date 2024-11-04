@@ -70,6 +70,7 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
  * $temp_mail_dir should be the location of the holding queue directory for mail.
  *
  * $exclude is a string reprensentating the .gitkeep file used to allow to pull this directory, empty.
+ * Or any alike file for CVS.
  *
  * Return an array with all data's from the mail.
  *
