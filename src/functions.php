@@ -258,24 +258,6 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
 
 }
 
-/*
- * If user has checked the checkbox 'receive_ack_receipt', removes it and return 'true'.
- *
- * $is_present is a bool.
- *
- * Return true, never false because this function is called IF it's supposed to get this key and it's necessary to
- * removes it.
- *
- * WARN: This function could be overkill ?
- *
- */
-function remove_receipt_key($is_present) {
-
-    unset($_POST['receive_ack_receipt']); // Remove this key to avoid conflict for testing validity of user input
-    return true;
-
-}
-
 /* Return true if $string is matching lenght against allowed range (>=$min, <= $max) and pattern matching (PCRE2).
  * See $filter_type below for more details about pattern matched.
  *
