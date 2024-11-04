@@ -67,6 +67,8 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
 
+- A nicer way to exit if something goes wrong, specially for the honey-pot feature: Hermessenger should return as a response the same as it would for a legitimate user to fool it even more.
+
 About : When achieve, Hermessenger will be considered secure, working and tested for most scenario. It will be considered by me as ready for production use.
 
 ## Things to do before first release
