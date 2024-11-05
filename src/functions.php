@@ -19,7 +19,6 @@ function reject_disposable_email_domain($user_email) {
     require 'var/untrusty_domains/disposable_email_domains.php';
 
     // Removes username from $user_domain
-    //$user_domain =  preg_split("/[A-Za-z0-9. _%+-]+/i", $user_email);
     $matches = [];
     preg_match("/@(.+\..*$)/", $user_email, $matches);
 
