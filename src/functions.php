@@ -68,6 +68,8 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
  *
  * $temp_mail_dir should be the location of the holding queue directory for mail.
  *
+ * It's expected to clean 3 entry from the scanned directory: '.', '..' and '.gitkeep'.
+ *
  * Return an array with all data's from the mail.
  *
  */
