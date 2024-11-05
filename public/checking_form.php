@@ -7,10 +7,10 @@ require_once '../src/functions.php';
 /* Set internal character encoding to UTF-8 */
 mb_internal_encoding($char_encoding);
 
-// Pre-copy $_POST to $raw_post_copy & avoid to works on the real one, is then updated in the script once cleaned
+// Pre-copy $_POST to $raw_post_copy & avoid to works on the real one, is then updated in the script once it was cleaned
 $raw_post_copy = $_POST;
 
-/*
+/* HONEY-POT
  * If this is true, then the form was used by a bot or alike, otherwise the non-needed key is removed from $_POST
  * before it is ($_POST) copied to $raw_post_copy.
  *
@@ -45,12 +45,18 @@ $post_copy = $raw_post_copy;
 
 // Test if $_POST isn't empty
 $user_input_count = count($post_copy);
+
 if (empty($post_copy)) {
 
     exit;
 
+}
+
+// Get the number of expected input+textarea field that the user was supposed to fill.
+$expected_input_count = count($mail_form);
+
 // Test if $_POST get the number of expected keys, otherwise something is wrong
-} else if (($user_input_count < 5)) {
+if (($user_input_count != $expected_input_count)) {
 
     exit;
 
