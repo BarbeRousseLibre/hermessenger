@@ -64,8 +64,8 @@ if (($user_input_count != $expected_input_count)) {
 
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
-var_dump($is_domain_untrusty);
-if ($is_domain_untrusty === true) {
+
+if ($is_domain_untrusty) {
 
     // Copy the file to 'mail_dir/UNTRUSTY/DISPOSABLE/' without passing it to store_sended_mail_to_logs()
     store_to_plaintext($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
