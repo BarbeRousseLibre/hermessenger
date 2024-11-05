@@ -58,6 +58,7 @@ if (empty($post_copy)) {
 
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
+var_dump($is_domain_untrusty);
 if ($is_domain_untrusty === true) {
 
     // Copy the file to 'mail_dir/UNTRUSTY/DISPOSABLE/'
