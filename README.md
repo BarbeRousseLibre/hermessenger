@@ -63,22 +63,16 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Honey-pot trap.
 
-## Missing features before first release
-
-- Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
-
-- A nicer way to exit if something goes wrong, specially for the honey-pot feature: Hermessenger should return as a response the same as it would for a legitimate user to fool it even more.
-
-About: When achieve, Hermessenger will be considered secure, working and tested for most scenario. It will be considered by me as ready for production use.
 
 ## Things to do before first release
 
-- Complete "missing features before first release"
-
 - Parsing code to harmonize style
 
+- Cleaning code from any useless, WIP, comments that are not needed, etc.
 
 ## Missing features, things to do & work-in-progress
+
+- Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
 
 - Captcha / «Are you a human?» / Question, that are efficient but at the same time does not rely on third-party services (such as Google) and does not collect any datas.
 
