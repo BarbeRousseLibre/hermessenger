@@ -58,27 +58,6 @@ $accepted_mail_dir = "ACCEPTED";
 $rejected_mail_dir = "REJECTED";
 $disposable_mail_dir = "UNTRUSTY/DISPOSABLE";
 
-/* WIP
- * Define the quarantine locations for suspicious mail request sending, too fast request, etc. As logs for them.
- *
- * "suspicious" is used for mails that was allowed, but a copy is written here (for, as example, later analysis).
- *
- * "too_fast" is used for mails that was sended too fast, see 'is_request_too_fast()' into src/functions.php for more
- * details.
- *
- * "rejected" is for mails that was not sended, but if a copy was asked from the administrator while using
- * 'is_request_too_fast()' function, see src/functions.php for more details.
- *
- * "logs" contains a plaintext file were all "suspicious", "too_fast" & "rejected" are logged into a log file for each
- * request.
- *
- */
-$quarantine = "quarantine";
-$suspicious = "suspicious";
-$too_fast = "too_fast";
-$rejected = "rejected";
-$logs = "logs";
-
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
 
 /* These below are safe to change, you probably needs to change them until a better configuration system is added. WIP.
@@ -183,14 +162,7 @@ $locations = ["pending_mails"           => $document_root . "/" . $temp_mail_dir
               "logs_mail"               => $document_root . "/" . $mail_dir . "/",
               "logs_mail_accepted"      => $document_root . "/" . $mail_dir . "/" . $accepted_mail_dir . "/",
               "logs_mail_rejected"      => $document_root . "/" . $mail_dir . "/" . $rejected_mail_dir . "/",
-              "logs_mail_disposable"    => $document_root . "/" . $mail_dir . "/" . $disposable_mail_dir . "/",
-              "quarantine"              => $document_root . "/" . $quarantine . "/"
-];
-
-$quarantine_locations = ["suspicious"   => $locations["quarantine"] . $suspicious . "/",
-                         "too_fast"     => $locations["quarantine"] . $too_fast . "/",
-                         "rejected"     => $locations["quarantine"] . $rejected . "/",
-                         "logs"         => $locations["quarantine"] . $logs . "/"
+              "logs_mail_disposable"    => $document_root . "/" . $mail_dir . "/" . $disposable_mail_dir . "/"
 ];
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
