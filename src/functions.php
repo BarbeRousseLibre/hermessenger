@@ -11,7 +11,7 @@ require_once 'var/variables.php';
  *
  * $user_email is a string from the $_POST of the user.
  *
- * If the user's input e-mail is listed, exit. Otherwise, return false.
+ * If the mail domain is untrusty, report true (it's untrusty), otherwise false (it's trusty regarding the list).
  *
  */
 function reject_disposable_email_domain($user_email) {
