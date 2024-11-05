@@ -66,6 +66,8 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 ## Things to do before first release
 
+- Adding a nicer way for exiting when something unexpected is coming ? Such as a missing directory that is needed.
+
 - Parsing code to harmonize style
 
 - Cleaning code from any useless, WIP, comments that are not needed, etc.

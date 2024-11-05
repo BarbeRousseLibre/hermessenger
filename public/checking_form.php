@@ -67,6 +67,13 @@ $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
 
 if ($is_domain_untrusty) {
 
+    // Test if the locations to store request made with disposable mail's domain.
+    if (!file_exists($locations["logs_mail_disposable"])) {
+
+        exit;
+
+    }
+
     // Copy the file to 'mail_dir/UNTRUSTY/DISPOSABLE/' without passing it to store_sended_mail_to_logs()
     store_to_plaintext($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
 
@@ -74,7 +81,7 @@ if ($is_domain_untrusty) {
 
 }
 
-// Execute all the tests (lenght and pattern matching)
+// Execute all the tests (lenght and pattern matching) on the clean version of user's input.
 $send_mail_test = validate_email_sending($post_copy, $field_len_list);
 if (!$send_mail_test) {
 
