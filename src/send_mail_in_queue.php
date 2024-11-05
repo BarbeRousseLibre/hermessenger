@@ -10,15 +10,14 @@
 require_once 'var/variables.php';
 require_once 'functions.php';
 
-// '.' and '..' are always here while calling scandir(), if only them are returned, nothing to send (empty directory)
-if (!scandir($locations["pending_mails"]) > 2) {
+// If false, no mail to send. Otherwise call 'php_mailer.php' once $mail_to_send contains an actual file.
+if (!$mail_to_send = return_oldest_mail($locations["pending_mails"])) {
 
-    exit; // Nothing to do
+    exit;
 
-} else { // At least one e-mail has to be send
+} else {
 
-    // Attribute the oldest item returned by scandir(), while avoiding if necessary to send the exclude file (last arg)
-    $mail_to_send = return_oldest_mail($locations["pending_mails"], ".gitkeep");
     include 'php_mailer.php'; // Call the script to actually send the mail
 
 }
+

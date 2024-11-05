@@ -68,31 +68,27 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
  *
  * $temp_mail_dir should be the location of the holding queue directory for mail.
  *
- * $exclude is a string reprensentating the .gitkeep file used to allow to pull this directory, empty.
- * Or any alike file for CVS.
- *
  * Return an array with all data's from the mail.
  *
- * scandir's default behavior allow this to directly get as third index (first being '.', second being '..'), being
- * the oldest file.
- *
  */
-function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
-
+function return_oldest_mail($temp_mail_dir) {
 
     // Retrieve all files in the temp directory as an array
-    $files = scandir($temp_mail_dir);
+    $files_list_uncleaned = scandir($temp_mail_dir);
 
-    // Check if an $exclude file is present, changes the index of the oldest mail accordingly
-    ($files[2] === $exclude ? $mail_index = 3 : $mail_index = 2);
+    // Clean list to remove all unwanted files, such as '.', '..' or '.gitkeep', making index 0 the oldest file.
+    $cleaned_files_list = array_slice($files_list_uncleaned, 3);
 
-    if (!array_key_exists($mail_index, $files)) { // If no mail to send
+    // Once cleaned, the first index (0) is the oldest file. Scandir()'s already sorting by default from oldest->newest.
+    $oldest_file_index = 0;
 
-        exit;
+    if (!array_key_exists($oldest_file_index, $cleaned_files_list)) { // If no mail to send.
+
+        return false;
 
     } else { // There is a mail to send
 
-        $oldest_mail = $temp_mail_dir . $files[$mail_index];
+        $oldest_mail = $temp_mail_dir . $cleaned_files_list[$oldest_file_index];
 
     }
 
@@ -121,7 +117,7 @@ function return_oldest_mail($temp_mail_dir, $exclude=".gitkeep") {
     $cgi_mail_data["pending_mail_location"] = $temp_mail_dir;
 
     // Define the file's name of the oldest mail
-    $cgi_mail_data["mail_file_name"] = $files[2];
+    $cgi_mail_data["mail_file_name"] = $cleaned_files_list[$oldest_file_index];
 
     return $cgi_mail_data;
 }
