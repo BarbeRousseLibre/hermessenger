@@ -37,7 +37,7 @@
  * This is the only mandatory value to change. Check out $timezone as well, you probably needs it too.
  *
  */
-$document_root = "/CHANGE/ME/TO/YOUR/DOCUMENTROOT";
+$document_root = "/CHANGE/ME/TO/YOUR/DOCUMENTROOT"; // Do not end this with a slash ("/")!
 
 // Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
@@ -56,7 +56,7 @@ $temp_mail_directory = "temp_mail_directory";
 $mail_dir = "mail_dir";
 $accepted_mail_dir = "ACCEPTED";
 $rejected_mail_dir = "REJECTED";
-$quarantine_dir = "quarantine";
+$disposable_mail_dir = "UNTRUSTY/DISPOSABLE";
 
 /* WIP
  * Define the quarantine locations for suspicious mail request sending, too fast request, etc. As logs for them.
@@ -183,6 +183,7 @@ $locations = ["pending_mails"           => $document_root . "/" . $temp_mail_dir
               "logs_mail"               => $document_root . "/" . $mail_dir . "/",
               "logs_mail_accepted"      => $document_root . "/" . $mail_dir . "/" . $accepted_mail_dir . "/",
               "logs_mail_rejected"      => $document_root . "/" . $mail_dir . "/" . $rejected_mail_dir . "/",
+              "logs_mail_disposable"    => $document_root . "/" . $mail_dir . "/" . $disposable_mail_dir . "/",
               "quarantine"              => $document_root . "/" . $quarantine . "/"
 ];
 
