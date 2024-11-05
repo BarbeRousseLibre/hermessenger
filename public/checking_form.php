@@ -60,6 +60,9 @@ if (empty($post_copy)) {
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
 if ($is_domain_untrusty === true) {
 
+    // Copy the file to 'mail_dir/UNTRUSTY/DISPOSABLE/'
+    store_to_plaintext($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
+
     exit; // User input is listed as untrusty, exiting.
 
 }
