@@ -53,7 +53,7 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - The sub-directory ' temp_mail_directory ' allows to slow down a "massive attack" from bots or peoples trying to send way too much mails. This is not intended to block any mails, simply blocking the possibility to quickly overload the mailbox, making it unavailable (no space left) as protecting the mail form from being blocked at the ESP side.
 
-- Remove request made with a non-trusty and disposable e-mail domains (such as yopmail, but not only).
+- Remove request made with a non-trusty and disposable e-mail domains (such as yopmail, but not only) and store them into 'mail_dir/UNTRUSTY/DISPOSABLE'.
 
 - Safe and secure .env file, allowing administators to safely write their sensitive data (their ESP's SMTP server info, user, password, etc) without being worried to accidentaly giving them to a "client".
 
@@ -61,15 +61,15 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 - Logged mail are having all datas from the request, plus a bool (true|false) showing if a copy/receipt was asked from the client.
 
-## Missing features before first release
+- Honey-pot trap.
 
-- A honey-pot for protection against smartest bot and AI, invisible to real user / client.
+## Missing features before first release
 
 - Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
 
 - A nicer way to exit if something goes wrong, specially for the honey-pot feature: Hermessenger should return as a response the same as it would for a legitimate user to fool it even more.
 
-About : When achieve, Hermessenger will be considered secure, working and tested for most scenario. It will be considered by me as ready for production use.
+About: When achieve, Hermessenger will be considered secure, working and tested for most scenario. It will be considered by me as ready for production use.
 
 ## Things to do before first release
 
@@ -214,7 +214,7 @@ You need a working mail service, or ESP, allowing you to use their SMTP servers 
 Once you have these info, simply follow instruction into 'How to install it' it above.
 
 ### About some files
-- public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code
+- public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code.
 - public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the " temp_mail_directory ", until it is send by " send_mail_in_queue.php ".
 
 - src/send_mail_in_queue.php - Once invoked, take from the " temp_mail_directory " the oldest mail and send it, only this one. If a checkbox has be checked on the index.html page, a second mail is sended as a receipt/copy for the user using the form.
