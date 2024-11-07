@@ -144,7 +144,7 @@ This allows you to keep a trace of every message, even if they are removed from 
 
 ## How to install it
 
-1. Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need. See NGinX example below.
+1. Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need.
 
 2. Renames src/var/variables.example.php to src/var/variables.php. Once it's done, open it and edit values accordingly to your needs (at least $document_root and probably $timezone):
 
@@ -183,6 +183,20 @@ RECIPIENT_DOMAIN = "@domain.org"
 ```bash
 cd /path/to/document_root/hermessenger/ && mv src/.env.example src/.env && echo -n "Success !\n"
 ```
+
+5. Install composer, following these instructions on composer's website (https://getcomposer.org/download/).
+
+Go into the document root and execute:
+
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+(these instructions right above has to be updated regarding what's asked on getcomposer.org/download)
+
+Once it's done, you should get a vendor/ directory and the needed class should works.
 
 ### Security notes (for administators installing hermessenger):
 
