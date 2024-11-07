@@ -213,9 +213,6 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
 
         switch ($field) {
 
-            // WIP
-            // case "nickname": break; // Remove honey-pot field, probably could do it earlier / better
-
             case "firstname" || "secondname" || "email" || "subject" || "body": // User input's data
 
                 file_put_contents($temp_mail_file, "|$line|$field|$user_input|\n", FILE_APPEND | LOCK_EX);
