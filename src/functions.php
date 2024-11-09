@@ -124,25 +124,23 @@ function return_oldest_mail($temp_mail_dir) {
     return $cgi_mail_data;
 }
 
-/* Take the mail from the the form and stores it into $temp_mail_dir. The mail will get formated this way for each
- * row:
+/* Take the mail from the the form and stores it into $pending_mail_directory. The mail will get formated this way
+ * for each row:
  *
  * |lineNumber|htmlTag|userInput|
  *
- * Exception being made for :
+ * Exception being made for the three last row:
  *
- * - Index 5 (6th row): |date_and_time| being the date & time when the user hit the send e-mail button on the page.
+ * |date_and_time| being the date & time when the user hit the send e-mail button on the page.
  *
- * - Index 6 (7th row): |IP| being the client's IP. Important: This data isn't trusty, but can be useful for stats and
- *                      such things.
+ * |IP| being the client's IP. Important: This data isn't trusty, but can be useful for stats and such things.
  *
- * - Index 7 (8th row): |send_copy| being a boolean stating if a copy has to be send to the actual user (|email|) as
- *                      a recipient.
+ * |send_copy| being a boolean stating if a copy has to be send to the actual user (|email|) as a recipient.
  *
  * These can be used to find a bit more data about who's trying to send an e-mail and when. Remembering that IP
  * is an untrusty information that can be hidden easily.
  *
- * Each file will then be formated this way:
+ * Each file will then be formated this way (example regarding how many fields are in the form):
  *
  * |0|firstname|foo|
  * |1|secondname|bar|
@@ -161,90 +159,59 @@ function return_oldest_mail($temp_mail_dir) {
  *
  * This way, both file's name and it's content could be used to extract data from these.
  *
- * $mail is the array from $_POST after remove_receipt_key() has cleaned it, if present.
+ * $mail is the array from $post_copy after remove_receipt_key() has cleaned it, if present.
  *
- * $temp_mail_dir is the path of the directory that will hold the file (.txt) used to store the mail until it is
- * send by a cronjob task running 'php_mailer.php' file every X minutes/hours/day (etc), or a loop.
+ * $pending_mail_directory is the path of the directory that will hold the file (.txt) used to store the mail until it
+ * is send by a cronjob task running 'php_mailer.php' file every X minutes/hours/day (etc), or a loop.
  *
- * $send_copy is a bool, stating if a second copy has to be send to the user of the form / sender.
+ * $send_copy is a bool, stating if a second copy has to be send to the user of the form / sender. Is turned into a
+ * string for convinience.
  *
- * Store the mail into the directory if true and returns it.
- *
- * Otherwise, return false.
+ * Store the mail into the directory if true, otherwise false.
  *
  */
-function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
+function store_to_plaintext($mail, $pending_mail_directory, $send_copy) {
 
-    // Define an array where each key is an user input or other informations regarding the mail sending
-    $FROM_post_info = ['username'      =>      $_POST['email'],
-                       'firstname'     =>      $_POST['firstname'],
-                       'secondname'    =>      $_POST['secondname'],
-                       'name'          =>      $_POST['firstname'] . " " . $_POST['secondname'],
-                       'IP'            =>      $_SERVER['REMOTE_ADDR'], // Client's IP while hitting the send e-mail button
-                       'date_and_time' =>      date('Y-m-d_His'), // Client's date and time while hitting the send e-mail button
-                       'send_copy'     =>      $send_copy
-                      ];
+    // Extra infos to adds to the file's name and it's content (statistic from user) at the end of the file's content
+    $extra_info = [
+        'IP'                => $_SERVER['REMOTE_ADDR'],
+        'date_and_time'     => date('Y-m-d_His'),
+        'send_copy'         => ($send_copy) ? "true" : "false"
+    ];
 
-    // Format the date & time information as IP for the file's name
-    $date_and_time = $FROM_post_info['date_and_time'];
-    $IP = $FROM_post_info['IP'];
-    $miscellaneous = $date_and_time . "_" . $IP;
+    // Merging the $_POST from user, cleaned, with IP, date and time from request
+    $raw_content = array_merge($mail, $extra_info);
 
-    // How the file for the mail is named
-    $temp_mail_file = "mail_pending_" .
-                       $FROM_post_info['date_and_time'] . "_" .
-                       $FROM_post_info['IP'] . "_" .
-                       $FROM_post_info['firstname'] . "_" .
-                       $FROM_post_info['secondname'] . "_" .
-                       $FROM_post_info['username'] .
-                       ".txt";
+    // Start composing the file's name, before non-wanted characters are removed
+    $file_name = "mail_pending_" .
+                 $raw_content['date_and_time'] .
+                 "_" .
+                 $raw_content['IP'] .
+                 "_" .
+                 $raw_content['firstname'] .
+                 "_" .
+                 $raw_content['secondname'] .
+                 "_" .
+                 $raw_content['email'] .
+                 ".txt";
 
-    // Where the file is stored
-    $temp_mail_file = $temp_mail_dir . $temp_mail_file;
+    // Replace '@' with '_at_', this is not ok otherwise
+    $file_name_without_at = str_replace("@", "_at_", $file_name);
+    // Replace any space by an underscore, for easier manipulation in shell (beside being legal and correct)
+    $file_name_clean = preg_replace('/\s+/', '_', $file_name_without_at);
+    // Prepare the name of the file and it's path
+    $full_file_path = $pending_mail_directory . $file_name_clean; // Append the directory's path to the file name
 
-    // Replace any space by an underscore
-    $temp_mail_file = preg_replace('/\s+/', '_', $temp_mail_file);
+    // Write down the mail's file to the pending queue directory, before sending
+    $line_number = 0;
+    foreach ($raw_content as $field => $data) { // Write the fill line by line
 
-    // Replace '@' with '_at_'
-    $temp_mail_file = str_replace("@", "_at_", $temp_mail_file);
-
-    $line = 0; // Define a counter used to number lines
-    foreach ($mail as $field => $user_input) {
-
-        switch ($field) {
-
-            case "firstname" || "secondname" || "email" || "subject" || "body": // User input's data
-
-                file_put_contents($temp_mail_file, "|$line|$field|$user_input|\n", FILE_APPEND | LOCK_EX);
-                $line++;
-
-                if ($field == "body") { // Once all the fields from the user input has been written
-
-                    // Write down date and time row
-                    file_put_contents($temp_mail_file, "|$line|date_and_time|$date_and_time|\n", FILE_APPEND | LOCK_EX);
-                    $line++;
-
-                    // Write down IP row
-                    file_put_contents($temp_mail_file, "|$line|IP|$IP|\n", FILE_APPEND | LOCK_EX);
-                    $line++;
-
-                    // Is a copy asked by user ?
-                    $send_copy === true ? $send_copy = "true" : $send_copy = "false";
-
-                    // Write down the switch stating a second mail has to be send as a copy or not
-                    file_put_contents($temp_mail_file, "|$line|send_copy|$send_copy|", FILE_APPEND | LOCK_EX);
-
-                    return $temp_mail_file;
-
-                }
-
-                break;
-
-            default: return false;
-
-        }
+        file_put_contents($full_file_path, "|$line_number|$field|$data|\n", FILE_APPEND | LOCK_EX);
+        $line_number++;
 
     }
+
+    return file_exists($full_file_path);
 
 }
 
@@ -288,7 +255,6 @@ function store_to_plaintext($mail, $temp_mail_dir, $send_copy) {
  */
 function check_string_validity($string, $filter_type, $min, $max) {
 
-
    // Range check
    if (strlen($string) < $min OR strlen($string) > $max) {
 
@@ -300,7 +266,7 @@ function check_string_validity($string, $filter_type, $min, $max) {
        switch ($filter_type) {
 
            case 'names':
-               return (bool) preg_match($filter_names, $string);
+               return (bool) preg_match("/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/", $string);
 
            case 'email':
                return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
@@ -324,58 +290,23 @@ function check_string_validity($string, $filter_type, $min, $max) {
  * Otherwise, return false and no more tests are needed, if one has failed, the mail won't be sended anyway.
  *
  */
-function validate_email_sending($user_post, $allowed_len_list) {
+function validate_email_sending($user_post, $allowed_len_list_min, $allowed_len_list_max, $field_type_list) {
 
-
-    // Define at each iteration what are min and max value for range, as the filter to use for pattern matching.
+    // For each itteration, define what are min and max values for each field, as the filter to run against the data
     foreach ($user_post as $key => $value) {
 
-        switch ($key) {
+        $min = $allowed_len_list_min[$key];
+        $max = $allowed_len_list_max[$key];
+        $current_filter = $field_type_list[$key];
 
-            case 'firstname':
+        if (!check_string_validity($value, $current_filter, $min, $max)) {
 
-                $min = $allowed_len_list['firstname_min'];
-                $max = $allowed_len_list['firstname_max'];
-                $current_filter = 'names';
-
-                break;
-
-            case 'secondname':
-
-                $min = $allowed_len_list['secondname_min'];
-                $max = $allowed_len_list['secondname_max'];
-                $current_filter = 'names';
-
-                break;
-
-            case 'email':
-
-                $min = $allowed_len_list['email_min'];
-                $max = $allowed_len_list['email_max'];
-                $current_filter = 'email';
-
-                break;
-
-            case 'subject':
-
-                $min = $allowed_len_list['subject_min'];
-                $max = $allowed_len_list['subject_max'];
-                $current_filter = 'text';
-
-                break;
-
-            case 'body':
-
-                $min = $allowed_len_list['body_min'];
-                $max = $allowed_len_list['body_max'];
-                $current_filter = 'text';
-
-                break;
+            return false;
 
         }
 
     }
 
-    return (bool) check_string_validity($value, $current_filter, $min, $max);
+    return true;
 
 }
