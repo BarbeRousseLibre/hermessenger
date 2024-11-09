@@ -1,33 +1,44 @@
 # hermessenger
-WIP - A self-made e-mail web form written in PHP, using composer, PHPDotenv &amp; PHPMailer. Be aware this is a newbie project, with (as is it for now) poor coding skills. Feel free to help me improves it. 
+
+Home-made web mail form for HTML contact page, written in PHP. It uses composer to manage the following class:
+
+- PHPDotenv, allowing to properly protect some sensitives datas such as your ISP's SMTP server address, username, password, etc.
+- PHPMailer, to effectively and properly sends e-mail (IMAP).
+
+This is a beta as it is for now. Some wanted features are missing, see below.
 
 ![Hermessenger logo, made by Blu](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo_320x320.jpg?raw=true)
 
 ## About
 
-This project is simply a goal for me to learn PHP. It was written with PHP 8.2 and (for now) it was not tested on other release of PHP. This was also not tested on other operating system than Linux.
+This project was for me an exercice to learn PHP. It's written in PHP 8.2 and will soon be moved to 8.3 as well.
 
-It is a free software, under GPL 3.0. Feel free to use it, enhance it…
+It was only tested on Linux with PHP 8.2 release.
 
-This project reach a simple goal: Being a good, well-made, secure and easy-to-use and install system of mail form into a HTML page.
+This project is using GPLv3 license. As the logo.
 
-Until I say it's ready, it's not.
+This is the 0.1 release and is still in beta, **you should probably avoid it in production**.
 
 ## Philosophy
 
-This project is not made for companies or any web site with a high trafic. It is also not supposed to send more than 60 mails per hours, one per minute (which is already a lot). As it was not made with the idea to add this into CMS such as Wordpress or what ever, but for simple HTML page.
+Hermessenger aim to sends a few mails by hours, keeping futur mail's sending into a pending queue directory until a loop, a crontask job or even a PHP-CGI is call on ' src/send_mail_in_queue.php ' script.
 
-But, if you are looking for a simple mail form into a web page, for personnal use (commercial for small or one-man companies or not), for small project (personnal web site, etc) with small traffic, it could be good for your usage.
+This is not made to support a lot of sending in a short period of time, instead it's expected to hold mails for a few minutes to manage potential threat against your recipient's mailbox.
 
-Hermessenger focus on sending a few mails per hours, for security reasons, nicely and slowly. Nothing more.
+It aims simplicity, ease of installation and configuration. Be aware, for now this is still under work and adding or removing one of the expected fields (firstname, secondname, email (of user), subject and body) would result in unexpected behavior.
 
-This does not also provide any fancy features as you could have with Javascript for example, and will never. It is made to be simple, quick to install and setup for administators. Feel free to add this layer your self or rely on other project.
-
-This project is free (as free beer, but mostly as in « Freedom »), under GPLv3 license.
+Please, if you are looking for a strong and bullet-proof project, this is actually not the case.
 
 ## This is a beta !
 
 This project is not ready for production use, for now, considering using this for production environment is probably a very bad idea. This repository is public and is used to share my code to other peoples, helping me improving it.
+
+**Actual release is 0.1.**
+
+Futur release (0.2) will allow:
+
+- Add, removes or modifier in a simple maner the HTML fields expected.
+- Rely on a configuration file that would greatly ease the settings of Hermessenger.
 
 ## Security
 
@@ -39,76 +50,61 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 ## Availables features
 
-- Checking if input's data from user's post ($_POST) are valid regarding their range (character's lenght).
+1. Tests values from the user's input request, for range and allowed pattern.
 
-- Checking if input's data from user's for each field is valid against PCRE2 pattern matching.
+2. User could check a box and receive at the same time an e-mail as a copy.
 
-- Copy the mail's file into a pending queue until a crontask job, a loop or a manual call from PHP CGI is made.
+3. Copy the pending mail's file into a temporary directory until it is asked to send it. It allows massive attacks to be drasticaly slowed down and avoid to get a full mailbox or being blacklisted from your ISP's SMTP server. Please note these attacks are **only slowed down** and not blocked.
 
-- Send an e-mail to the recipient from the mail form.
+4. E-mail file, once it has been tried to send it, is moved and renamed into a sub-directory regarding it's status, ' mail_dir/ACCEPTED ' or ' mail_dir/REJECTED '.
 
-- Allow the sender to get a copy of the mail sended to the sender's mailbox, by checking a checkbox right before sending the mail.
+5. Block request made using a list of disposable e-mails domains (non-exhaustive list). Please see ' [src/var/untrusty_domains/disposable_email_domains.php](https://github.com/BarbeRousseLibre/hermessenger/blob/master/src/var/untrusty_domains/disposable_email_domains.php) ', thus they are moved into ' mail_dir/UNTRUSTY/DISPOSABLE '.
 
-- Mail sended, using PHPMailer, are copied regarding the returned status, to the proper sub-directory.
+6. Sensitives datas, which is your ISP's SMTP server info, are nicely stored into ' src/.env ' to moves it from code, document root as well.
 
-- The sub-directory ' temp_mail_directory ' allows to slow down a "massive attack" from bots or peoples trying to send way too much mails. This is not intended to block any mails, simply blocking the possibility to quickly overload the mailbox, making it unavailable (no space left) as protecting the mail form from being blocked at the ESP side.
+7. Mail file's name are using a formatted name from user's input data to quickly find out an e-mail regarding time and date, IP, firstname and second name as sender's e-mail address. As their current status : pending, accepted, rejected. See "How it works" below.
 
-- Remove request made with a non-trusty and disposable e-mail domains (such as yopmail, but not only) and store them into 'mail_dir/UNTRUSTY/DISPOSABLE'.
+8. Mail's file's content store all data from the user input, plus IP, date and time and if a copy was asked.
 
-- Safe and secure .env file, allowing administators to safely write their sensitive data (their ESP's SMTP server info, user, password, etc) without being worried to accidentaly giving them to a "client".
-
-- Logged mail are named with most informations of the mail: status (pending, accepted, rejected), date & time, IP of the client, first and second name and e-mail address.
-
-- Logged mail are having all datas from the request, plus a bool (true|false) showing if a copy/receipt was asked from the client.
-
-- Honey-pot trap.
-
-
-## Things to do before first release
-
-- Adding a nicer way for exiting when something unexpected is coming ? Such as a missing directory that is needed.
-
-- Parsing code to harmonize style
-
-- Cleaning code from any useless, WIP, comments that are not needed, etc.
+9. A hidden honey-pot field, named 'firstname_input', allowing to checks if the request was made using a dumb-bot.
 
 ## Missing features, things to do & work-in-progress
 
-- Adding TOML support and removes from src/var/variables.php anything that could lead administators to break code by accident, making Hermessenger easier to setup and tweak around.
+1. Adding a configuration system, avoiding administators to rely on editing .php files, such as TOML.
 
-- Captcha / «Are you a human?» / Question, that are efficient but at the same time does not rely on third-party services (such as Google) and does not collect any datas.
+2. A captcha method that is not blocking some kind of users, such as peoples with dyslexia, to be able to prouves they are human and not a bot. This method should also be able to detect more modern bot or AI.
 
-- Allow to block Tor request, which could be used to hide the real client IP.
+3. Allow to block Tor request, which could be used to hide the real client IP.
 
-- Allow to block VPN & request from proxy, which could be used to hide the real client IP.
+4. Allow to block VPN & request from proxy, which could be used to hide the real client IP.
 
-- Adding a list of non-trusty mailbox and IP.
+5. Allow to block request made from a client's IP that is known to be spamming (blacklist).
 
-- Comparing time between the client receiving the mail's form request and the mail's sending, checking for too quickly filled form.
+6. Check the client's time between the request of the contact page holding the form and the time the user send the request. If it's too fast, then it's suspicious and could be a bot / AI.
 
-- Checking the content of body & subject to found out suspicious wording, link, etc.
+7. Parsing the content of subject and body to find out suspicious wording.
 
-- An uploading features for files, with anti-virus checking, size blocking, mime content type blocking, etc.
+8. Uploading features with an anti-virus checks.
 
-- Adding support for non-Latin input data.
+9. Adding support for non-Latin input data.
 
-- Testing this script on PHP8.3.
+10. Testing this script on PHP8.3.
 
-- Testing this script on other operating system (such as *BSD or Windows).
+11. Testing this script on other operating system (such as *BSD or Windows).
 
-- Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
+12. Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
 
-- Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
+13. Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
 
-- Adding a sweet way to add a prefix for subject as body, allowing to know easier and quicker that the current mail of the recipient's mail box is coming from this script.
+14. Internationalization system for a few languages : french, english, spanish… and more later.
 
-- Giving the choice for pre-defined natural languages, probably these one: french, english, spanish. Some more could be added, later, like Chinese, Arabic, Hindi, Russian, Ukrainian and other cyrillic languages, and more. This first needs a better implementation of the pattern matching actually used, which only allow Latin-alike alphabet. Please note, this won't use translation software or AI translation. If you want to help, let's do it properly :) !
-
-- Get a svg of the actual logo of Hermessenger.
+16. Get a svg of the actual logo of Hermessenger, with a slight enhanced design.
 
 ## How it works
 
-From input's user into a HTML mail form to send a message, check validity of the input and write a file into this format :
+**Please note**: This is not, for now, a perfect and easy methods, it lacks features. This is still a work-in-progress.
+
+1. Check validity of the user input and write a file into this format :
 
 > |0|firstname|Foo|
 
@@ -126,62 +122,140 @@ From input's user into a HTML mail form to send a message, check validity of the
 
 > |7|send_copy|bool|
 
+Each row could be represented this way :
+```|line number|html tag|user input```
+Where | (pipe) are used as delimiter.
+
 The mail will take this type of name :
 
-> pending_mail_YYYY-MM-DD_hhmmss_XXX.XXX.XX.XXX_Foo_Bar_foo.bar_at_gogole.com.txt
+> status_mail_YYYY-MM-DD_hhmmss_XXX.XXX.XX.XXX_firstname_secondname_recipient-mailbox_at_domain.tld.txt
 
-This file will be stored into ' mail_temp_directory '.
+Where:
+- **status_mail**: pending, accepted, rejected. The actual mail's status regarding the current workflow.
+- **YYYY-MM-DD**: date in the international format.
+- **hhmmss**: time, 24h format, with seconds.
+- **XXX.XXX.XX.XXX**: the IP sending the request, which is **not a trusty** value.
+- **firstname**: the value inside the user's input. An underscore ('_') is replacing the following white space.
+- **secondname**: the value inside the user's input.
+- **recipient-mailbox**: the name of the mailbox in the user's input.
+- **at**: the '@' (at) is replaced by '\_at\_' to avoid error in Unix's filesystem.
+- **domain.tld**: the ISP domain holding 'recipient-mailbox' user.
+- **.txt**: The content mime type of the file.
 
-Per default, this is not sending any mail at this point. This was written to be used aside a task schedular (such as cron), a loop or you can (for testing purpose) execute the following file manually on a shell : ' send_mail_in_queue.php '
+And:
+- **_**: Field delimiter between each value, replace also white-space characters when needed.
 
-The goal is to make impossible to overload your mailbox, or being blocked by your ESP's SMTP server for abusing it without knowing it. My advice is to look up what's your sending limits and imagine the following scenario : If someone manage to abuse this form, adding 10k mails into your mail pending queue, that won't block you in any way : If you set a call to ' send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day. **Warning : This has to be doubled if you wants to allow your user to get a receipt / copy on their own mailbox, making it to 576 e-mails sends / day.**
+This file will be stored into ' mail_temp_directory/ '.
 
-This script will look into ' temp_mail_directory ' and report the oldest mail file. Once one has been found, invoke ' php_mailer.php ' which will try to actually send the mail. Regarding the code returned by PHPMailer, will move the mail files into ' mail_dir/ACCEPTED ' or ' mail_dir/REJECTED '. It's important to note : If PHPMailer return true, it does NOT MEANS YOUR MAIL IS ACTUALLY SENDED TO THE MAILBOX. The recipient server could reject it for many reasons. 
+Per default, this is not sending any mail at this point. This was written to be used aside a task schedular (such as a cronjob), a loop or you can (for testing purpose) execute the following file manually on a shell : ' send_mail_in_queue.php ':
 
-The mail file is also renamed regarding it's status (returned by PHPMailer), 'accepted_mail…' or 'rejected_mail…'.
+### Crontask job:
 
-This allows you to keep a trace of every message, even if they are removed from the mailbox, as logs and helping you getting statistic from file's name and it's content, and finally detect non-sended message (from PHPMailer side only, so your own side).
+First be sure to target the crontask file from an user with the permission to use ' /usr/bin/phpX.X ' binary.
+
+Then, this user should have the read and execution permissions on the document root as the ' src/send_mail_in_queue.php ' script.
+
+Before actually settings this into your user's crontab, try executing it manually, see point ' PHP-CGI manual sending / testing '. below.
+
+The output could be redirected to some logs file, per default you could use ' logs/ ' directory. So the user should as well be able to read, write and execute into this directory.
+
+**Note:** If into ' src/php_mailer.php ' you turned on the debug features, expect dozens of line for each sending, instead of one, as this example showing when debug features is off:
+
+```Message has been sent the 2024-11-09, at 11:21:14.```
+
+Open your user's crontab the good way (since you are going in hell if you edit this manually):
+```bash
+$ crontab -u youruser -e
+```
+
+Then add (for a sending every 5 minutes):
+
+```
+*/5 * * * * /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/logs/sending_logs.txt
+```
+
+*Do not forget to save and quit, otherwise this won't be applied until so !*
+
+### PHP-CGI manual sending / testing:
+
+Simply execute the following command:
+```bash
+$ /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/logs/sending_logs.txt
+```
+
+To be sure to see it works when using crontab (see above, ' Crontask job '), hit the full path for your PHP binary and proper release if needed.
+
+### Bash loop using while (300 seconds, so 5 minutes):
+```bash
+$ while true; do /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php; sleep 300; done
+```
+
+And stop it using:
+
+```bash
+$ ctrl^c
+```
+
+Or to pause it for a while:
+
+```bash
+$ ctrl^z
+```
+
+And to unpause it:
+
+```bash
+$ fg
+```
+
+This is nice for testing without actually modifying the crontab. You could also runs this from a screen, but I won't recommands it since cron is doing it much more nicely.
+
+2. The goal is to make impossible to overload your mailbox, or being blocked by your ESP's SMTP server for abusing it without knowing it (sending limit ration). To setup the sending rate from Hermessenger, you should look up what's your sending limits and imagine the following scenario:
+
+If someone manage to abuse this form, adding 10k mails into your mail pending queue, that won't block you in any way. If you set a call to ' send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day.
+**Warning : This has to be doubled if you wants to allow your user to get a receipt / copy on their own mailbox, making it to 576 e-mails sends / day.**
+
+This is your job to define what's the maximum limit for the mail's sending per hour. You should also keep in mind that leaving a safe difference between what could be sended per day by Hermessenger and what's your actual limit ration is important: This domains, probably sharing among different mailbox, this ratio should still be able to sends mails.
+
+3. Once ' src/send_mail_in_queue.php ' is called, it will look up into ' temp_mail_directory ' and report the oldest mail file (if any). Once one has been found, invoke ' src/php_mailer.php ' which will try to actually send the mail. It will ignore '.', '..' (Unix path) as '.gitkeep'.
+
+4. Regarding the code returned by PHPMailer, will move the mail files into ' mail_dir/ACCEPTED ' or ' mail_dir/REJECTED '.
+
+**It's important to note : If PHPMailer return true, it does NOT MEANS YOUR MAIL IS ACTUALLY SENDED TO THE MAILBOX. The recipient server could reject it for many reasons.**
+
+To find out the reason, enable debug's feature inside ' src/php_mailer.php '.
+
+The mail file is also renamed regarding it's status (returned by PHPMailer), 'accepted_mail…' or 'rejected_mail…' in the expected directory.
+
+This allows you to keep a trace of every message, even if they are removed from the mailbox, as logs and helping you getting statistic from file's name and it's content, and finally detect non-sended message (from PHPMailer side only, so your own side).
 
 ## How to install it
 
-1. Download the code into your Document Root and configure your web server's virtual host (the site you want to add this form) regarding your need.
+**WIP: As it is for now, this needs to follow these steps to be working, a better way will be added in futur realeses.**
 
-2. Renames src/var/variables.example.php to src/var/variables.php. Once it's done, open it and edit values accordingly to your needs (at least $document_root and probably $timezone):
+You need, once the code will be copied on your server, to moves all your files (.html, .css, .js, and all others assets) into ' public/ ', as the script expect to have all the needed file into ' public/ '.
 
-```bash
-cd /path/to/document_root/hermessenger/ && mv src/var/variables.example.php src/var/variables.php && echo -n "Success !\n"
-```
-
-3. Edit .env.example file accordingly to your ESP's SMTP parameters. You need to edit without adding at the end of the line the semicolon (';'):
-
-```
-SMTP_USER = "sender_username"
-SMTP_DOMAIN = "@domain.org"
-SMTP_PASSWORD = "super_secret_password"
-SMTP_SERVER = "mail.domain.org"
-SMTP_PORT = yourport
-
-RECIPIENT_USER = "recipient_username"
-RECIPIENT_DOMAIN = "@domain.org"
-```
-
-To:
-
-```
-SMTP_USER = "contact"
-SMTP_DOMAIN = "@mywebsite.com"
-SMTP_PASSWORD = "1234_abcdefg!"
-SMTP_SERVER = "mail.myesp.org"
-SMTP_PORT = 465
-
-RECIPIENT_USER = "recipient_username"
-RECIPIENT_DOMAIN = "@domain.org"
-```
-
-4. Once you are sure of your parameters, renames it to .env:
+1. Download the code into your Document Root:
 
 ```bash
-cd /path/to/document_root/hermessenger/ && mv src/.env.example src/.env && echo -n "Success !\n"
+$ cd /path/to/document_root
+$ git clone git@github.com:BarbeRousseLibre/hermessenger.git
+```
+
+And moves all your website's file into ' public/ ', as all assets directory needed to your website.
+
+2. Renames ' src/var/variables.example.php ' to ' src/var/variables.php '. Once it's done, open it and edit values accordingly to your needs (at least ' $document_root ' and probably ' $timezone '):
+
+```bash
+$ cd /path/to/document_root/hermessenger/
+$ mv src/var/variables.example.php src/var/variables.php && echo -n "Success !\n"
+```
+
+3. Renames ' src/.env.example ' to ' src/.env ', and edit it this file accordingly to your ESP's SMTP parameters. You need to edit without adding at the end of the line the semicolon (';'):
+
+```bash
+$ cd /path/to/document_root/hermessenger/
+$ mv src/.env.example src/.env && echo -n "Success !\n"
 ```
 
 5. Install composer, following these instructions on composer's website (https://getcomposer.org/download/).
@@ -189,33 +263,37 @@ cd /path/to/document_root/hermessenger/ && mv src/.env.example src/.env && echo 
 Go into the document root and execute:
 
 ```bash
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
+$ cd /path/to/document_root/hermessenger/
+$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+$ php composer-setup.php
+$ php -r "unlink('composer-setup.php');"
 ```
-(these instructions right above has to be updated regarding what's asked on getcomposer.org/download)
+**Be aware: these instructions right above has to be updated regarding what's asked on getcomposer.org/download. This example above could be outdated.**
 
-Once it's done, you should get a vendor/ directory and the needed class should works.
+Once it's done, you should get a ' src/vendor/ ' directory and the needed class should works flawlessly.
 
 ### Security notes (for administators installing hermessenger):
 
-1. Be aware that .env file should NEVER be accessible to your webserver (and so, client).
+1. Be aware that ' src/.env ' file should **NEVER** be accessible to your webserver (and so, client). This is why it is outside the document root.
 
-2. As it should always be added to .gitignore or any cvs system equivalent.
+2. As ' src/.env ' should stay inside .gitignore or any cvs system equivalent to avoid sharing it by mistake.
 
-3. Be still sure to never 'git add src/.env', only .env.example is safe. If that so, changes ASAP your password, maybe user as well. This is your responsability as the one implementing my script. Git never forget!
+3. Be still sure to never execute this command:
+```bash
+$ git add src/.env
+```
 
-4. NEVER use .env.example, and do not renames or moves it. It as to belong to src/ as well.
+Only .env.example is safe (and you should **NEVER** use it directly).
+If that so, changes ASAP your password, maybe user as well. This is your responsability as the one implementing my script. **Git never forget**!
 
-5. It is also useless to manually block it from your webserver, because only public/ should be accessible to your webserver, and should be your document root **no matter what**.
+4. NEVER use ' src/.env.example ', it as to belong to ' src/ ' as well (outside the document root).
 
-6. This also apply, at a lesser degree of security issue, to src/var/variables.php as well. See src/var/variables.example.php.
+5. It is also useless to manually block it from your webserver, because only ' public/ ' should be accessible to your webserver, and should be your document root **no matter what**.
+
+6. This also apply (1., 2., 3., 4., 5.), at a lesser degree of security issue, to ' src/var/variables.php ' as well. See src/var/variables.example.php.
 
 Soon some example of configuration using NGinx & Apache2 will be provided, as tweaks for php.ini and a dedicated pool for it.
-
-The user running the cron task job needs to be able to access the PHP's binary as the Document Root holding it.
-
 
 ## How to use it
 
@@ -225,21 +303,21 @@ Once you have these info, simply follow instruction into 'How to install it' it 
 
 ### About some files
 - public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code.
-- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the " temp_mail_directory ", until it is send by " send_mail_in_queue.php ".
+- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, etc), if all tests are succesful, then the data are exported to a plaintext file into the ' public/temp_mail_directory ', until it is send by ' src/send_mail_in_queue.php '.
 
-- src/send_mail_in_queue.php - Once invoked, take from the " temp_mail_directory " the oldest mail and send it, only this one. If a checkbox has be checked on the index.html page, a second mail is sended as a receipt/copy for the user using the form.
-- src/var/mailing_var.php - This file rely on PHPDotenv, it reads from src/.env some sensitive datas: SMTP server, username, **password**, etc. You should write into .env the sensitive datas, nowhere else !
-- src/var/variables.php - This file is allowing you to add or remove fields, there is variables you could modify to adapt the code to your actual HTML page and need.
-- src/var/variables.example.php - See How to use it above.
+- src/send_mail_in_queue.php - Once invoked, take from the ' temp_mail_directory ' the oldest mail and send it, only this one. If a checkbox has be checked on the contact page holding the form, a second mail is sended as a receipt/copy for the user using the form.
+- src/var/mailing_var.php - This file rely on PHPDotenv, it reads from ' src/.env ' some sensitive datas: SMTP server, username, **password**, etc. You should write into ' src/.env ' the sensitive datas, nowhere else !
+- src/var/variables.php - This file is allowing you to setup your document root and the timezone, as the actual HTML tag's field used on your contact page.
+- src/var/variables.example.php - Example file you have to modify, see ' src/var/variables.php ' right above.
 - src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
-- src/.env.example - File to renames .env for your usage. See .env above.
-- src/var/untrusty_domains/disposable_email_domains.php - Listing all domains that is listed as a disposable e-mail address, rejecting them.
+- src/.env.example - File to renames ' src/.env ' for your usage. See ' src/.env ' above.
+- src/var/untrusty_domains/disposable_email_domains.php - Listing all domains that is listed as a disposable e-mail address, rejecting them. This is safe to edit to removes or add new domains.
 
-- .gitkeep - File allowing me to send "empty" directory to git, this is safe to removes them, unless you need to push code to this repository.
+- .gitkeep - If you don't know what is it: A trick to force git to add empty directory that needs to be here to allow Hermessenger to works. If you do not commit anything to this project or will not forks it, this is safe to removes, but useless.
 
 ## Special thanks to… and credit
 
-- Everyone's helping me by answering my answers or showing what was bad, you are great !
+- Everyone's helping me by answering my answers or showing what was bad, you are great ! Special thanks to #php@irc.libera.chat and « Les joies du code » Discord server for their advice and patience.
 
 - [PHP](https://www.php.net) for their documentation.
 
@@ -253,14 +331,16 @@ Once you have these info, simply follow instruction into 'How to install it' it 
 
 - [Blu](https://www.instagram.com/bluareus/) for her cute logo she made pretty quickly !
 
+- [Les esprits atypiques](https://les-esprits-atypiques.org) for giving me a good case to learn PHP.
+
 ## Last words
 
 I can not push this more, but… **THIS IS NOT READY FOR PRODUCTION USE**. If you do it, well… 
 
 Feel free to help me improves it, I'm open to critics (if they are constructive).
 
-Just keep in mind : There is obviously better project around, doing this, with better or more modern way. This is one of my goal : Improves it to reach the " perfection ".
+Just keep in mind : There is obviously better project around, doing this, with better or more modern way. This is one of my goal : Improves it to reach the " perfection ".
 
 Thanks, stay safe.
 
-GASPARD DE RENEFORT Kévin
+GASPARD DE RENEFORT Kévin
