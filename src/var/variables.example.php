@@ -81,7 +81,6 @@ $field_len_list_min = [
       'email' => 8,
       'subject' => 8,
       'body' => 64,
-      'test' => 2
 ];
 
 $field_len_list_max = [
@@ -90,7 +89,6 @@ $field_len_list_max = [
       'email' => 32,
       'subject' => 48,
       'body' => 2048,
-      'test' => 32
 ];
 
 $field_type = [
@@ -99,7 +97,6 @@ $field_type = [
       'email' => 'email',
       'subject' => 'text',
       'body' => 'text',
-      'test' => 'text'
 ];
 
 
@@ -157,13 +154,6 @@ $mail_form = [
           'type' => 'text',
           'htmltag' => 'textarea',
           'placeholder' => 'Type your message here'],
-
-    5 => ['id'    => 'test',
-          'name'   => 'test',
-          'readable' => 'test field',
-          'type' => 'text',
-          'htmltag' => 'textarea',
-          'placeholder' => 'testing field']
 
 ];
 
