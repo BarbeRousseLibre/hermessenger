@@ -82,7 +82,7 @@ if ($is_domain_untrusty) {
 }
 
 // Execute all the tests (lenght and pattern matching) on the clean version of user's input.
-$send_mail_test = validate_email_sending($post_copy, $field_len_list);
+$send_mail_test = validate_email_sending($post_copy, $field_len_list_min, $field_len_list_max, $field_type);
 if (!$send_mail_test) {
 
     exit;
