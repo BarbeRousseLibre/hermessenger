@@ -124,6 +124,7 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 Each row could be represented this way :
 ```|line number|html tag|user input|```
+
 Where | (pipe) are used as delimiter, starting and ending each row as well.
 
 The mail will take this type of name :
