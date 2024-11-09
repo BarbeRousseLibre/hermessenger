@@ -265,13 +265,13 @@ function check_string_validity($string, $filter_type, $min, $max) {
        // Pattern check
        switch ($filter_type) {
 
-           case 'names':
-               return (bool) preg_match("/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/", $string);
+           case "names":
+               return (bool) preg_match("/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/u", $string);
 
-           case 'email':
+           case "email":
                return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
 
-           case 'text':
+           case "text":
                return (bool) preg_match("/^[\p{Latin}\p{Common}\d\s\p{P}\p{S}]+$/u", $string);
 
            default: return false; // Not a valid filter
@@ -298,15 +298,19 @@ function validate_email_sending($user_post, $allowed_len_list_min, $allowed_len_
         $min = $allowed_len_list_min[$key];
         $max = $allowed_len_list_max[$key];
         $current_filter = $field_type_list[$key];
+        var_dump($current_filter);
 
-        if (!check_string_validity($value, $current_filter, $min, $max)) {
+        $is_current_field_valid = check_string_validity($value, $current_filter, $min, $max);
+        if (!$is_current_field_valid) {
 
             return false;
+
+        } else {
+
+            return true;
 
         }
 
     }
-
-    return true;
 
 }
