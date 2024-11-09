@@ -37,7 +37,7 @@
  * This is the only mandatory value to change. Check out $timezone as well, you probably needs it too.
  *
  */
-$document_root = "/var/www/localhost/htdocs/hermessenger"; // Do not end this with a slash ("/")!
+$document_root = "/CHANGE/ME/TO/YOUR/DOCUMENTROOT"; // Do not end this with a slash ("/")!
 
 // Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
