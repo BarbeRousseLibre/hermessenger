@@ -37,7 +37,7 @@
  * This is the only mandatory value to change. Check out $timezone as well, you probably needs it too.
  *
  */
-$document_root = "/CHANGE/ME/TO/YOUR/DOCUMENTROOT"; // Do not end this with a slash ("/")!
+$document_root = "/var/www/localhost/htdocs/hermessenger"; // Do not end this with a slash ("/")!
 
 // Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
@@ -75,12 +75,33 @@ $disposable_mail_dir = "UNTRUSTY/DISPOSABLE";
  * alike language. You can probably keep them as it is.
  *
  */
-$field_len_list = ['firstname_min' => 2, 'firstname_max' => 32,
-                   'secondname_min' => 2, 'secondname_max' => 32,
-                   'email_min' => 8, 'email_max' => 32,
-                   'subject_min' => 8, 'subject_max' => 48,
-                   'body_min' => 64, 'body_max' => 2048
-                  ];
+$field_len_list_min = [
+      'firstname' => 2,
+      'secondname' => 2,
+      'email' => 8,
+      'subject' => 8,
+      'body' => 64,
+      'test' => 2
+];
+
+$field_len_list_max = [
+      'firstname' => 32,
+      'secondname' => 32,
+      'email' => 32,
+      'subject' => 48,
+      'body' => 2048,
+      'test' => 32
+];
+
+$field_type = [
+      'firstname' => 'names',
+      'secondname' => 'names',
+      'email' => 'email',
+      'subject' => 'text',
+      'body' => 'text',
+      'test' => 'text'
+];
+
 
 /*
  * Each row/key define a new input/textarea field in the HTML code.
@@ -107,48 +128,44 @@ $mail_form = [
           'readable' => 'First name',
           'type' => 'text',
           'htmltag' => 'input',
-          'placeholder' => 'Jean'
-         ],
+          'placeholder' => 'Jean'],
 
     1 => ['id' => 'secondname',
           'name' => 'secondname',
           'readable' => 'Second name',
           'type' => 'text',
           'htmltag' => 'input',
-          'placeholder' => 'Dupont'
-         ],
+          'placeholder' => 'Dupont'],
 
     2 => ['id' => 'email',
           'name' => 'email',
           'readable' => 'Your e-mail address',
           'type' => 'text',
           'htmltag' => 'email',
-          'placeholder' => 'foo@bar.org'
-         ],
+          'placeholder' => 'foo@bar.org'],
 
     3 => ['id' => 'subject',
           'name' => 'subject',
           'readable' => 'Subject of your message',
           'type' => 'text',
           'htmltag' => 'input',
-          'placeholder' => 'Subject of your message'
-         ],
+          'placeholder' => 'Subject of your message'],
 
     4 => ['id' => 'body',
           'name' => 'body',
           'readable' => 'Type your message here',
           'type' => 'text',
           'htmltag' => 'textarea',
-          'placeholder' => 'Type your message here'
-    ]
+          'placeholder' => 'Type your message here'],
+
+    5 => ['id'    => 'test',
+          'name'   => 'test',
+          'readable' => 'test field',
+          'type' => 'text',
+          'htmltag' => 'textarea',
+          'placeholder' => 'testing field']
 
 ];
-
-/* Filters for pattern matching, no need for e-mail because 'FILTER_VALIDATE_EMAIL' is already nicely doing it.
- *
- * Only changes these if it's needed.
- */
-$filter_names = "/^\p{Latin}+((?:-|\h)\p{Latin}+)*$/"; // Allow latin, separated by white-space/NBSP or hypen ("-")
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
 
@@ -162,7 +179,6 @@ $locations = ["pending_mails"           => $document_root . "/" . $temp_mail_dir
               "logs_mail"               => $document_root . "/" . $mail_dir . "/",
               "logs_mail_accepted"      => $document_root . "/" . $mail_dir . "/" . $accepted_mail_dir . "/",
               "logs_mail_rejected"      => $document_root . "/" . $mail_dir . "/" . $rejected_mail_dir . "/",
-              "logs_mail_disposable"    => $document_root . "/" . $mail_dir . "/" . $disposable_mail_dir . "/"
-];
+              "logs_mail_disposable"    => $document_root . "/" . $mail_dir . "/" . $disposable_mail_dir . "/"];
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
