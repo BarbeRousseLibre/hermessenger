@@ -298,7 +298,6 @@ function validate_email_sending($user_post, $allowed_len_list_min, $allowed_len_
         $min = $allowed_len_list_min[$key];
         $max = $allowed_len_list_max[$key];
         $current_filter = $field_type_list[$key];
-        var_dump($current_filter);
 
         $is_current_field_valid = check_string_validity($value, $current_filter, $min, $max);
         if (!$is_current_field_valid) {
