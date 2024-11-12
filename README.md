@@ -90,7 +90,7 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 ## Bugs (I am aware of)
 
 1. When testing with an incorrectly formated e-mail address for sender, when the function ' reject_disposable_email_domain() ' is called, return an error about an undefined array key:
-> FastCGI sent in stderr: "PHP message: PHP Warning:  Undefined array key 1 in /path/to/the/document_root/hermessenger/src/functions.php on line 39" while reading response header from upstream, client: 192.168.1.44, server: mail-form.sandbox.local, request: "POST /checking_form.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm/php.8.2-fpm-lea_mail-form.sandbox.local.sock:", host: "mail-form.sandbox.local:8080", referrer: "http://mail-form.sandbox.local:8080///index.html"
+> FastCGI sent in stderr: "PHP message: PHP Warning:  Undefined array key 1 in /path/to/the/document_root/hermessenger/src/functions.php on line 39" while reading response header from upstream, client: 192.168.1.44, server: sandbox.local, request: "POST /checking_form.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm/sandbox.local.sock:", host: "sandbox.local:8080", referrer: "http://sandbox.local:8080///index.html"
 
 This is because this function is called before checking if the mailbox domains is listed as an untrusty domains.
 
@@ -137,14 +137,23 @@ Keeping it for 0.1 and will get fixed ASAP for a minor release between 0.1 and 0
 1. Check validity of the user input and write a file into a JSON file :
 
 > {
+
 >    "firstname": "Foo",
+
 >    "secondname": "BAR",
+
 >    "email": "foo.bar@gogole.com",
+
 >    "subject": "This is a test subject",
+
 >    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit  in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laboru",
+
 >    "IP": "XXX.XX.XXX.XXX",
+
 >    "date_and_time": "YYYY-MM-DD_hhmmss",
+
 >    "send_copy": bool
+
 > }
 
 All values are strings, beside "send_copy" value that is a bool.
