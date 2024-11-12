@@ -1,23 +1,38 @@
 <?php
 
 /*
- * This script is called by a crontask job, a loop or manually, to send the oldest mail.
+ * This script is called by a crontask job, a loop or manually (CGI), to send the oldest mail.
  *
- * This, by the way, could be used in other manner, but this is the default behavior.
+ * This, by the way, could be used in other manner, but this is the expected behavior (crontask job).
  *
  */
 
 require_once 'var/variables.php';
 require_once 'functions.php';
 
-// If false, no mail to send. Otherwise call 'php_mailer.php' once $mail_to_send contains an actual file.
-if (!$mail_to_send = return_oldest_mail($locations["pending_mails"])) {
+$file_list = scandir($locations["pending_mails"]); // Retrieve all the files, increasing order (oldest to newest)
 
-    exit;
+/*
+ * Select only the first file (being as scandir is used, the oldest) starting with the prefix for pending mail and
+ * avoiding UNIX path ('.', '..') values as other non-mail file (such as '.gitkeep' or alike).
+ *
+ */
+foreach ($file_list as $file) {
 
-} else {
+    if (str_starts_with($file, "mail_pending_")) {
 
-    include 'php_mailer.php'; // Call the script to actually send the mail
+        echo "Mail to send:\n=> \" $file \"\n";
+
+        $path_to_mail = $locations["pending_mails"] . $file; // Gives ' php_mailer.php ' the path to the mail to send
+
+        include_once 'php_mailer.php'; // Send the mail
+
+        exit; // This could be avoided ?
+
+    }
 
 }
 
+// Reaching this point, there was no mail to send
+echo "No mail to send at: " . date('Y-m-d, \a\t H:i:s') . ", exiting.\n";
+exit;

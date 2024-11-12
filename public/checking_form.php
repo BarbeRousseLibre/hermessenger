@@ -10,9 +10,13 @@ mb_internal_encoding($char_encoding);
 // Pre-copy $_POST to $raw_post_copy & avoid to works on the real one, is then updated in the script once it was cleaned
 $raw_post_copy = $_POST;
 
-/* HONEY-POT
+echo "1\n<br/>";
+
+/*
+ * HONEY-POT
+ *
  * If this is true, then the form was used by a bot or alike, otherwise the non-needed key is removed from $_POST
- * before it is ($_POST) copied to $raw_post_copy.
+ * before it is copied to $raw_post_copy.
  *
  * If a bot use this, then exit silently. It's expected to return as a response to this bot-request the same page as a
  * normal and legit user would have, to fool it even more.
@@ -28,6 +32,9 @@ if (isset($raw_post_copy[0])) {
 
 }
 
+echo "2\n<br/>";
+
+
 // If sender is asking to get a receipt of the e-mail as a copy (so 2 mails has to be send), remove the key before copy
 if (array_key_exists('receive_ack_receipt', $raw_post_copy)) {
 
@@ -36,15 +43,22 @@ if (array_key_exists('receive_ack_receipt', $raw_post_copy)) {
 
 } else {
 
-    $is_receipt_asked = false;
+    $is_receipt_asked = false; // Copy wasn't asked
 
 }
+
+echo "3\n<br/>";
+
 
 // Update the copy of $_POST, since now it's clean for the workflow
 $post_copy = $raw_post_copy;
 
+echo "4\n<br/>";
+
 // Test if $_POST isn't empty
 $user_input_count = count($post_copy);
+
+echo "5\n<br/>";
 
 if (empty($post_copy)) {
 
@@ -52,22 +66,30 @@ if (empty($post_copy)) {
 
 }
 
-// Get the number of expected input+textarea field that the user was supposed to fill.
+echo "6\n<br/>";
+
+// Get the number of expected <input/> and <textarea></textarea> HTML's tag that the user was supposed to fill
 $expected_input_count = count($mail_form);
 
-// Test if $_POST get the number of expected keys, otherwise something is wrong
+echo "7\n<br/>";
+
+// Test if $_POST get the number of expected keys
 if (($user_input_count != $expected_input_count)) {
 
     exit;
 
 }
 
+echo "8\n<br/>";
+
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
 
+echo "9\n<br/>";
+
 if ($is_domain_untrusty) {
 
-    // Test if the locations to store request made with disposable mail's domain.
+    // Test if the locations to store request was made with disposable mail's domain
     if (!file_exists($locations["logs_mail_disposable"])) {
 
         exit;
@@ -75,11 +97,13 @@ if ($is_domain_untrusty) {
     }
 
     // Copy the file to 'mail_dir/UNTRUSTY/DISPOSABLE/' without passing it to store_sended_mail_to_logs()
-    store_to_plaintext($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
+    store_to_json($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
 
     exit; // User input is listed as untrusty, exiting.
 
 }
+
+echo "10\n<br/>";
 
 // Execute all the tests (lenght and pattern matching) on the clean version of user's input.
 $send_mail_test = validate_email_sending($post_copy, $field_len_list_min, $field_len_list_max, $field_type);
@@ -89,6 +113,8 @@ if (!$send_mail_test) {
 
 }
 
+echo "12\n<br/>";
+
 // Test if the locations to store pending mails exist and is accessible. If true, try to store the mail in the temp dir
 if (!file_exists($locations["pending_mails"])) {
 
@@ -96,5 +122,7 @@ if (!file_exists($locations["pending_mails"])) {
 
 }
 
+echo "13\n<br/>";
+
 // Try to store the mail's file and return the code
-return (bool) $store_mail = store_to_plaintext($post_copy, $locations["pending_mails"], $is_receipt_asked);
+return (bool) $store_mail = store_to_json($post_copy, $locations["pending_mails"], $is_receipt_asked);

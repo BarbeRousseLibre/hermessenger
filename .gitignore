@@ -1,8 +1,9 @@
-# This file should never be shared
+# These files should never be shared.
 *.env
 src/.env
 
-# The file should, possibly, never be shared (giving local path informations, which is not very nice, as useless)
+# The file should, possibly, never be shared (giving local path informations, which is not very nice, as useless to
+# share anyway).
 src/var/variables.php
 *.txt
 
@@ -10,17 +11,18 @@ src/var/variables.php
 composer.phar
 /vendor/*
 
-# Some personnal files that can be created using an IDE/text editor, etc.
+# Some uncleand and useless personnal files that can be created using an IDE/text editor, while developing, etc.
 .*.swp
 .*~
 *-swp
 *.kate-swp
 
 # Files that are, in normal circumstance, containing pretty much sensitive informations, such as mail content, ip, etc.
+# These should never be shared, not being a security issue for your server, but for the privacy of your users !
 pending_*
 accepted_*
 rejected_*
 
-# Example files, see README.md
+# Example files, see README.md, that are needed to be shared.
 !.env.example
 !src/var/variables.example.php

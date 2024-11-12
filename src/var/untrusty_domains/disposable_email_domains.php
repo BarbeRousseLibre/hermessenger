@@ -1,15 +1,23 @@
 <?php
 
-// Two-dimensionnal array listing all untrusty domains, specifically disposable e-mails domains.
+/*
+ * Array listing all untrusty domains, specifically disposable e-mails domains.
+ *
+ * WIP: Futur release should use a better and more complet listing of such.
+ *
+ */
 
 $non_trusty_esp_domain = [
-    "10minutemail" => ["dcobe.com"],
+    "10minutemail" => // ESP, followed by it's list of available domains
+        ["dcobe.com"],
 
-    "tempmail" => ["aleitar.com"],
+    "tempmail" => // ESP, followed by it's list of available domains
+        ["aleitar.com"],
 
-    "emailondeck" => ["instrete.com"],
+    "emailondeck" => // ESP, followed by it's list of available domains
+        ["instrete.com"],
 
-    "guerillamail"  =>
+    "guerillamail"  => // ESP, followed by it's list of available domains
         ["sharklasers.com",
          "guerrillamail.info",
          "grr.la",
@@ -20,10 +28,9 @@ $non_trusty_esp_domain = [
          "guerrillamail.org",
          "guerrillamailblock.com",
          "pokemail.net",
-         "spam4.me"
-        ],
+         "spam4.me"],
 
-    "yopmail" =>
+    "yopmail" => // ESP, followed by it's list of available domains
         ["1xp.fr",
          "cpc.cx",
          "1xp.fr",
@@ -532,7 +539,6 @@ $non_trusty_esp_domain = [
          "speed.1s.fr",
          "yopmail.com",
          "yopmail.fr",
-         "yopmail.net"
-        ]
+         "yopmail.net"]
 
 ];
