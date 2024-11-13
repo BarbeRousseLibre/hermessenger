@@ -10,8 +10,6 @@ mb_internal_encoding($char_encoding);
 // Pre-copy $_POST to $raw_post_copy & avoid to works on the real one, is then updated in the script once it was cleaned
 $raw_post_copy = $_POST;
 
-echo "1\n<br/>";
-
 /*
  * HONEY-POT
  *
@@ -32,9 +30,6 @@ if (isset($raw_post_copy[0])) {
 
 }
 
-echo "2\n<br/>";
-
-
 // If sender is asking to get a receipt of the e-mail as a copy (so 2 mails has to be send), remove the key before copy
 if (array_key_exists('receive_ack_receipt', $raw_post_copy)) {
 
@@ -47,18 +42,11 @@ if (array_key_exists('receive_ack_receipt', $raw_post_copy)) {
 
 }
 
-echo "3\n<br/>";
-
-
 // Update the copy of $_POST, since now it's clean for the workflow
 $post_copy = $raw_post_copy;
 
-echo "4\n<br/>";
-
 // Test if $_POST isn't empty
 $user_input_count = count($post_copy);
-
-echo "5\n<br/>";
 
 if (empty($post_copy)) {
 
@@ -66,12 +54,8 @@ if (empty($post_copy)) {
 
 }
 
-echo "6\n<br/>";
-
 // Get the number of expected <input/> and <textarea></textarea> HTML's tag that the user was supposed to fill
 $expected_input_count = count($mail_form);
-
-echo "7\n<br/>";
 
 // Test if $_POST get the number of expected keys
 if (($user_input_count != $expected_input_count)) {
@@ -80,12 +64,8 @@ if (($user_input_count != $expected_input_count)) {
 
 }
 
-echo "8\n<br/>";
-
 // Check if the domain in the user's input isn't in one of the non-trusty ESP domain
 $is_domain_untrusty = reject_disposable_email_domain($post_copy['email']);
-
-echo "9\n<br/>";
 
 if ($is_domain_untrusty) {
 
@@ -103,8 +83,6 @@ if ($is_domain_untrusty) {
 
 }
 
-echo "10\n<br/>";
-
 // Execute all the tests (lenght and pattern matching) on the clean version of user's input.
 $send_mail_test = validate_email_sending($post_copy, $field_len_list_min, $field_len_list_max, $field_type);
 if (!$send_mail_test) {
@@ -113,16 +91,12 @@ if (!$send_mail_test) {
 
 }
 
-echo "12\n<br/>";
-
 // Test if the locations to store pending mails exist and is accessible. If true, try to store the mail in the temp dir
 if (!file_exists($locations["pending_mails"])) {
 
     exit;
 
 }
-
-echo "13\n<br/>";
 
 // Try to store the mail's file and return the code
 return (bool) $store_mail = store_to_json($post_copy, $locations["pending_mails"], $is_receipt_asked);
