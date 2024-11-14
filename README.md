@@ -208,12 +208,12 @@ $ crontab -u youruser -e
 Then add (for a sending every 5 minutes):
 
 ```
-*/5 * * * * /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/logs/sending_logs.txt
+*/5 * * * * /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/var/logs/sending_logs.txt
 ```
 
 Every minutes:
 ```
-* * * * * /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/logs/sending_logs.txt
+* * * * * /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /var/www/localhost/htdocs/hermessenger/var/logs/sending_logs.txt
 ```
 
 *Do not forget to save and quit, otherwise this won't be applied until so !*
@@ -223,14 +223,14 @@ Every minutes:
 Simply execute the following command:
 
 ```bash
-$ /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/logs/sending_logs.txt
+$ /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/var/logs/sending_logs.txt
 ```
 
 To be sure it will works when using next a crontab (see above, ' Crontask job '), hit the full path for your PHP binary and proper release if needed. As would do your task. If it works from the shell (with full path to binary), it *should* works.
 
 ### Bash loop using while (300 seconds, so 5 minutes):
 ```bash
-$ while true; do /usr/bin/php8.2 /path/to/the/document_root/hermessenger/src/send_mail_in_queue.php; sleep 300; done
+$ while true; do /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/var/logs/sending_logs.txt; sleep 300; done
 ```
 
 And stop it using:
@@ -263,9 +263,9 @@ For a mail per minute, 60 minutes × 24 hours = 1440 mail's sending, doubled to 
 
 This is your job to define what's the maximum limit for the mail's sending per hour. You should also keep in mind that leaving a safe difference between what could be sended per day by Hermessenger and what's your actual limit ration is important: This domains, probably sharing among different mailbox, this ratio should still be able to sends mails.
 
-3. Once ' src/send_mail_in_queue.php ' is called, it will look up into ' temp_mail_directory ' and report the oldest mail file (if any) with desired prefix (being hardcoded, for now, ' mail_pending_ ', WIP). Once one mail has been found, calling ' src/php_mailer.php ' will try to actually send the mail. It will ignore '.', '..' (Unix path) as '.gitkeep' or other alike files. If no mails are pending, simply exit.
+3. Once ' bin/send_mail_in_queue.php ' is called, it will look up into ' var/temp_mail_directory ' and report the oldest mail file (if any) with desired prefix (being hardcoded, for now, ' mail_pending_ ', WIP). Once one mail has been found, calling ' src/php_mailer.php ' will try to actually send the mail. It will ignore '.', '..' (Unix path) as '.gitkeep' or other alike files. If no mails are pending, simply exit.
 
-4. Regarding the code returned by PHPMailer, will move the mail files into ' mail_dir/ACCEPTED ' or ' mail_dir/REJECTED '.
+4. Regarding the code returned by PHPMailer, will move the mail files into ' var/mail_dir/ACCEPTED ' or ' var/mail_dir/REJECTED '.
 
 **It's important to note : If PHPMailer return true, it does NOT MEANS YOUR MAIL IS ACTUALLY SENDED TO THE MAILBOX. The recipient server could reject it for many reasons.**
 
@@ -291,11 +291,11 @@ $ git clone git@github.com:BarbeRousseLibre/hermessenger.git
 
 And moves all your website's file into ' hermessenger/public/ ', as all assets and files, directories, needed to your website.
 
-2. Renames ' src/var/variables.example.php ' to ' src/var/variables.php '. Once it's done, open it and edit values accordingly to your needs (at least ' $document_root ' and probably ' $timezone '):
+2. Renames ' /config/variables.example.php ' to ' config/variables.php '. Once it's done, open it and edit values accordingly to your needs (at least ' $document_root ' and probably ' $timezone '):
 
 ```bash
 $ cd /path/to/the/document_root/hermessenger/
-$ cp src/var/variables.example.php src/var/variables.php && echo -n "Success !\n"
+$ cp config/variables.example.php config/variables.php && echo -n "Success !\n"
 ```
 
 3. Renames ' src/.env.example ' to ' src/.env ', and edit it this file accordingly to your ESP's SMTP parameters. You need to edit without adding at the end of the line the semicolon (';'):
@@ -349,13 +349,13 @@ You need a working mail service, or ESP, allowing you to use their SMTP servers 
 Once you have these info, simply follow instruction into 'How to install it' it above.
 
 ### About some files
-- public/index.html - mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code.
-- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful, then the data are exported to a JSON file into the ' public/temp_mail_directory ', until it is send by ' src/send_mail_in_queue.php '.
+- public/contact.example.html - non-mandatory file, it was mostly used by me for my testing and you could replace as well it with your own HTML code, probably a contact.html or what ever.
+- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful, then the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
 
-- src/send_mail_in_queue.php - Once called, take from the ' temp_mail_directory ' the oldest mail, starting with the proper prefix (' mail_pending_ ') and send it, only this one. If a checkbox has been checked on the contact page holding the form, a second mail is sended as a receipt/copy for the user using the form.
+- bin/send_mail_in_queue.php - Once called, take from the ' var/temp_mail_directory ' the oldest mail, starting with the proper prefix (' mail_pending_ ') and send it, only this one. If a checkbox has been checked on the contact page holding the form, a second mail is sended as a receipt/copy for the user using the form.
 - src/var/mailing_var.php - This file rely on PHPDotenv, it reads from ' src/.env ' some sensitive datas: SMTP server, username, **password**, etc. You should write into ' src/.env ' the sensitive datas, nowhere else !
-- src/var/variables.php - This file is allowing you to setup your document root and the timezone, as the actual HTML tag's field used on your contact page.
-- src/var/variables.example.php - Example file you have to modify, see ' src/var/variables.php ' right above.
+- config/variables.php - This file is allowing you to setup your document root and the timezone, as the actual HTML tag's field used on your contact page.
+- config/variables.example.php - Example file you have to modify, see ' src/var/variables.php ' right above.
 - src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
 - src/.env.example - File to renames ' src/.env ' for your usage. See ' src/.env ' above.
 - src/var/untrusty_domains/disposable_email_domains.php - Listing all domains that is listed as a disposable e-mail address, rejecting them. This is safe to edit to removes or add new domains.
