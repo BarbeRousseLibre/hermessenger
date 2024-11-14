@@ -21,7 +21,7 @@ This is the 0.1 release and is still in beta, **you should avoid it in productio
 
 ## Philosophy
 
-Hermessenger aim to sends a few mails by hours, no more than 60 to be correct (one per minute), keeping futur mail's sending into a pending queue directory until a loop, a crontask job (expected behavior) or even a PHP-CGI is call on ' src/send_mail_in_queue.php ' script.
+Hermessenger aim to sends a few mails by hours, no more than 60 to be correct (one per minute), keeping futur mail's sending into a pending queue directory until a loop, a crontask job (expected behavior) or even a PHP-CGI is call on ' bin/send_mail_in_queue.php ' script.
 
 This is not made to support a lot of sending in a short period of time, instead it's expected to hold mails for a few minutes to manage potential threat against your recipient's mailbox (resulting in a no space left scenario for legitimate e-mails) or blocking your domain from your SMTP e-mail service providers (such as Google, Microsoft, Infomaniak or other).
 
@@ -75,9 +75,9 @@ Also, be aware there is for now almost no tests against bots / AI / massive atta
 
 3. Copy the pending mail's file into a temporary directory until it is asked to send it. It allows massive attacks to be drasticaly slowed down and avoid to get a full mailbox or being blacklisted from your ISP's SMTP server. Please note these attacks are **only slowed down** and not blocked.
 
-4. E-mail file, once it has been tried to send it, is moved and renamed into a sub-directory regarding it's status, ' mail_dir/ACCEPTED ' or ' mail_dir/REJECTED ', in JSON format.
+4. E-mail file, once it has been tried to send it, is moved and renamed into a sub-directory regarding it's status, ' var/mail_dir/ACCEPTED ' or ' var/mail_dir/REJECTED ', in JSON format.
 
-5. Block request made using a list of disposable e-mails domains (non-exhaustive list). Please see ' [src/var/untrusty_domains/disposable_email_domains.php](https://github.com/BarbeRousseLibre/hermessenger/blob/master/src/var/untrusty_domains/disposable_email_domains.php) ', thus they are moved into ' mail_dir/UNTRUSTY/DISPOSABLE '.
+5. Block request made using a list of disposable e-mails domains (non-exhaustive list). Please see ' [src/var/untrusty_domains/disposable_email_domains.php](https://github.com/BarbeRousseLibre/hermessenger/blob/master/src/var/untrusty_domains/disposable_email_domains.php) ', thus they are moved into ' var/mail_dir/UNTRUSTY/DISPOSABLE '.
 
 6. Sensitives datas, which is your ISP's SMTP server info, are nicely and securely stored into ' src/.env ' to moves it from code as document root.
 
@@ -177,15 +177,15 @@ Where:
 And:
 - **_**: Field delimiter between each value, replace also white-space characters when needed.
 
-This file will be stored into ' mail_temp_directory/ '.
+This file will be stored into ' var/mail_temp_directory/ '.
 
-Per default, this is not sending any mail at this point. This was written to be used aside a task schedular (such as a cronjob), a loop or you can (for testing purpose) execute the following file manually on a shell : ' send_mail_in_queue.php ':
+Per default, this is not sending any mail at this point. This was written to be used aside a task schedular (such as a cronjob), a loop or you can (for testing purpose) execute the following file manually on a shell : ' bin/send_mail_in_queue.php ':
 
 ### Crontask job:
 
 1. Be sure to target the crontask file from an user with the permission to use ' /usr/bin/phpX.X ' binary.
 
-2. This user should have the read and execution permissions on the document root as the ' src/send_mail_in_queue.php ' script.
+2. This user should have the read and execution permissions on the document root as the ' bin/send_mail_in_queue.php ' script.
 
 3. Before actually settings this into your user's crontab, try executing it manually, see point ' PHP-CGI manual sending / testing '. below.
 
@@ -223,14 +223,14 @@ Every minutes:
 Simply execute the following command:
 
 ```bash
-$ /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/var/logs/sending_logs.txt
+$ /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/logs/sending_logs.txt
 ```
 
 To be sure it will works when using next a crontab (see above, ' Crontask job '), hit the full path for your PHP binary and proper release if needed. As would do your task. If it works from the shell (with full path to binary), it *should* works.
 
 ### Bash loop using while (300 seconds, so 5 minutes):
 ```bash
-$ while true; do /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/var/logs/sending_logs.txt; sleep 300; done
+$ while true; do /usr/bin/php8.2 /path/to/the/document_root/hermessenger/bin/send_mail_in_queue.php >> /path/to/the/document_root/hermessenger/logs/sending_logs.txt; sleep 300; done
 ```
 
 And stop it using:
@@ -256,7 +256,7 @@ This is nice for testing without actually modifying the crontab. You could also 
 2. The goal is to make impossible to overload your mailbox, or being blocked by your ESP's SMTP server for abusing it without knowing it (sending limit ratio was reached). To setup the sending rate from Hermessenger, you should look up what's your sending limits and imagine the following scenario:
 
 If someone manage to abuse this form by adding 10k mails into your mail pending queue, that won't block you in any way:
-If you set a call to ' send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day.
+If you set a call to ' bin/send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day.
 **Warning : This has to be doubled if you wants to allow your user to get a receipt / copy on their own mailbox, making it to 576 e-mails sends / day.**
 
 For a mail per minute, 60 minutes × 24 hours = 1440 mail's sending, doubled to 2880 per day with all request made to get a copy.
@@ -282,10 +282,10 @@ Probably 0.2.
 
 You need, once the code will be copied on your server, to moves all your files (.html, .css, .js, and all others assets) into ' public/ ', as the script expect to have all the needed file into ' public/ '.
 
-1. Download the code into your Document Root:
+1. Download the code into your Document Root's parent directory:
 
 ```bash
-$ cd /path/to/the/document_root
+$ cd /path/to/the/document_root/parent
 $ git clone git@github.com:BarbeRousseLibre/hermessenger.git
 ```
 
@@ -297,6 +297,7 @@ And moves all your website's file into ' hermessenger/public/ ', as all assets a
 $ cd /path/to/the/document_root/hermessenger/
 $ cp config/variables.example.php config/variables.php && echo -n "Success !\n"
 ```
+*This path above is the parent directory for hermessenger.*
 
 3. Renames ' src/.env.example ' to ' src/.env ', and edit it this file accordingly to your ESP's SMTP parameters. You need to edit without adding at the end of the line the semicolon (';'):
 
