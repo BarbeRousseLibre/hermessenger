@@ -1,6 +1,6 @@
 <?php 
 
-require_once 'var/variables.php';
+require_once '../config/variables.php';
 
 /* Set internal character encoding to UTF-8 */
 mb_internal_encoding($char_encoding);
@@ -18,14 +18,6 @@ mb_internal_encoding($char_encoding);
  *
  */
 function reject_disposable_email_domain($user_email) {
-
-    // Check if it's, at least, a properly formated e-mail address, otherwise it's useless to keep going this test
-    // THIS IS NOT WORKING !
-    if (filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-
-        return false;
-
-    }
 
     require 'var/untrusty_domains/disposable_email_domains.php';
 

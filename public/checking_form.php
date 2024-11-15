@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-require_once '../src/var/variables.php';
+require_once '../config/variables.php';
 require_once '../src/functions.php';
 
 /* Set internal character encoding to UTF-8 */

@@ -5,7 +5,7 @@ src/.env
 # The file should, possibly, never be shared (giving local path informations, which is not very nice, as useless to
 # share anyway).
 src/var/variables.php
-*.txt
+*.json
 
 # Files or directories that are useless to be shared.
 composer.phar

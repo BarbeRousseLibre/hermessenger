@@ -10,8 +10,6 @@
  *
  */
 
-require_once 'variables.php';
-
 // Who's sending the mail - DO NOT EDIT
 $SMTP_info = ['server'    => $_ENV['SMTP_SERVER'],
               'mailbox'   => $_ENV['SMTP_USER'],

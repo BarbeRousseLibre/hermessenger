@@ -7,8 +7,6 @@
  *
  */
 
-require 'var/variables.php';
-
 /* Set internal character encoding */
 mb_internal_encoding($char_encoding);
 
