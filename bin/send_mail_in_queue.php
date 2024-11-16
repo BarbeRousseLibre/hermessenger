@@ -7,8 +7,8 @@
  *
  */
 
-require_once '../config/variables.php';
-require_once '../src/functions.php';
+require_once(__DIR__ . '/../config/variables.php');
+require_once(__DIR__ . '/../src/functions.php');
 
 $file_list = scandir($locations["pending_mails"]); // Retrieve all the files, increasing order (oldest to newest)
 
@@ -25,8 +25,7 @@ foreach ($file_list as $file) {
 
         $path_to_mail = $locations["pending_mails"] . $file; // Gives ' php_mailer.php ' the path to the mail to send
 
-        include_once '../config/variables.php';
-        include_once '../src/php_mailer.php'; // Send the mail
+        include_once(__DIR__ . '/../src/php_mailer.php'); // Send the mail
 
         exit; // This could be avoided ?
 
