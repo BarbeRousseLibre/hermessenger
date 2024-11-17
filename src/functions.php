@@ -11,23 +11,6 @@ mb_internal_encoding($char_encoding);
  * $target should be the full URL to the futur location:
  * scheme://domain-name/ressource_path
  *
- *
- * If extra parameters was added into ' config/variables.php ' for ' $redirecting_locations["extra_parameters"] ',
- * then it is append at the end of the $target:
- *
- * scheme://domain-name/ressource_path?key1=value1&key2=value2
- *
- *
- * If an anchor is needed, add it into ' config/variables.php ' for ' $redirecting_locations["anchor"] ', giving:
- *
- * scheme://domain-name/ressource_path#SomewhereInTheRessource
- *
- *
- * Or with both (extra parameters and anchor):
- *
- * scheme://domain-name/ressource_path?key1=value1&key2=value2#SomewhereInTheRessource
- *
- *
  * Before actually sending the new location (redirection), checks if no headers was sent before.
  *
  * Return false if a headers was already sent, otherwise silently exit once the client has been redirected.

@@ -40,7 +40,7 @@
  * This is the only mandatory value to change. Check out $timezone as well, you probably needs it too.
  *
  */
-$document_root_parent = "/PATH/TO/DOCUMENT_ROOT/PARENT"; // NO SLASH AT THE END OF PATH !
+$document_root_parent = ""; // NO SLASH AT THE END OF PATH !
 
 // Timezone to use, per default Europe/Paris, change according your location / need.
 $timezone = "Europe/Paris";
@@ -71,20 +71,6 @@ $disposable_mail_dir = "UNTRUSTY/DISPOSABLE";
  * ('.com', '.net', etc).
  *
  * "ressource_path" is the name of the targeted file used for redirecting the browser.
- * If it is needed to use parameters, add them at the end of this value by filling "extra_parameters". For more
- * details see ' src/functions.php ' and read comments for ' redirect_browser_to_new_location() '.
- *
- * "extra_parameters" is any parameters to append after the ressource path. If none are needed,
- * it should be empty. Otherwise you should compose them properly yourself by starting the value with ' ? ' and
- * the data you need.
- *
- * "anchor" is the targeted anchor in the DOM, if any. If none, it should be empty. You should, if using one,
- * compose it yourself properly by adding ' # ' at the start.
- *
- *
- * For more info about how to compose an URL:
- * - https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL
- *
  *
  * Do NOT use any character pattern like ' :// ' or ' / ' (slash) to make any delimiter. This is made later in this
  * file and you should NOT edit this.
@@ -92,9 +78,7 @@ $disposable_mail_dir = "UNTRUSTY/DISPOSABLE";
  */
 $redirecting_location = ["scheme"             => "",
                          "domain_name"        => "",
-                         "ressource_path"     => "",
-                         "extra_parameters"   => "",
-                         "anchor"             => ""];
+                         "ressource_path"     => ""];
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
 
@@ -239,8 +223,6 @@ $target_for_redirection = $redirecting_location["scheme"] .
                           "://" .
                           $redirecting_location["domain_name"] .
                           "/" .
-                          $redirecting_location["ressource_path"] .
-                          "/" .
-                          $redirecting_location["extra_parameters"];
+                          $redirecting_location["ressource_path"];
 
 /* - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - */
