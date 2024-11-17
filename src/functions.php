@@ -172,7 +172,7 @@ function store_to_json($mail, $pending_mail_directory, $send_copy, $target = fal
     // If a redirectiong location has been set, redirect the browser to it
     if ($target !== false) {
 
-        redirect_user($target);
+        redirect_browser_to_new_location($target);
 
     }
 
