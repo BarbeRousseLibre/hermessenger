@@ -106,7 +106,7 @@ $field_len_list_min = [
 $field_len_list_max = [
       'firstname' => 32,
       'secondname' => 32,
-      'email' => 32,
+      'email' => 48,
       'subject' => 48,
       'body' => 2048];
 
