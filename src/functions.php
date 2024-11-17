@@ -6,6 +6,52 @@ require_once(__DIR__ . '/../config/variables.php');
 mb_internal_encoding($char_encoding);
 
 /*
+ * Return to the HTML page defined as argument ($target).
+ *
+ * $target should be the full URL to the futur location:
+ * scheme://domain-name/ressource_path
+ *
+ *
+ * If extra parameters was added into ' config/variables.php ' for ' $redirecting_locations["extra_parameters"] ',
+ * then it is append at the end of the $target:
+ *
+ * scheme://domain-name/ressource_path?key1=value1&key2=value2
+ *
+ *
+ * If an anchor is needed, add it into ' config/variables.php ' for ' $redirecting_locations["anchor"] ', giving:
+ *
+ * scheme://domain-name/ressource_path#SomewhereInTheRessource
+ *
+ *
+ * Or with both (extra parameters and anchor):
+ *
+ * scheme://domain-name/ressource_path?key1=value1&key2=value2#SomewhereInTheRessource
+ *
+ *
+ * Before actually sending the new location (redirection), checks if no headers was sent before.
+ *
+ * Return false if a headers was already sent, otherwise silently exit once the client has been redirected.
+ *
+ */
+function redirect_browser_to_new_location($target) {
+
+    if (!headers_sent()) {
+
+        // Redirect the client to the $target
+        header('Location: ' . $target);
+
+        exit();
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+
+/*
  * Reject all domains used in the form as 'e-mail' if it is listed as a non-trusty, disposable e-mail domains from such
  * service.
  *
@@ -77,10 +123,13 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
  *
  * $send_copy, a bool extracted from the original $_POST, unset while being copied into a variable.
  *
+ * $target, a string or a bool. If not used (per default is false (bool)), does not ask for redirection. Otherwise
+ * should be a string used as a new location for redirecting the browser once the request has been made.
+ *
  * Returns nothing, write down the file.
  *
  */
-function store_to_json($mail, $pending_mail_directory, $send_copy) {
+function store_to_json($mail, $pending_mail_directory, $send_copy, $target = false) {
 
     // Extra infos to adds to the file's name and it's content (statistic from user) at the end of the file's content
     $extra_info = [
@@ -119,6 +168,14 @@ function store_to_json($mail, $pending_mail_directory, $send_copy) {
 
     // Write down the file
     file_put_contents($full_file_path, $json_content, FILE_APPEND | LOCK_EX);
+
+    // If a redirectiong location has been set, redirect the browser to it
+    if ($target !== false) {
+
+        redirect_user($target);
+
+    }
+
 
 }
 

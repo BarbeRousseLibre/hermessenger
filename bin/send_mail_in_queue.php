@@ -34,5 +34,5 @@ foreach ($file_list as $file) {
 }
 
 // Reaching this point, there was no mail to send
-echo "No mail to send at: " . date('Y-m-d, H:i:s') . ", exiting.\n";
+// echo "No mail to send at: " . date('Y-m-d, H:i:s') . ", exiting.\n";
 exit;

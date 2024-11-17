@@ -98,5 +98,5 @@ if (!file_exists($locations["pending_mails"])) {
 
 }
 
-// Try to store the mail's file and return the code
-return (bool) $store_mail = store_to_json($post_copy, $locations["pending_mails"], $is_receipt_asked);
+// Store the mail file and redirect the browser on another page stating it was accepted and will be sended soon
+store_to_json($post_copy, $locations["pending_mails"], $is_receipt_asked, $target_for_redirection);
