@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=8.0.0",
+        "php": ">=8.2.24",
         "phpmailer/phpmailer": "^6.9.2",
         "vlucas/phpdotenv": "^5.6.1"
     }
