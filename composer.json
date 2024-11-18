@@ -1,6 +1,6 @@
 {
     "name": "barberousselibre/hermessenger",
-    "description": "Work in progress - Web mail form for HTML page, written in PHP.",
+    "description": "Work in progress - Web mail form for HTML page, written in PHP - Please do not use this in production environment (for now).",
     "homepage": "https://github.com/BarbeRousseLibre/hermessenger/",
     "license": "GPL-3.0-only",
     "authors":
