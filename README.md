@@ -73,7 +73,13 @@ It was only tested on Linux with PHP 8.2 release for now.
 
 ### License
 The source code I made is under [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html). As the logo. 
-For codes I did not made, please see the licenses of each project.
+
+For codes I did not made, please see the licenses of each project:
+
+- [PHPDotenv license](https://github.com/vlucas/phpdotenv?tab=BSD-3-Clause-1-ov-file)
+- [PHPMailer license](https://github.com/PHPMailer/PHPMailer?tab=LGPL-2.1-1-ov-file)
+
+All of them are free (like in freedom, but also free beers).
 
 ### Goals
 Hermessenger aim to sends a few mails by hours, no more than 60 (one per minute), keeping futur mail's sending into a pending queue directory until a loop, a crontask job (expected behavior) or even a PHP-CGI command line execute ' bin/send_mail_in_queue.php ' script.
