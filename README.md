@@ -128,7 +128,7 @@ Keeping it for 0.1.1 and will get fixed ASAP for a minor release between 0.1.1 a
 
 ## How to install it
 
-You can either download the source code from [github](git@github.com:BarbeRousseLibre/hermessenger.git) or [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger) by using [Composer](https://getcomposer.org/).
+You can either download the source code from [github](https://github.com/BarbeRousseLibre/hermessenger/) or [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger) by using [Composer](https://getcomposer.org/).
 
 ### Security notes (for administators installing hermessenger):
 
