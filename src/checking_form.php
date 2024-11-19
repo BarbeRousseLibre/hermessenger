@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 require_once '../config/variables.php';
-require_once '../src/functions.php';
+require_once 'functions.php';
 
 /* Set internal character encoding to UTF-8 */
 mb_internal_encoding($char_encoding);
