@@ -15,5 +15,8 @@
 // Load composer
 require __DIR__ . '/../vendor/autoload.php';
 
+// Pre-copy $_POST to $raw_post_copy & avoid to works on the real datas, then s updated in the script once it was cleaned for further testing
+$raw_post_copy = $_POST;
+
 // Redirect user's input for testing it
 require_once __DIR__ . '/../vendor/barberousselibre/hermessenger/src/checking_form.php';
