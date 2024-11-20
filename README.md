@@ -168,7 +168,7 @@ Please see [HOW-TO-USE-IT.md](https://github.com/BarbeRousseLibre/hermessenger/t
 
 Please see [ABOUT-FILES.md](https://github.com/BarbeRousseLibre/hermessenger/tree/master/docs/ABOUT-FILES.md) for more details.
 
-## Special thanks to… and credit
+## Special thanks to… and credit 
 
 - Everyone's helping me by answering my answers or showing what was bad, you are great ! Special thanks to #php@irc.libera.chat and « Les joies du code » Discord server for their advice and patience.
 
