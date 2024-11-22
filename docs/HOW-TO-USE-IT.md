@@ -1,5 +1,11 @@
 # How to use it
 
+## About the workflow
+
+It is not very good as it is. It is expected to completly rewrite this for a more comfy, easy and more modern way. But for now it should works.
+
+## How to install Hermessenger
+
 This is recommanded for an actual usage of Hermessenger to use [Composer](https://getcomposer.org/) and install the package from [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger).
 
 ## Define the SMTP info
@@ -43,9 +49,10 @@ $char_encoding = "UTF-8";
 *If another characters encoding is needed, please see [Supported characters encoding (from php.net)](https://www.php.net/manual/en/mbstring.supported-encodings.php)*
 
 ### Redirection after mail has been sended
-```$redirecting_location = ["scheme"             => "",
-                            "domain_name"        => "",
-                            "ressource_path"     => ""];
+```
+$redirecting_location = ["scheme"             => "",
+                         "domain_name"        => "",
+                         "ressource_path"     => ""];
 ```
 
 Where:
