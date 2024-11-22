@@ -13,7 +13,7 @@ mb_internal_encoding($char_encoding);
 // Define timezone
 date_default_timezone_set($timezone);
 
-require __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__, 4) . '/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
