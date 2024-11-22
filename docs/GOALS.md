@@ -89,13 +89,17 @@ Nonetheless, it's pretty easy to removes them on the fly as it is now with a few
 Workaround A:
 
 1/ Create a loop using bash built-in features ' while '
+
 2/ At every iteration, use ' find ' command to find all json files into the ' temp_mail_directory ' and moves them into some other location, locally, or with SSH on your own machine, on an external hard drive, etc.
+
 3/ Once the .json files has been moved, add them to a tar(.xz) archive, which is nice because compressing could remove about ~90% of disk usage, but it requires some CPU times and ressources.
+
 4/ Per waves, once compressed, keep these archives for further analysis.
 
 Or workaround B:
 
 1/ Create a loop using bash built-in features ' while '
+
 2/ Removes them on the fly if you want to get quick and dirty
 
 Command for A, local copy and compressing them on the fly:
