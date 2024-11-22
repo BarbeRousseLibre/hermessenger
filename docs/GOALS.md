@@ -99,18 +99,34 @@ Or workaround B:
 2/ Removes them on the fly if you want to get quick and dirty
 
 Command for A, local copy and compressing them on the fly:
-```(Terminal 1) $ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec mv -t /some/other/location {} + ; done```
-```(Terminal 2) $ while true; do tar cfJ /some/other/location_for_archives/flooding_mails.tar.xz /some/other/location/*;```
+
+```
+(Terminal 1) $ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec mv -t /some/other/location {} + ; done
+```
+
+```
+(Terminal 2) $ while true; do tar cfJ /some/other/location_for_archives/flooding_mails.tar.xz /some/other/location/*;
+```
 
 Command for A, remote copy:
-```(Local terminal)  $ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec scp user@destination:/some/other/location {} + ; done```
-```(Remote terminal) $ while true; do tar cfJ /some/other/location_for_archives/flooding_mails.tar.xz /some/other/location/*;```
+
+```
+(Local terminal)  $ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec scp user@destination:/some/other/location {} + ; done
+```
+
+```
+(Remote terminal) $ while true; do tar cfJ /some/other/location_for_archives/flooding_mails.tar.xz /some/other/location/*;
+```
 
 Command for B (with a safety-test first):
-```while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec ls {}\; done```
+```
+while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec ls {}\; done
+```
 
 If happy with the results (you are not hitting an incorrect directory, for example):
 **Be very careful, this command will remove on the fly everything matching the condition of for, use ' ls ' for testing before !**
-```while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec rm {}\; done```
+```
+while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec rm {}\; done
+```
 
 Etcetera, there is some ways to take care of such with less pain, open to ideas :) !
