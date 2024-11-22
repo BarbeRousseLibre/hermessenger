@@ -3,7 +3,7 @@
 Still a WIP.
 
 ## Take the user's input and saves it into a JSON
-First it checks validity of the user input and write a file into a JSON file if all tests are OK and if the needed directories exist:
+First it checks validity of the user input and write a file in JSON format if all tests are OK and if the needed directories exist:
 
 > {
 
@@ -53,7 +53,6 @@ Where:
 - **domain.tld**: the ESP domain holding 'recipient-mailbox' user.
 
 - **.json**: Type of the file (JSON).
-
 
 This file will be stored into ' var/mail_temp_directory/ ' as a JSON.
 

@@ -2,11 +2,11 @@
 
 # public/ - The Document Root
 
-Only files served by the web server, aka Document Root, are inside. The only exception being ' checking_form.php ', being the entry point of Hermessenger.
+Only files served by the web server, aka Document Root, are inside. The only exception being ' main.php ', being the entry point of Hermessenger.
 
 - public/contact.example.html - example file, it is mostly used for testing and it could be replaced as well it with your own HTML code, probably a contact.html or what ever.
 
-- public/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful, then the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
+- public/main.php - the main entry point to PHP by the HTML form to ' src/checking_form.php '.
 
 # bin/
 
@@ -28,23 +28,25 @@ Where you could redirect output of some process, such as the crontask job callin
 
 # var/
 
-Where the mails files are actually holded before and after sendings.
+Where the mails files are actually keep before and after sendings.
 
-- var/mail_dir/ - Hold sub-directories to store mails once they were passed through ' src/php_mailer.php ' (sending), regarding their status.
+- var/temp_mail_directory - Holding mail until they are sended, being a pending queue.
+
+- var/mail_dir/ - Hold sub-directories to store mails once they were passed through ' src/php_mailer.php ' (sending), regarding their status:
 
 - var/mail_dir/ACCEPTED - Hold mails that was, regarding PHPMailer returned status, sended and accepted (but not necessary delivered).
 
 - var/mail_dir/REJECTED - Hold mails that was, regarding a PHPMailer error code that was returned, rejected (no hope to see them delivered).
 
-- var/mail_dir/UNTRUSTY/ - Holding sub-directories, regarding why the mail is untrusty.
+- var/mail_dir/UNTRUSTY/ - Holding sub-directories, regarding why the mail is untrusty:
 
 - var/mail_dir/UNTRUSTY/DISPOSABLE - Mails request made from a disposable mailbox domain (such as Yopmail and other) are stored here and not sended.
-
-- var/temp_mail_directory - Holding mail until they are sended, being a pending queue.
 
 # src/
 
 Actual source code that does not need to be served by the web server.
+
+- src/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful, then the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
 
 - src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
 
