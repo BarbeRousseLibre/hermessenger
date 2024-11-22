@@ -15,9 +15,9 @@ It uses [composer](https://github.com/composer/composer) to manage the following
 
 \* *This doesn't seems like the most efficient way tho, it needs to be [cached](https://github.com/vlucas/phpdotenv/issues/207) and as it is, it's not.*
 
-# Release - 0.1.2
+# Release - 0.1.4
 
-This is a beta as it is for now (0.1.2). 
+This is a beta as it is for now (0.1.4). 
 
 Some wanted and important features are still missing and will be added in futur releases.
 
