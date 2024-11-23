@@ -4,6 +4,18 @@
 
 It is not very good as it is. It is expected to completly rewrite this for a more comfy, easy and more modern way. But for now it should works.
 
+__TL;DR:__
+- 1. Install Hermessenger and the needed dependancies by using [Composer](https://getcomposer.org/).
+- 2. Copy .env.example file to .env, located in ' vendor/barberousselibre/hermessenger/src/ '.
+- 3. Edit the .env file accordingly to your SMTP account.
+- 4. Copy variables.example.php to variables.example.php, located in ' vendor/barberousselibre/hermessenger/config/ '.
+- 5. Edit the variables.php file accordingly to your own need, mandatory variables being $char_encoding, $timezone.
+- 6. Edit variables.php file accordingly to your document root location, adding the **parent** directory (one level above) is __important__. See $document_root_parent.
+- 7. Finally for variables.php, fill the array $redirecting_location[] with your desired schemes (http or https), the domain name and the target file used for redirection once the user has clicked on send the mail.
+- 8. Copy ' vendor/barberousselibre/hermessenger/public/main.php ' to your actual document root.
+- 9. Set the proper ownership & permissions for ' vendor/barberousselibre/hermessenger/bin/send_mail_in_queue.php ' (the user executing this should get 7, or rwx, on the file and it's parent directory).
+- 10. Set the proper ownership & permissions for ' vendor/barberousselibre/hermessenger/var ' directory, allowing web server user and / or group reading, writing and execution.
+
 ## How to install Hermessenger
 
 This is recommanded for an actual usage of Hermessenger to use [Composer](https://getcomposer.org/) and install the package from [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger).
