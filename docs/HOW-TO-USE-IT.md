@@ -71,3 +71,15 @@ cp vendor/barberousselibre/hermessenger/public/main.php public/
 ```
 
 Now once the send e-mail button will be hit by the user, main.php will do the entry point with the source code into ' vendor/* '.
+
+## Permissions & ownership
+
+WIP.
+
+This is not a course about UNIX permissions and ownership.
+
+These below are the notable files that needs tweaking for now:
+
+- bin/send_mail_in_queue.php - Needs to allow execution for the user *or* the group executing this, which could be another user than the one running the web server, but in this case at least the group should be allowed to do so. As dhe directory ' bin/ ' should aswell get execution to allow to be opened by the user or groups.
+
+- var/ - Needs to allow read & write for the user *or* group using this, being the web server no matter what. As the directory should allow read, write & execution for this to works (writting mail's file, moving and renaming them, etc).
