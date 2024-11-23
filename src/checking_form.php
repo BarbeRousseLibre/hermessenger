@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__) . '../config/variables.php';
+require_once dirname(__DIR__) . '/config/variables.php';
 require_once 'functions.php';
 
 /* Set internal character encoding to UTF-8 */
