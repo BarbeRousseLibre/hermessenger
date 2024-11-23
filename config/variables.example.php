@@ -181,7 +181,7 @@ $mail_form = [
 mb_internal_encoding($char_encoding); // See top of the file to change this
 
 // Hermessenger source directory
-$hermessenger_source = $document_root_parent . '/vendor/barbeRousseLibre/hermessenger';
+$hermessenger_source = $document_root_parent . '/vendor/barberousselibre/hermessenger';
 
 // Locations used to store mail's file (JSON)
 $locations = ["pending_mails"           =>
