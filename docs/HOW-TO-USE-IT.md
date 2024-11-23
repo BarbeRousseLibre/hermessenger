@@ -61,3 +61,13 @@ Where:
 - domain_name: should be the full URL, after scheme, without ' :// ', to the top-level-domain, such as ' www.example.org ', without ending slash ('/').
 
 - ressource_path: should be the actual path to the redirecting page once the mail's request has been made (user clicked on sending mail button). Such as ' some_file.html '.
+
+## Move the main.php into your document root
+
+Last step being manually copy the ' vendor/barberousselibre/hermessenger/public/main.php ' file into your actual document root:
+```
+cd /path/to/the/document_root_parent
+cp vendor/barberousselibre/hermessenger/public/main.php public/
+```
+
+Now once the send e-mail button will be hit by the user, main.php will do the entry point with the source code into ' vendor/* '.
