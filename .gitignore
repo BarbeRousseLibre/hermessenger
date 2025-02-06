@@ -26,3 +26,4 @@ rejected_*
 # Example files, see README.md, that are needed to be shared.
 !.env.example
 !.settings.example.php
+!var/pending_mail_directory
