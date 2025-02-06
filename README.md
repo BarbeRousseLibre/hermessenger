@@ -1,8 +1,8 @@
 # hermessenger
 
-Web mail form script for HTML contact page, written in PHP. 
+Hermessenger is a sending e-mail form for HTML web page, written in PHP, aiming simplicity and security.
 
-Get e-mail request from a contact page, keeping it in a pending queue directory until it has to be send.
+This is a Work-In-Progress project, not ready for actual production use. It was made for learning PHP basics on my side.
 
 ![Hermessenger logo, made by Blu](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo_320x320.jpg?raw=true)
 
@@ -15,19 +15,19 @@ It uses [composer](https://github.com/composer/composer) to manage the following
 
 \* *This doesn't seems like the most efficient way tho, it needs to be [cached](https://github.com/vlucas/phpdotenv/issues/207) and as it is, it's not.*
 
-# Release - 0.1.4
+# Release - 0.2
 
-This is a beta as it is for now (0.1.4). 
+This is a beta as it is for now (0.2). 
 
 Some wanted and important features are still missing and will be added in futur releases.
 
-I will say this once: **DO.NOT.USE.THIS.IN.A.PRODUCTION.ENVIRONMENT!**
+I will say this once again and a last time: **DO.NOT.USE.THIS.IN.A.PRODUCTION.ENVIRONMENT!**
 
 It is **not** ready, simple as that. The features, directories and files hierarchy, workflow and… everything actually, will probably changes deeply in the next releases. 
 
 This is a newbie project, keep that in mind.
 
-**If you are looking for a strong and bullet-proof project, this is actually not the case.**
+**If you are looking for a strong and bullet-proof project, this is actually not the case as it is for now.**
 
 ### Roadmap
 
@@ -35,12 +35,13 @@ Please see [ROADMAP.md](https://github.com/BarbeRousseLibre/hermessenger/blob/ma
 
 ## About & philosophy
 
-This project was for me an exercice to learn PHP. It is written in PHP 8.2 and will soon be moved to 8.3 as well (0.2).
+This project was for me an exercice to learn PHP. It is written in PHP 8.2 and will soon be moved to 8.3 as well.
 
 It was only tested on Linux with PHP 8.2 release for now.
 
 ### License
-The source code I made is under [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html). As the [logo](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo_320x320.jpg). 
+
+The source code is under [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html). As the [logo](https://github.com/BarbeRousseLibre/hermessenger/blob/master/hermessenger_logo_320x320.jpg). 
 
 For codes I did not made, please see the licenses of each project:
 
@@ -57,7 +58,7 @@ Please see [GOALS.md](https://github.com/BarbeRousseLibre/hermessenger/tree/mast
 
 I try to do the things the right way, but I started this project from scratch with zero-PHP skills and almost no knowledge in this area (developping).
 
-Be aware there is for now almost no tests against bots / AI, beside a pending mail queue and rejecting disposable e-mail domains, see below.
+Be aware there is for now almost no tests against bots / AI, beside a pending mail queue and rejecting disposable e-mail domains and an honey-pot, see below.
 
 The usage of [PHPDotenv](https://github.com/vlucas/phpdotenv) isn't the expected way for production use for now, too.
 
@@ -75,7 +76,7 @@ The usage of [PHPDotenv](https://github.com/vlucas/phpdotenv) isn't the expected
 
 6. Sensitives datas, which is your ISP's SMTP server info, are stored into ' src/.env ' to moves it from code as document root.
 
-7. Mail file's name are using a formatted name from user's input data to quickly find out an e-mail regarding time and date, IP, firstname and second name as sender's e-mail address. As their current status : pending, accepted, rejected. See " How it works " below.
+7. Mails file's name are using a formatted name from user's input data to quickly find out an e-mail regarding time and date, IP, firstname and second name as sender's e-mail address. As their current status : pending, accepted, rejected. See " How it works " below.
 
 8. Mail's file's content store all data from the user input, in JSON, plus IP, date and time and if a copy was asked.
 
@@ -89,8 +90,6 @@ The usage of [PHPDotenv](https://github.com/vlucas/phpdotenv) isn't the expected
 This is because this function is called before checking if the mailbox domains is listed as an untrusty domains, but not only ?
 
 This is a very minor bug and don't block anything, it simply pollute logs for nothing as showing my workflow is not optimal.
-
-Keeping it for 0.1.1 and will get fixed ASAP for a minor release between 0.1.1 and 0.2.
 
 2. Bad usage of [PHPDotenv](https://github.com/vlucas/phpdotenv), see [this](https://github.com/vlucas/phpdotenv/issues/207).
 
@@ -118,17 +117,15 @@ Keeping it for 0.1.1 and will get fixed ASAP for a minor release between 0.1.1 a
 
 11. Adding Robotframework + Selenium2Library tests suits, and how to make it works (and install pip, venv and such)…
 
-12. Adding a feature to add a prefix in front of subject, regarding a list of subject into the mail form.
+12. Internationalization system for a few languages : french, english, spanish… and more later.
 
-13. Internationalization system for a few languages : french, english, spanish… and more later.
+13. Get a svg of the actual logo of Hermessenger, with a slight enhanced design.
 
-14. Get a svg of the actual logo of Hermessenger, with a slight enhanced design.
-
-15. An installation script, doing everything nicely in a few seconds, top.
+14. An installation script, doing everything nicely in a few seconds, top.
 
 ## How to install it
 
-You can either download the source code from [github](https://github.com/BarbeRousseLibre/hermessenger/) or [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger) by using [Composer](https://getcomposer.org/).
+You can either download the source code from [github](https://github.com/BarbeRousseLibre/hermessenger/) or [packagist.org](https://packagist.org/packages/barberousselibre/hermessenger) by using [Composer](https://getcomposer.org/) (recommanded for simplicity).
 
 ### Security notes (for administators installing hermessenger):
 
@@ -148,7 +145,7 @@ If that so, changes ASAP your password, maybe user as well. This is your respons
 
 5. It is also useless to manually block it from your webserver, because only ' /path/to/the/document_root/hermessenger/public/ ' should be accessible to your webserver, and should be your document root **no matter what**. WIP.
 
-6. This also apply (1., 2., 3., 4., 5.), at a lesser degree of security issue, to ' src/var/variables.php ' as well. See ' src/var/variables.example.php '.
+6. This also apply (1., 2., 3., 4., 5.), at a lesser degree of security issue, to ' config/settings.php ' as well. See ' config/settings.example.php '.
 
 Soon some examples of configuration using NGinx & Apache2 will be provided, as tweaks for php.ini and a dedicated pool for it.
 
@@ -160,7 +157,7 @@ Please see [HOW-IT-WORKS.md](https://github.com/BarbeRousseLibre/hermessenger/tr
 
 You need a working mail service, or ESP, allowing you to use their SMTP servers to send the e-mail with PHPMailer.
 
-Once you have these info, simply follow instruction into 'How to install it' it above.
+Once you have these info, simply follow instruction into ' How to install it ' it above.
 
 Please see [HOW-TO-USE-IT.md](https://github.com/BarbeRousseLibre/hermessenger/tree/master/docs/HOW-TO-USE-IT.md) for more details.
 

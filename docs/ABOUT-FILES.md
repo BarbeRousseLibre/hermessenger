@@ -18,7 +18,7 @@ If a checkbox has been checked on the contact page holding the form, a second ma
 
 # docs/
 
-All documentations file that were " too much " to sets directly into [README.md](https://github.com/BarbeRousseLibre/hermessenger/blob/master/README.md).
+All documentations file that were " too much " to write them directly into [README.md](https://github.com/BarbeRousseLibre/hermessenger/blob/master/README.md).
 
 Nobody likes wall of text.
 
@@ -28,7 +28,7 @@ Where you could redirect output of some process, such as the crontask job callin
 
 # var/
 
-Where the mails files are actually keep before and after sendings.
+Where the mails files are actually holded before and after sendings.
 
 - var/temp_mail_directory - Holding mail until they are sended, being a pending queue.
 
@@ -46,7 +46,7 @@ Where the mails files are actually keep before and after sendings.
 
 Actual source code that does not need to be served by the web server.
 
-- src/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful, then the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
+- src/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful or one at least failed the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
 
 - src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
 
@@ -68,9 +68,9 @@ Needed variables files used by the source code.
 
 Holding configuration files, which has to be edited by the administrator.
 
-- config/variables.php - This file is allowing you to setup your document root and the timezone, as the actual HTML tag's field used on your contact page.
+- config/settings.php - This file is allowing you to setup your document root and the timezone, as the actual HTML tag's field used on your contact page.
 
-- config/variables.example.php - Example file you have to modify, see ' src/var/variables.php ' right above.
+- config/settings.example.php - Example file you have to modify, see ' config/settings.php ' right above.
 
 # vendor/
 

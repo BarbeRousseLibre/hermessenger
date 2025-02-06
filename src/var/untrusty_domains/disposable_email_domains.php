@@ -3,7 +3,7 @@
 /*
  * Array listing all untrusty domains, specifically disposable e-mails domains.
  *
- * WIP: Futur release should use a better and more complet listing of such.
+ * WIP: Futur releases should use a better and more complet listing for such.
  *
  */
 

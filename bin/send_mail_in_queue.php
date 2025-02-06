@@ -7,13 +7,15 @@
  *
  */
 
-require_once(__DIR__ . '/../config/variables.php');
+require_once(__DIR__) . '/../config/settings.php';
+require_once(__DIR__) . '/../config/form_config.php';
+require_once(__DIR__) . '/../config/server_path_config.php';
 require_once(__DIR__ . '/../src/functions.php');
 
 $file_list = scandir($locations["pending_mails"]); // Retrieve all the files, increasing order (oldest to newest)
 
 /*
- * Select only the first file (being as scandir is used, the oldest) starting with the prefix for pending mail and
+ * Select only the first file (as scandir is used, the oldest) starting with the prefix for pending mail and
  * avoiding UNIX path ('.', '..') values as other non-mail file (such as '.gitkeep' or alike).
  *
  */
@@ -34,5 +36,4 @@ foreach ($file_list as $file) {
 }
 
 // Reaching this point, there was no mail to send
-// echo "No mail to send at: " . date('Y-m-d, H:i:s') . ", exiting.\n";
 exit;

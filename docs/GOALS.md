@@ -7,7 +7,7 @@ It stores the untrusty e-mails in it's own directory for further analysis if des
 
 It aims simplicity of use, installation, settings, while keeping you out of some problems against such tools. 
 
-Another main objectives would be securit against possible threats. 
+Another main objectives would be security against possible threats. 
 
 ## No mails bombing and no flood-based denial of services (DoS)
 
@@ -39,7 +39,7 @@ You installed this project (you fool !) for your personal website, nothing much 
 
 Let's imagine a simple scenario:
 
-Some time ago, you had a bad, long and painful argument online with someone, you decided to ignore this.
+Some time ago, you had a bad, long and painful argument online with someone, you decided to ignore this and move on.
 
 This one wants to become a pain in your *ss, because he or she thinks it's fun, you deserves it, what ever.
 
@@ -76,11 +76,13 @@ The main and first idea here is avoiding to get a no space left scenario for leg
 
 It is designed for slow sending, one at-a-time mail sending.
 
+Last note on this : To avoid to actually sends these bad e-mails, the simple and easiest way is to remove theses files from the pending mail queue, no files means no mails to send. 
+
 ## Wait… the space for holding the pending mails could be full pretty quickly too !
 
 True, for now, Hermessenger could not prevent this as it is. 
 
-This is a feature that would need to be implemented for 0.2.
+This is a feature that would need to be implemented for 0.3.
 
 It is supposed to protect your mailbox against threats, abuse and other kind of attack and blocking, even HTTP-server side where it could act, of course, it's not preventing your from classic HTTP-(D)DoS based attack !
 
@@ -92,7 +94,7 @@ Workaround A:
 
 2/ At every iteration, use ' find ' command to find all json files into the ' temp_mail_directory ' and moves them into some other location, locally, or with SSH on your own machine, on an external hard drive, etc.
 
-3/ Once the .json files has been moved, add them to a tar(.xz) archive, which is nice because compressing could remove about ~90% of disk usage, but it requires some CPU times and ressources.
+3/ Once the .json files has been moved, add them to a tar(.xz) archive, which is nice because compressing could remove about ~90% of disk usage, but it requires some CPU times and ressources. It could also help against a file-system with too much files and making the inodes limits reached (one file instead of thousands).
 
 4/ Per waves, once compressed, keep these archives for further analysis.
 
@@ -103,6 +105,8 @@ Or workaround B:
 2/ Removes them on the fly if you want to get quick and dirty
 
 Command for A, local copy and compressing them on the fly:
+
+**Be very careful, this command will remove on the fly everything matching the condition of for, use ' ls ' for testing before !**
 
 ```
 (Terminal 1) $ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec mv -t /some/other/location {} + ; done
@@ -128,7 +132,6 @@ while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.j
 ```
 
 If happy with the results (you are not hitting an incorrect directory, for example):
-**Be very careful, this command will remove on the fly everything matching the condition of for, use ' ls ' for testing before !**
 ```
 while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec rm {}\; done
 ```

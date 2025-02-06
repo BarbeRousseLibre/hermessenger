@@ -3,7 +3,8 @@
 Still a WIP.
 
 ## Take the user's input and saves it into a JSON
-First it checks validity of the user input and write a file in JSON format if all tests are OK and if the needed directories exist:
+
+First it checks validity of the user input and write a file in JSON format if all tests are OK or not and if the needed directories exist:
 
 > {
 
@@ -141,7 +142,7 @@ This is nice for testing without actually modifying the crontab. You could also 
 
 The goal is to make impossible to overload your mailbox, or being blocked by your ESP's SMTP server for abusing it without knowing it (sending limit ratio was reached). To setup the sending rate from Hermessenger, you should look up what's your sending limits and imagine the following scenario:
 
-If someone manage to abuse this form by adding 10k mails into your mail pending queue, that won't block you in any way.
+If someone manage to abuse this form by adding 10k mails into your mail pending queue, that won't block you in any way (beside your web server being attacked with a denial of services).
 If you set a call to ' bin/send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day.
 **Warning : This has to be doubled if you wants to allow your user to get a receipt / copy on their own mailbox, making it to 576 e-mails sends / day.**
 
@@ -155,7 +156,7 @@ Once ' bin/send_mail_in_queue.php ' is called, it will look up into ' var/temp_m
 
 ## After sending 
 
-Regarding the returned code from PHPMailer, will then move the mail file into ' var/mail_dir/ACCEPTED ' or ' var/mail_dir/REJECTED '.
+Regarding the returned code from PHPMailer, will move the mail file into ' var/mail_dir/ACCEPTED ' or ' var/mail_dir/REJECTED '.
 
 **It's important to note : If PHPMailer return true, it does NOT MEANS YOUR MAIL IS ACTUALLY SENDED TO THE MAILBOX. The recipient server could reject it for many reasons.**
 
