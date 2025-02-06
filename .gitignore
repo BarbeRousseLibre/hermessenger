@@ -4,7 +4,7 @@ src/.env
 
 # The file should, possibly, never be shared (giving local path informations, which is not very nice, as useless to
 # share anyway).
-src/var/variables.php
+src/config/settings.php
 *.json
 
 # Files or directories that are useless to be shared.
@@ -25,4 +25,4 @@ rejected_*
 
 # Example files, see README.md, that are needed to be shared.
 !.env.example
-!src/var/variables.example.php
+!.settings.example.php
