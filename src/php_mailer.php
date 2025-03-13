@@ -76,7 +76,7 @@ try {
 
     // Yes, this is not very good. WIP.
     $unicode_Envelope = "✉";
-    $mail->Subject     = '=?UTF-8?B?' . base64_encode($unicode_Envelope) . '?=' . " [" . $mail_clean["subject_prefix_list"] . "] " . $mail_clean["subject"];
+    $mail->Subject     = '=?UTF-8?B?' . base64_encode($unicode_Envelope) . '?=' . " [" . $mail_clean["subject"] . "] " ;
 
     // Otherwise we don't know who sended it
     $mail->Body         = "Was sended from ".
