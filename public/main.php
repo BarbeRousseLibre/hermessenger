@@ -3,7 +3,7 @@
 /*
  * Main entry point for Hermessenger.
  *
- * This file has to be in the document root.
+ * This file has to be in the document root of the website using it.
  *
  * The web mail form should target this file to redirect the user's input data to Hermessenger:
  * ' <form action="/main.php" method="post"> '
