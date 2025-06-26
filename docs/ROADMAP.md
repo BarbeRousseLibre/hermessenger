@@ -1,6 +1,6 @@
 # Roadmap
 
-These goals could change, but more or less I aim:
+These goals could change.
 
 ## Notes about versioning
 
@@ -12,35 +12,31 @@ For now, all 0.1.x is poorly using tagging and branches system.
 
 **Please be sure to use the last tag available for the last " stable " release for any testing.**
 
-## Futur release (0.2)
+## Current version
 
-- Add: removes, add or modify easily the needed input from a HTML form (\<input/\>, \<textarea\>\</textarea\>, etc).
-- Add: feature to add easily a list of subject that user could pick up from, prefixing the actual mail's subject for an easier and quicker way to read subject category or simplify the filtering process for a MUA.
-- Add: captcha to block AI / bot, while still being accessible for some disabled user (such as blind peoples, or with dyslexia, etc).
+After months of testing and (re)learning to use my favorites tools to do so, I managed to get a working form that seems to be reliable.
 
-- Enhancing: protection against floods and mail-bombing, as mitigate the possibility of fill a disk space with request until there is no more room left.
+As for now, the code is still not ready for a production environement. I will use it for my personal needs and see what is bad or need to be improved.
 
-- Check: Compatibility with all version of PHP8
-- Check: Better use of PHPDotenv (using [cache](https://github.com/vlucas/phpdotenv/issues/207))
+## Futur goal
 
-## Futur release (0.3)
+Non-exhaustiv lists of features I want and need to add.
 
-- Add: Non-latin alphabets support.
-- Add: An easy I18N way.
-- Add: Content parsing for suspicious wording, links, etc.
+### Spam, AI & Bots strategy
 
-## Futur release (0.4)
+The actual system to avoid spam is divided between a sets of array listing the non-allowed domains used as disposable mailbox and a slow rate sending
+to avoid effecient attacks against a mailbox or ESP services.
 
-- Add: sharing the full testing process.
+This is way under the expected protection I want for this tool. For now, at best, it mitigate attacks.
 
-- Enhancing: a better listing system for blacklisted domains (disposable) as IP and mailbox.
+Against this, it is intended to use solutions as [Anubis](https://xeiaso.net/blog/2025/anubis/), avoiding to use some services such as Cloudflare.
 
-## Futur release (0.5)
+This will help by « weighting » the soul of request mades to access, from the web browser, the mail form (Hermessenger).
 
-- Enhancing: being closer to the [Twelve-Factor App](https://12factor.net/), without necessary fully respect it, until I'm ready to do so.
+Again, this won’t and never will be a 100% proof solution, as far as I know, it’s another layer.
 
-## Futur release (1.x)
+### Phone numbers
+I realized Hermessenger could not handle properly, for now, the case of phone number. We could simply add a input in the HTML source code and retrieve
+the phone numbers, but regarding the country the size and format differs. 
 
-Incompatibility that is predicted for the first stable release:
-
-- Add: A safer, easier and quicker configuration system, avoiding administrators to edit actual PHP code.
+Instead of doing this from scratch, I’ll use a library made to manager every international phone numbers format.
