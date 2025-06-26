@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Call needed functions to check if the request is allowed by Hermessenger (datas are valids, existing, etc).
+ */
+
 require_once 'functions.php';
 require_once(__DIR__ . '/../config/settings.php');
 require_once(__DIR__ . '/../config/form_config.php');
