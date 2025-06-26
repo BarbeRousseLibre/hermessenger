@@ -5,6 +5,10 @@
  *
  * WIP: Futur releases should use a better and more complet listing for such.
  *
+ * This should not be considered, per se, as a fully working security features.
+ *
+ * This is simply another layer to help avoiding spam or non-desired sending domains that are know to be suspicious.
+ *
  */
 
 $non_trusty_esp_domain = [
