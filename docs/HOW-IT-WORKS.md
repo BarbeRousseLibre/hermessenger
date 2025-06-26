@@ -57,9 +57,9 @@ Where:
 
 This file will be stored into ' var/mail_temp_directory/ ' as a JSON.
 
-Per default, this is not sending any mail at this point. 
+This is not sending any mail at this point. 
 
-This was written to be used aside a task schedular (such as a cronjob), a loop or you can (for testing purpose) execute the following file manually on a shell : ' bin/send_mail_in_queue.php ':
+This was written to be used aside a task schedular (such as a cronjob), a loop or you can (for testing purpose) execute the following file manually on a shell with php: ' bin/send_mail_in_queue.php ':
 
 ### Crontask job:
 
@@ -74,7 +74,7 @@ The output could be redirected to some logs file, per default you could use ' lo
 **Note:** If into ' src/php_mailer.php ' you turned on the debug features, expect dozens of line for each sending, instead of a few, as this example showing when debug features is off:
 
 ```Mail to send:
-=> " mail_pending_2024-11-14_130849_192.168.1.44_Kévin_GASPARD_DE_RENEFORT_misc_at_koshie.fr.json "
+=> " mail_pending_2024-11-14_130849_148.122.54.548_Kévin_GASPARD_DE_RENEFORT_contact_at_baguette.fr.json "
 Message has been sent the 2024-11-14, at 13:09:09 and file was copied to /path/to/hermessenger/var/mail_dir/ACCEPTED/
 ```
 
@@ -93,13 +93,15 @@ Saying this, it is your server, not mine…
 Then add (for a sending every 5 minutes):
 
 ```
-*/5 * * * * /usr/bin/php8.2 /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
+*/5 * * * * /usr/bin/phpX.X /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
 ```
 
 Or every minutes:
 ```
-* * * * * /usr/bin/php8.2 /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
+* * * * * /usr/bin/phpX.X /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
 ```
+
+Please modify these example accordingly to your need.
 
 *Do not forget to save and quit, otherwise this won't be applied until so !*
 
@@ -108,14 +110,14 @@ Or every minutes:
 Simply execute the following command:
 
 ```bash
-$ /usr/bin/php8.2 /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
+$ /usr/bin/phpX.X /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt
 ```
 
 To be sure it will works when using a crontab (see above, ' Crontask job '), hit the full path for your PHP binary and proper release if needed. As would do your cron task job. If it works from the shell (with full path to binary) **with the same user that will run the crontask job**, it *should* works from crontab. If it is not, try to test your crontab.
 
 ### Bash loop using while (300 seconds, so 5 minutes):
 ```bash
-$ while true; do /usr/bin/php8.2 /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt; sleep 300; done
+$ while true; do /usr/bin/phpX.X /path/to/hermessenger/bin/send_mail_in_queue.php >> /path/to/hermessenger/logs/sending_logs.txt; sleep 300; done
 ```
 
 And stop it using:
@@ -140,7 +142,7 @@ This is nice for testing without actually modifying the crontab. You could also 
 
 ## The pending queue process
 
-The goal is to make impossible to overload your mailbox, or being blocked by your ESP's SMTP server for abusing it without knowing it (sending limit ratio was reached). To setup the sending rate from Hermessenger, you should look up what's your sending limits and imagine the following scenario:
+The goal is to make impossible to overload your mailbox, at least quickly and easily, or being blocked by your ESP's SMTP server for abusing it without knowing it (sending limit ratio was reached). To setup the sending rate from Hermessenger, you should look up what's your sending limits and imagine the following scenario:
 
 If someone manage to abuse this form by adding 10k mails into your mail pending queue, that won't block you in any way (beside your web server being attacked with a denial of services).
 If you set a call to ' bin/send_mail_in_queue.php ' every 5 minutes, it means you won't send more than 60 ÷ 5 = 12 mails per hours, 12 × 24 = 288 mails per day.
@@ -152,15 +154,15 @@ For a mail per minute, 60 minutes × 24 hours = 1440 mail's sending, doubled to 
 
 ## The sending process
 
-Once ' bin/send_mail_in_queue.php ' is called, it will look up into ' var/temp_mail_directory ' and report the oldest mail file (if any) with desired prefix (being hardcoded, for now, ' mail_pending_ ', WIP!). Once one mail has been found, it will try to actually send the mail. It will ignore '.', '..' (Unix path) as '.gitkeep' or other alike files. If no mails are pending, starting (still hardcoded for now) with ' mail_pending_ ', it simply exit.
+Once ' bin/send_mail_in_queue.php ' is called, it will look up into ' var/temp_mail_directory ' and report the oldest mail file (if any) with desired prefix (being hardcoded, for now, ' mail_pending_ ', WIP!). Once one mail has been found, it will try to actually send the mail. It will ignore '.', '..' (Unix path) as '.gitkeep' or other alike files and directories. If no mails are pending, starting (still hardcoded for now) with ' mail_pending_ ', it simply exit.
 
 ## After sending 
 
 Regarding the returned code from PHPMailer, will move the mail file into ' var/mail_dir/ACCEPTED ' or ' var/mail_dir/REJECTED '.
 
-**It's important to note : If PHPMailer return true, it does NOT MEANS YOUR MAIL IS ACTUALLY SENDED TO THE MAILBOX. The recipient server could reject it for many reasons.**
+**It's important to note : If PHPMailer return true, it does not means your e-mail will be actually sended. The recipient server could still reject it for many reasons.**
 
-To find out the reason, enable debug's feature inside ' src/php_mailer.php '.
+To find out the reason, enable debug's feature inside ' src/php_mailer.php ' and analyze the logs.
 
 The mail file is also renamed regarding it's status (returned by PHPMailer), ' accepted_mail ' or ' rejected_mail ' in the expected directory.
 
