@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once(__DIR__ . '/../config/settings.php');
 require_once(__DIR__ . '/../config/form_config.php');
@@ -8,52 +8,51 @@ require_once(__DIR__ . '/../config/server_path_config.php');
 mb_internal_encoding($char_encoding);
 
 /*
- * Take the $_POST from user and do a serie of checks:
+ * Take the $_POST from user and do the following checks:
  *
  * - Is $_POST empty
  * - Is email domain input by user untrusty (not in the $non_trusty_esp_domain array)
- * - Is the honey-pot used
- * - Is the mandatory checkbox for rules has been checked or not
- * - Is the number of fields valid
- * - Is the length for each according field valid
- * - Is the pattern for each according field valid
+ * - Is the number of fields valid, the one being mandatory not empty and with valids input
+ * - Is the length for input according to the field valid range
+ * - Is the pattern for input according to the field valid filter
  *
- * All above would redirect the user on the rejected sending page if true.
+ * All above would redirect the user on the rejected sending page if true (error occured).
  *
  * It is also doing:
  * - Storing if a copy has to be send to the sender (e-mail address used while filling form)
  * - What is the used prefixed subject list
  *
- * These above are simply features that is not rejecting the message.
- *
  * $post has to be the $_POST or $_POST's copy (recommanded).
  *
  * $html_elements_list is the array used in ' form_config.php ' file, defining how many fields there are to test as
- * what are their respective rules (minimun and maximum lenght, their pattern, etc).
+ * what are their respective rules (minimun and maximum lenght, their pattern, are they mandatory, etc).
  *
  * $locations is the array defining which locations exist on the system to store pending mails, accepted or rejected,
  * untrusty, etc.
  *
- * At the first encountered error, return false, which should then once this function called, redirect on the rejected
- * sending page. The error will call the ' store_to_json() ' functions with " logs_mail_rejected " as location.
+ * At the first error return false, which should then once this function called, redirecting on the rejected
+ * sending page. The error will call the ' store_to_json() ' functions with " logs_mail_rejected ".
  *
  * If no error was find, then return true, which should then redirected the browser to the accepted sending page.
  * The file will then be stored into the "pending_mails" location for further sending.
  *
- * If all fields are valids BUT the honey-pot is used, then redirected the user on accepted sending page, while
- * actually not sending anything, hoping to trick even more bots and alike.
- *
  */
 function checking_form($post, $html_elements_list, $locations) {
 
-    $post_copy = $post; // Work on a copy of $post
-    $is_receipt_asked = false; // Per default, none is asked
-    $removed_keys = 0; // Count the number of keys that has been removed for a correct checks later on
+    // Work on a copy of $post
+    $post_copy = $post;
+    // Per default, none is asked
+    $is_receipt_asked = false;
+    // Count the number of keys that has been removed for a correct checks later on
+    $removed_keys = 0;
 
     // Test if $_POST isn't empty
     if (count($post_copy) == 0) {
 
-        store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
+        // If empty, return false (the mail won’t be stored for sending)
+        // It was before hand storing the mail in the rejected directory, but since this is empty this has no logic!
+        // To remove once it was tested with this.
+        // store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
         return false;
 
     }
@@ -61,59 +60,70 @@ function checking_form($post, $html_elements_list, $locations) {
     // Test if the used domain mail by user is trusty, if not, return false and reject the request
     if ($is_domain_trusty = reject_disposable_email_domain($post_copy['email'])) {
 
+        // Store the e-mail in the " logs_mail_disposable " directory and won’t be sended
         store_to_json($post_copy, $locations["logs_mail_disposable"], $is_receipt_asked);
         return false;
 
     }
 
-    // Look out for honey-pot
-    if (!isset($post_copy[0])) {
-
-        unset($post_copy['first_input']); // Remove that useless key because it was not filled
-        --$removed_keys;
-
-    } else {
-
-        // Store the mail in the rejected location, while not saying to the " user " it was rejected
-        store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
-        return false;
-
-    }
+    /*
+    * As is it for now, the feature "honeypot" has been disabled because it was not very easy to hide to a real user
+    * from an actual bot.
+    *
+    * This will maybe be re-implemented later on, but for now I will focus my time and energy on using more modern and
+    * bot-proof strategy, such as weighting the soul of the request (as Anubis do).
+    *
+    * // Look out for honey-pot
+    * if (!isset($post_copy[0])) {
+    *
+    *     unset($post_copy['first_input']); // Remove that useless key because it was not filled
+    *     --$removed_keys;
+    *
+    * } else {
+    *
+    *     // Store the mail in the rejected location, while not saying to the " user " it was rejected
+    *     store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
+    *     return false;
+    *
+    * }
+    */
 
     // Look if user has asked to receive a copy of the e-mail
     if (array_key_exists('receive_ack_receipt', $post_copy)) {
 
-        unset($post_copy['receive_ack_receipt']); // This key is not needed anymore
-        $is_receipt_asked = true; // Keeping info in $is_receipt_asked (receipt asked)
+        unset($post_copy['receive_ack_receipt']);
+        $is_receipt_asked = true;
         --$removed_keys;
 
     } else {
 
-        $is_receipt_asked = false; // None was asked
+        $is_receipt_asked = false;
 
     }
 
-    // Look if user has checked the (mandatory) checkbox for rules agreements
+    // Look if user has checked the (mandatory) checkbox for rules agreements if one exist
+    // Note: This is not a very nice way to test this, need to add it as an boolean argument
     if (!array_key_exists('data_sharing', $post_copy)) {
 
         store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
-        return false; // Message will be rejected
+        return false;
 
     } else {
 
-        unset($post_copy['data_sharing']); // Remove the key
+        unset($post_copy['data_sharing']);
         --$removed_keys;
 
     }
 
-    // Test if the actual number of input is valid, all input minus the unset fields
+    // Test if the actual number of input is valid, minus the previously unset fields
     $post_copy_count = count($post_copy);
     $updated_count = count($post) - $removed_keys;
 
     if ((!$post_copy_count == $updated_count)) {
 
+        // Counting has gone wrong, message will be rejected
         store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
-        return false; // Counting has gone wrong, message will be rejected
+        return false;
 
     }
 
@@ -121,13 +131,15 @@ function checking_form($post, $html_elements_list, $locations) {
     foreach ($post_copy as $key => $value) {
 
         // When the tested field is a subject prefix, there is no need to test it
+        // Note: This is not the best way to handle this, that should probably be a value into the definition
+        // of the field or an argument.
         if ($key == "subject_prefix_list") {
 
-            continue; // Skip the tests on this key (prefixed subject list)
+            continue;
 
         }
 
-        /* Define the minimun and maximun allowed lenght (according to the actual field tested) as what pattern we need
+        /* Define the allowed range size (according to the actual field tested) as what pattern we need for it
          * to check the input field against. */
         $min = $html_elements_list[$key]['min_length'];
         $max = $html_elements_list[$key]['max_length'];
@@ -140,7 +152,7 @@ function checking_form($post, $html_elements_list, $locations) {
         if ($current_length < $min || $current_length > $max) {
 
             store_to_json($post_copy, $locations["logs_mail_rejected"], $is_receipt_asked);
-            return false; // Message will be rejected because lenght check returned an error on the current field
+            return false;
 
         }
 
@@ -155,17 +167,17 @@ function checking_form($post, $html_elements_list, $locations) {
 
     }
 
-    // All is good
+    // All is good if the code has reached this point, return true
     store_to_json($post_copy, $locations["pending_mails"], $is_receipt_asked);
     return true;
 
 }
 
 /*
- * Redirect the client browser to the target (.html page) defined with $target argument.
+ * Redirect the client browser to the target (an .html page) defined with $target argument.
  *
  * $target should be the full URL to the futur location:
- * scheme://domain-name/ressource_path
+ * ' scheme://domain-name/ressource_path '
  *
  * Before actually sending the new location (redirection), checks if no headers was sent before.
  *
@@ -179,11 +191,13 @@ function redirect_browser_to_new_location($target) {
         // Redirect the client to the $target
         header('Location: ' . $target);
 
-        return true; // Redirect the browser to $target
+        // Redirect the browser to $target
+        return true;
 
     } else {
 
-        return false; // Does not redirect, an header has already been send
+        // Does not redirect, an header has already been send
+        return false;
 
     }
 
@@ -218,7 +232,7 @@ function reject_disposable_email_domain($user_email) {
 }
 
 /*
- * Once the mail has been given to PHPMailer, stores it to the good location, accordingly to PHPMailer returned code.
+ * Store the mail to the good location, accordingly to PHPMailer returned code, given as argument ' $status '.
  *
  * ' rejected_mail ' goes into ' mail_dir/REJECTED ' subdirectory, and ' accepted_mail ' into ' mail_dir/ACCEPTED '.
  *
@@ -253,8 +267,8 @@ function store_sended_mail_to_logs($pending_mail_path, $status, $locations) {
 }
 
 /*
- * From the $mail argument being the copy of $_POST, after it was cleaned from receipt key and honey-pot field, write
- * into $pending_mail_directory the file in JSON, without forgetting to state if a copy was asked (since it was
+ * From the $mail argument being the copy of $_POST, after it was cleaned from useless datas, write
+ * into $pending_mail_directory the file in JSON format and define if a copy was asked (since it was
  * removed from the $mail, and saved in a variable for this function call, being the third argument).
  *
  * $mail is an array, copied from $_POST.
@@ -339,6 +353,9 @@ function check_pattern($input, $pattern_filter) {
         case "numbers":
             return (bool) filter_var($input, FILTER_VALIDATE_INT);
             //return (bool) preg_match("/^\d+$/g", $input);
+
+        // WIP
+        //case "phones":
 
         default: return false; // Not a valid filter
 
