@@ -74,7 +74,7 @@ $html_elements_list =
                 "html_tag"     => "select"
             ],
 
-        "subject" =>
+/*        "subject" =>
             [
                 "min_length"   => 8,
                 "max_length"   => 48,
@@ -83,7 +83,7 @@ $html_elements_list =
                 "pattern_type" => "text",
                 "html_tag"     => "input",
                 "placeholder"  => "Subject of your e-mail",
-            ],
+            ],*/
 
         "body" =>
             [
