@@ -24,7 +24,7 @@ Nobody likes wall of text.
 
 # logs/
 
-Where you could redirect output of some process, such as the crontask job calling ' bin/send_mail_in_queue.php ' or ' src/php_mailer.php ' as logs for Hermessenger.
+Where you could redirect output of some process, such as the crontask job calling ' bin/send_mail_in_queue.php ' or ' src/php_mailer.php ' as logs for Hermessenger. As you please.
 
 # var/
 
@@ -32,11 +32,11 @@ Where the mails files are actually holded before and after sendings.
 
 - var/temp_mail_directory - Holding mail until they are sended, being a pending queue.
 
-- var/mail_dir/ - Hold sub-directories to store mails once they were passed through ' src/php_mailer.php ' (sending), regarding their status:
+- var/mail_dir/ - Hold sub-directories to store mails once they were passed through ' src/php_mailer.php ' (sending), regarding their status.
 
-- var/mail_dir/ACCEPTED - Hold mails that was, regarding PHPMailer returned status, sended and accepted (but not necessary delivered).
+- var/mail_dir/ACCEPTED - Hold mails that was, regarding PHPMailer returned status, sended and accepted (but not necessary delivered, at least on Hermessenger side everything is good).
 
-- var/mail_dir/REJECTED - Hold mails that was, regarding a PHPMailer error code that was returned, rejected (no hope to see them delivered).
+- var/mail_dir/REJECTED - Hold mails that was, regarding a PHPMailer error code that was returned, rejected (no hope to see them delivered no matter what).
 
 - var/mail_dir/UNTRUSTY/ - Holding sub-directories, regarding why the mail is untrusty:
 
@@ -44,11 +44,11 @@ Where the mails files are actually holded before and after sendings.
 
 # src/
 
-Actual source code that does not need to be served by the web server.
+Actual source code that does not need to be served by the web server. This should **NOT** be accessible by clients.
 
 - src/checking_form.php - take the $_POST from the user's input and test it against some condition (lenght, pattern matching, disposable e-mails domain list, etc), if all tests are succesful or one at least failed the data are exported to a JSON file into the ' var/temp_mail_directory ', until it is send by ' bin/send_mail_in_queue.php '.
 
-- src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (not accessible for client !) and properly stored.
+- src/.env - The file used by PHPDotenv, allowing you to add sensitive informations and being sure they are safe (**not to be accessible for client !**) and properly stored.
 
 - src/.env.example - File to renames ' src/.env ' for your usage. See ' src/.env ' above.
 
@@ -78,6 +78,6 @@ Every composer packages that made Hermessenger works are installed here.
 
 # Other
 
-- .gitkeep - If you don't know what is it: A trick to force git to add empty directory that needs to be here to allow Hermessenger to works. If you do not commit anything to this project or will not forks it, this is safe to removes, but useless.
+- .gitkeep - If you don't know what is it: A trick to force git to add empty directory that needs to be here to allow Hermessenger to works. If you do not commit anything to this project or will not forks it, this is safe to removes, but useless to do so, just keeping them won’t be an issue anyway.
 
 - composer.* - Files used by composer and interacting with ' vendor/ ' class's directory. 
