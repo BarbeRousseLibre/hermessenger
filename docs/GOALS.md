@@ -1,13 +1,13 @@
 # Goals of Hermessenger
-Hermessenger aim to sends a few mails by hours, no more than 60 (one per minute), keeping futur mail's sending into a pending queue directory until a loop, a crontask job (expected behavior) or even a PHP-CGI command line execute ' bin/send_mail_in_queue.php ' script.
+Hermessenger aim to sends a few mails by hours, no more than 60 (one per minute, max), keeping futur mail's sending into a pending queue directory until a loop, a crontask job (expected behavior) or even a PHP-CGI command line execute ' bin/send_mail_in_queue.php ' script.
 
-Every mails are stored on the web server as logs file, or backup of sended e-mails if you prefer, and moved accordingly regarding if the sending was supposed to be accepted or rejected.
+Every mails are stored on the web server as logs file, or backup of sended e-mails if you prefer, and moved accordingly if the sending was supposed to be accepted or rejected.
 
-It stores the untrusty e-mails in it's own directory for further analysis if desired.
+It stores the untrusty e-mails in it's own directory for further analysis if desired by administrator, as it serve as logs.
 
 It aims simplicity of use, installation, settings, while keeping you out of some problems against such tools. 
 
-Another main objectives would be security against possible threats. 
+Another main objectives would be security against possible threats. WIP. 
 
 ## No mails bombing and no flood-based denial of services (DoS)
 
@@ -15,21 +15,25 @@ A few possible type of threats against web mail form are explained below.
 
 ### What is mail bombing ?
 
-The mail bombing is any actions targeting a mail server, the goal being turns it unavailable by " bombing it " by saturation, sending too many mail's request in a short period of it. Or flooding it if you prefer.
+The mail bombing is any actions targeting a mail server, the goal being turns it unavailable by " bombing it " by saturation, sending too many mail's request in a short period of time. Or flooding it if you prefer.
 
 This is specially dangerous if the SMTP servers is hosted by some ESP, non self-hosted. 
 
-Or even if the SMTP server is hosted on **your** dedicated server and if you are your own ESP, using a server hosted somewhere in a data center: The company you rent a server could detect such behavior, and simply blocks request on this port for a while.
+Or even if the SMTP server is hosted on **your** dedicated server and if you are your own ESP, using a server hosted somewhere in a data center: The company you rent a server from could detect such behavior, and simply blocks request on this port for a while. And they are right to do so!*
 
 ESP never allows an unlimited sending ratio, *at least good ones*. If they did, everyone would be able to abuse this and send a **lot** of spams.
 
-Nobody likes spams.
+* Nobody likes spams. Specially, as in one of my previous work experience for an hosting company, managing customer on a dedicated ESP server could be very painful: Users might not understand, know or cares about the rules and good practices about e-mail sending. Worst, an infected workstation (or server) could be used to forward maliciously many spams e-mails.
 
 ### What is a flood-based denial of service (Dos) ?
 
-A DoS (denial of service) is usually made against HTTP(S) servers: With a lot of requests per seconds, or even from a lot of different locations (DDoS, or Distributed Denial of Service), the targeted servers becomes unavailable at worst, at best if any impacts it get slowed down. They are usually hard to fight against. 
+A DoS (**D**enial **o**f **S**ervice) is usually made against HTTP(S) servers: With a lot of requests per seconds, or even from a lot of different locations (DDoS, or **D**istributed **D**enial **o**f **S**ervice), the targeted servers becomes unavailable at worst, at best if any impacts it get slowed down, which could be from the attacker side considered as a succesful mission, if the goal was to make your web site bad and slow. 
 
-It is used to annoys peoples, make companies lost money (an online shop won't be able to sell, customers will get annoyed, etc), make the competitors unable to make profit / get a less good images, etc. What ever, it's made to turn off a service avaibility, slow it down… It's a pain.
+They are usually hard to fight against. 
+
+It is used to annoys peoples, make companies lost money (an online shop won't be able to sell, customers will get annoyed, etc), make the competitors unable to make profit / get a less good images, etc. 
+
+What ever, it's made to turn off a service avaibility, slow it down… It's a pain and could cost money, time and mental sanity.
 
 **In the case scenario here of a web mail form system such as Hermessenger**
 
@@ -43,9 +47,9 @@ Some time ago, you had a bad, long and painful argument online with someone, you
 
 This one wants to become a pain in your *ss, because he or she thinks it's fun, you deserves it, what ever.
 
-This person see your form (after lurking online for your footprints), and realize (or guess) there is no protection against flooding message. Neat! 
+This person see your form (after lurking online for your footprints), and realize (or guess) there is no protection against flooding message. Neat (for the attacker)! 
 
-There is none, you were naiv, or careless.
+There is none such protection, you were naiv, or careless.
 
 Now with a few commands, a (few) script(s), some script-kiddies tools, this person decide to annoys you. Simple, not very long to do too, one person could do it with the will and a bit of skills and knowledge.
 
@@ -64,9 +68,9 @@ c/ this is your self-hosted ESP service, you are the boss and you won't block yo
 
 But in this case you are sending a mail from ' mailbox1@yourownmailservice.xyz ' to ' mailbox2@yourownmailservice.xyz '. 
 
-After a while, your own space dedicated to host your mails is full, unable to gets new mails. 
+After a while, your own space dedicated to host your mails is full, unable to gets new mails! 
 
-**You can't get new mails** and it doesn't stop ! You blocks IP by dozens but new requests from new IP are coming.
+**You can't get new mails** and it doesn't stop! You blocks IP by dozens but new requests from new IP are coming.
 
 **Let's resume this: This person has wasted your precious time, energy and mental sanity.**
 
@@ -82,7 +86,7 @@ Last note on this : To avoid to actually sends these bad e-mails, the simple and
 
 True, for now, Hermessenger could not prevent this as it is. 
 
-This is a feature that would need to be implemented for 0.3.
+This is a feature that would need to be implemented for a futur release.
 
 It is supposed to protect your mailbox against threats, abuse and other kind of attack and blocking, even HTTP-server side where it could act, of course, it's not preventing your from classic HTTP-(D)DoS based attack !
 
@@ -136,4 +140,4 @@ If happy with the results (you are not hitting an incorrect directory, for examp
 while true; do find /path/to/temp_mail_directory -type f -name "mail_pending_*.json" -exec rm {}\; done
 ```
 
-Etcetera, there is some ways to take care of such with less pain, open to ideas :) !
+Etcetera, there is some ways to take care of such with less pain, open to ideas or better ways :)!
