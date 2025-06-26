@@ -1,12 +1,12 @@
 # How to set up settings.php and make Hermessenger works for you
 
-After having installed Hermessenger, you need to configure it accordingly to your web server parameters.
+After installingr Hermessenger, you need to configure it accordingly to your web server parameters.
 
 This settings.php file will allow you to edit:
 
 - Characters encoding
 - Timezone
-- UNIX path among your server
+- UNIX path within your server
 - URLs used for redirection (on valid or rejected mail sending request)
 
 ## Characters encoding
@@ -37,11 +37,9 @@ When the client will click the submit button to send the message, two cases are 
 
 - Rejected sending, the mail won't be sended to the SMTP server because Hermessenger could not accept it, bad formated message for example.
 
-\* Please note: If honeypot field was used, the client will be redirected to the valid sending page no matter what. It's a lie, yes.
-
 You have to define:
 
-- The schemes, being 'http' or 'https' only.
+- The scheme, being 'http' or 'https', only.
 - The domain name, being the website holding the mail form.
 - The accepted ressource, being the HTML page the client will be redirected on in case of success.
 - The rejected ressource, being the HTML page the client will be redirected on in case of failure.
