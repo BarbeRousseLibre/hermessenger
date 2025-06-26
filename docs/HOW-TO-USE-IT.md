@@ -7,12 +7,12 @@ It is not very good as it is. It is expected to completly rewrite this for a mor
 __TL;DR:__
 - 1. Install Hermessenger and the needed dependancies by using [Composer](https://getcomposer.org/) or from source code on git directly.
 - 2. Copy .env.example file to .env, located in ' vendor/barberousselibre/hermessenger/src/ '.
-- 3. Edit the .env file accordingly to your SMTP account.
+- 3. Edit the .env file accordingly to your SMTP account. **Be sure to never share this!**
 - 4. Copy settings.example.php to settings.php, located in ' vendor/barberousselibre/hermessenger/config/ '.
-- 5. Edit settings.php file accordingly to your own need, mandatory variables being $char_encoding, $timezone.
+- 5. Edit settings.php file accordingly to your own need, mandatory variables being $char_encoding and $timezone.
 - 6. Edit variables.php file accordingly to your document root location, adding the **parent** directory (one level above) is __important__. See $document_root_parent.
 - 7. Finally for settings.php, fill the array $redir_location[] with your desired schemes (http or https), the domain name and the target file used for redirection once the user has clicked on send the mail.
-- 8. Copy ' vendor/barberousselibre/hermessenger/public/main.php ' to your actual document root.
+- 8. Copy ' vendor/barberousselibre/hermessenger/public/main.php ' to your actual document root and **do NOT edit it**.
 - 9. Set the proper ownership & permissions for ' vendor/barberousselibre/hermessenger/bin/send_mail_in_queue.php ' (the user executing this should get 7, or rwx, on the file and it's parent directory).
 - 10. Set the proper ownership & permissions for ' vendor/barberousselibre/hermessenger/var ' directory, allowing web server user and / or group reading, writing and execution.
 
@@ -75,7 +75,7 @@ $redir_location = ["scheme"             => "",
 
 ## Move the main.php into your document root
 
-Last step being manually copy the ' vendor/barberousselibre/hermessenger/public/main.php ' file into your actual document root:
+Last step is to copy the ' vendor/barberousselibre/hermessenger/public/main.php ' file into your actual document root:
 ```
 cd /path/to/the/document_root_parent
 cp vendor/barberousselibre/hermessenger/public/main.php public/
