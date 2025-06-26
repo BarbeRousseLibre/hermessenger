@@ -32,18 +32,16 @@ that make 6, so 6 keys has to be defined.
 
 If you need, for example, a checkbox to allow users to get a copy of their message too, it's 7. 
 
-If you use an honeypot above that, it's 8.
+If you add any other input, textarea, checkbox, it's 8. And so on.
 
 These 8 fields are mandatory and needs to be in the HTML source code as into this array.
 
 Below an example for a contact form with:
-- Honey pot, an invisible input to trap bots and alike
 - First name input
 - Second name input
 - Email input
 - A zip code input
 - A prefixed select list for subject
-- An input subject field
 - A textarea for body
 - A checkbox to ask to get a copy while sending the message
 - A submit button to send the request.
@@ -51,17 +49,6 @@ Below an example for a contact form with:
 ```
 $html_elements_list =
     [
-        "honeypot" =>
-            [
-                "min_length"   => 2,
-                "max_length"   => 32,
-                "id"           => "first_input",
-                "name"         => "first_input",
-                "pattern_type" => "names",
-                "html_tag"     => "input",
-                "placeholder"  => "Foo"
-            ],
-
         "firstname" =>
             [
                 "min_length"   => 2,
@@ -113,17 +100,6 @@ $html_elements_list =
                 "html_tag"     => "select"
             ],
 
-        "subject" =>
-            [
-                "min_length"   => 8,
-                "max_length"   => 48,
-                "id"           => "subject",
-                "name"         => "subject",
-                "pattern_type" => "text",
-                "html_tag"     => "input",
-                "placeholder"  => "Subject of your e-mail",
-            ],
-
         "body" =>
             [
                 "min_length"   => 64,
@@ -161,10 +137,10 @@ Some above needs a bit of explaination:
 
 - ' pattern_type ' has to be in the following list of allowed value: names (for identity fields, such as firstname & secondname), text (for anything not being identity related), numbers (see zipcode) and email. Each of them having their own pattern matching rules, defined inside ' src/functions.php ' in the ' check_pattern() ' function. 
 
-To remove a field, simply removes the whole key, for example for the same code without honey pot, remove line from:
+To remove a field, simply removes the whole key, for example for the same code without the subject_prefix, remove line from:
 
 ```
-"honeypot" =>
+"subject_prefix" =>
 ```
 
 To it's ending:
@@ -176,15 +152,11 @@ To it's ending:
 Which was, in this example, this whole piece of code:
 
 ```
-        "honeypot" =>
+        "subject_prefix" =>
             [
-                "min_length"   => 2,
-                "max_length"   => 32,
-                "id"           => "first_input",
-                "name"         => "first_input",
-                "pattern_type" => "names",
-                "html_tag"     => "input",
-                "placeholder"  => "Foo"
+                "id"           => "subject_prefix",
+                "name"         => "subject_prefix",
+                "html_tag"     => "select"
             ],
 ```
 
