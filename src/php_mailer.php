@@ -1,6 +1,13 @@
 <?php
 
-/* Set internal character encoding */
+/*
+ * This is a copy/pasted source code from the PHPMailer project, modified to works as expected with Hermessenger.
+ *
+ * Original file: https://github.com/PHPMailer/PHPMailer?tab=readme-ov-file#a-simple-example
+ *
+ */
+
+// Set internal character encoding
 mb_internal_encoding($char_encoding);
 
 // Define timezone
@@ -21,13 +28,12 @@ require 'var/mailing_var.php';
 $mail_json_file = file_get_contents($path_to_mail);
 $mail_decoded = json_decode($mail_json_file);
 
-// This is useless but working as it is for now. To change.
+// This is useless but working as it is for now. To change later.
 $mail_clean = ["firstname" => $mail_decoded->firstname,
                "secondname" => $mail_decoded->secondname,
                "email" => $mail_decoded->email,
                "zipcode" => $mail_decoded->zipcode,
                "subject_prefix_list" => $mail_decoded->subject_prefix_list,
-               "subject" => $mail_decoded->subject,
                "body" => $mail_decoded->body, // Forcing carriage and line return
                "IP" => $mail_decoded->IP,
                "date_and_time" => $mail_decoded->date_and_time,
@@ -52,7 +58,7 @@ try {
 
     /* ESP's server settings */
     //$mail->SMTPDebug  = SMTP::DEBUG_SERVER;
-    $mail->SMTPDebug  = true; // This is not a good way to define this here !
+    $mail->SMTPDebug  = true; // This is not a good way to define this here (?)
     $mail->isSMTP(true);
     $mail->Host       = $SMTP_info["server"];
     $mail->SMTPAuth   = true;
@@ -74,9 +80,9 @@ try {
     // Content
     $mail->isHTML(false);
 
-    // Yes, this is not very good. WIP.
+    // WIP.
     $unicode_Envelope = "✉";
-    $mail->Subject     = '=?UTF-8?B?' . base64_encode($unicode_Envelope) . '?=' . " [" . $mail_clean["subject"] . "] " ;
+    $mail->Subject     = '=?UTF-8?B?' . base64_encode($unicode_Envelope) . '?=' . " [" . $mail_clean["subject_prefix_list"] . "] " ;
 
     // Otherwise we don't know who sended it
     $mail->Body         = "Was sended from ".
