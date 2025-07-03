@@ -91,7 +91,7 @@ You can either download the source code from [github](https://github.com/BarbeRo
 
 1. Be aware that ' src/.env ' file should **NEVER** be accessible to your webserver (and so, client). This is why it is outside the document root.
 
-2. As ' src/.env ' should stay inside ' .gitignore ' or any CVS system equivalent to avoid sharing it by mistake.
+2. As ' src/.env ' should stay inside ' .gitignore ' or any CVS to avoid sharing it by mistake.
 
 3. Be still sure to **never execute** this command:
 ```bash
