@@ -13,7 +13,7 @@ Do not expect this code to be ready for a production environment, please. Its us
 It uses [composer](https://github.com/composer/composer) to manage the following class:
 
 - [PHPDotenv](https://github.com/vlucas/phpdotenv): allowing to properly protect some sensitives datas such as your ISP's SMTP server address, username, password, etc.*
-- [PHPMailer](https://github.com/PHPMailer/PHPMailer): effectively and properly sends e-mail (IMAP).
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer): effectively and properly sends e-mail (SMTP).
 
 \* *This doesn't seems like the most efficient way tho, it needs to be [cached](https://github.com/vlucas/phpdotenv/issues/207) and as it is, it's not.*
 
@@ -91,7 +91,7 @@ You can either download the source code from [github](https://github.com/BarbeRo
 
 1. Be aware that ' src/.env ' file should **NEVER** be accessible to your webserver (and so, client). This is why it is outside the document root.
 
-2. As ' src/.env ' should stay inside ' .gitignore ' or any cvs system equivalent to avoid sharing it by mistake.
+2. As ' src/.env ' should stay inside ' .gitignore ' or any CVS system equivalent to avoid sharing it by mistake.
 
 3. Be still sure to **never execute** this command:
 ```bash
@@ -115,7 +115,7 @@ Please see [HOW-IT-WORKS.md](https://github.com/BarbeRousseLibre/hermessenger/tr
 
 ## How to use it
 
-You need a working mail service, or ESP, allowing you to use their SMTP servers to send the e-mail with PHPMailer.
+You need a working mail service, or ESP allowing you to use their SMTP servers to send the e-mail with PHPMailer.
 
 Once you have these info, simply follow instruction into ' How to install it ' above.
 
@@ -131,7 +131,7 @@ Please see [ABOUT-FILES.md](https://github.com/BarbeRousseLibre/hermessenger/tre
 
 - [PHP](https://www.php.net) for their documentation.
 
-- [KDEvelop](https://kdevelop.org/) for being a neat IDE.
+- [KDevelop](https://kdevelop.org/) for being a neat IDE.
 
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer) for the ease to install and the good work on sending mails.
 
